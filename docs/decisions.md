@@ -150,6 +150,11 @@ copias y extras, de ahí la horquilla. El modelo separa **gastos de compraventa*
 (los paga el comprador) de **gastos de hipoteca** (los paga el banco desde la
 Ley 5/2019 → 0 € para el comprador, con toggle para casos atípicos).
 
+> **Revisada el 2026-09-06.** El ±25 % previsto resultó insuficiente al
+> implementarlo: el arancel puro se queda muy por debajo de la factura real. Se
+> sustituyó por un multiplicador al alza. Ver "Gastos: arancel normativo más un
+> multiplicador que no lo es" más abajo.
+
 ## 2026-09-06 · Motor de cálculo como módulo puro
 
 **Decisión:** toda la lógica de cálculo vive en `src/lib/mortgage/` como funciones
