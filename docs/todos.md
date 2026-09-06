@@ -8,29 +8,32 @@ _Última actualización: 2026-09-06_
 - [x] Decidir framework (Next.js) e i18n (next-intl)
 - [x] Decidir fuentes de datos externas
 - [x] Crear repositorio en GitHub y enlazar `origin`
-- [ ] Andamiar proyecto: `create-next-app` (TS, App Router, Tailwind, ESLint) +
-      Zustand + next-intl + estructura de `architecture.md`
-- [ ] Configurar Vitest + React Testing Library
+- [x] Andamiar proyecto: `create-next-app` + Zustand + next-intl + estructura
+- [x] Configurar Vitest + React Testing Library
+- [ ] Actualizar Node del equipo a >= 20.19 (necesario para tests de componentes
+      con jsdom; `.nvmrc` y `engines` ya lo piden)
 
 ## Prioridad media
 
-- [ ] Configurar Prettier (ESLint ya viene con `create-next-app`)
-- [ ] Hook `PostToolUse` que formatee tras cada edición (requiere `package.json`)
-- [ ] CI GitHub Actions: lint + test + build en Node 20
-- [ ] v1 · `payment.ts` (cuota sistema francés) + tests
+- [x] Configurar Prettier (+ plugin Tailwind + `eslint-config-prettier`)
+- [ ] Hook `PostToolUse` que formatee con Prettier tras cada edición
+- [ ] CI GitHub Actions: lint + typecheck + test + build en Node 20.19
+- [ ] v1 · `payment.ts` (cuota sistema francés, fijo y variable) + tests
 - [ ] v1 · `amortization.ts` (cuadro de amortización) + tests
-- [ ] v1 · UI mínima mobile-first + i18n ES/EN
-- [ ] v1 · serialización del estado de la simulación a la URL
+- [ ] v1 · UI mínima mobile-first sobre `[locale]` + textos en `messages/`
+- [ ] v1 · serialización del estado de la simulación a la URL (`src/store/`)
 
 ## Prioridad baja
 
-- [ ] `/init` para generar el `CLAUDE.md` del proyecto (cuando haya código)
+- [ ] `/init` para generar el `CLAUDE.md` del proyecto
 - [ ] Decidir despliegue (probable Vercel)
+- [ ] Limpiar los SVG de plantilla en `public/` al montar la UI real
+- [ ] Revisar realinear versiones (vitest 5, plugin-react 6, jsdom) al subir Node
 
 ## Investigación / verificación
 
 - [ ] Verificar CORS del endpoint del BCE desde navegador; si falla, decidir entre
-      *fetch* en build (JSON + cron CI) o `route handler` proxy
+      _fetch_ en build (JSON + cron CI) o `route handler` proxy
 - [ ] v2 · Contrastar tipos de ITP/AJD por comunidad autónoma con Agencia Tributaria
       o texto legal consolidado (las cifras de portales son fuente secundaria)
 - [ ] v2 · Escalas exactas de aranceles de notaría (RD 1426/1989) y registro
@@ -42,4 +45,4 @@ _Última actualización: 2026-09-06_
 
 ## Bugs
 
-Ninguno. No hay código.
+Ninguno.

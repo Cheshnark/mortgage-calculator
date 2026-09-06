@@ -1,0 +1,11 @@
+# Artefactos y dependencias
+.next/
+out/
+build/
+dist/
+coverage/
+node_modules/
+
+# Ficheros generados
+next-env.d.ts
+package-lock.json

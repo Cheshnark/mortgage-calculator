@@ -97,7 +97,7 @@ https://data-api.ecb.europa.eu/service/data/FM/M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA?l
 - Respaldo / semilla histórica: dataset `datasets/euribor` en GitHub (CSV, mismo
   origen EMMI).
 - **Pendiente de verificar:** si el BCE envía cabeceras CORS que permitan la llamada
-  desde el navegador. Si no, se resuelve con *fetch* en build (JSON en el bundle,
+  desde el navegador. Si no, se resuelve con _fetch_ en build (JSON en el bundle,
   refrescado por cron de CI) o con un `route handler` que hace de proxy con caché.
 
 **Motivo:** fuente oficial, gratuita, sin registro, en formato programable.
@@ -154,3 +154,39 @@ módulo. Los datos curados viven aparte en `src/data/`.
 **Motivo:** es la parte con requisito de tests unitarios y la que más va a crecer
 entre v1 y v3. Aislada, se prueba con Vitest sin renderizar nada y no se ve afectada
 por cambios de framework.
+
+## 2026-09-06 · Andamiaje: versiones y ajustes concretos
+
+**Decisión:** proyecto generado con `create-next-app@16.3.4` (TypeScript, App
+Router, Tailwind v4, ESLint flat, `src/`, alias `@/*`, `--disable-git`). React 19.
+Gestor npm.
+
+Ajustes que fue necesario hacer sobre la plantilla:
+
+- **`middleware.ts` → `proxy.ts`.** Next 16 deprecó el nombre `middleware`; el
+  convenio ahora es `proxy.ts`. La función sigue siendo la de `next-intl/middleware`.
+- **`vitest.config.mts`** (no `.ts`). Con Node 20.10 el cargador de config de Vite
+  hace `require()` de dependencias ESM-only y falla; la extensión `.mts` fuerza
+  carga como ESM.
+- **Entorno de test = `node` por defecto**, no `jsdom`. En Node 20.10 jsdom 27
+  arrastra `@csstools/css-calc` (ESM) por `require()` y rompe. El motor de cálculo
+  es puro y no necesita DOM; los tests de componentes declararán
+  `// @vitest-environment jsdom` cuando el equipo suba a Node >= 20.19.
+- **`.nvmrc` = `20.19.0`** (antes `20`). Es el mínimo que exigen ESLint 9 y jsdom 27. `package.json` declara `engines.node >= 20.19.0`. El equipo está en 20.10;
+  build, lint y tests de lógica funcionan, los de componentes no hasta actualizar.
+- **`eslint-config-prettier`** añadido al final de `eslint.config.mjs` para que
+  ESLint no pelee con Prettier.
+
+**Motivo:** dejar constancia de por qué estos ficheros se desvían de lo que genera
+`create-next-app`, para no "corregirlos" de vuelta por error.
+
+## 2026-09-06 · Estilos: Tailwind + CSS Modules
+
+**Decisión:** Tailwind para estructura, espaciado y ajustes puntuales. CSS Modules
+(`*.module.css`) para bloques con muchos estados, animaciones o `grid` complejos,
+donde escribirlo en `className` genera demasiado ruido.
+
+**Motivo:** preferencia del equipo y patrón de primera clase en Next. Nota técnica:
+en Tailwind v4, usar `@apply`/`theme()` dentro de un CSS Module obliga a un
+`@reference "../app/globals.css";`; se prefiere tirar de las CSS custom properties
+del `@theme` (`var(--color-foreground)`…), que no lo necesitan.

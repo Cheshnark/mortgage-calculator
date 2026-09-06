@@ -4,40 +4,43 @@ _Última actualización: 2026-09-06_
 
 ## Dónde estamos
 
-Fase de definición **cerrada**. Sigue sin haber código de aplicación, pero ya no hay
-decisiones de arranque pendientes.
+Proyecto **andamiado y verde**. La app arranca, sirve `/es` y `/en`, y `/` redirige
+a `/es`. Aún no hay lógica de negocio más allá de un formateador de importes.
 
-Hecho:
+Hecho en esta sesión:
 
-- Repositorio Git propio (rama `main`), remoto `origin` sincronizado.
-- `.gitignore`, y ahora `.gitattributes` (LF en repo), `.editorconfig`, `.nvmrc` (`20`).
-- `docs/` con las cinco áreas al día.
-- **Alcance definido y faseado** (`business.md`): v1 cuota + amortización, v2 coste
-  de compra + impuestos + gastos, v3 ayudas y avales.
-- **Framework decidido**: Next.js (App Router) + TypeScript + Tailwind + Zustand +
-  next-intl. Tests con Vitest + RTL. Ver `decisions.md`.
-- **Fuentes de datos externas resueltas**: euríbor vía API del BCE; ITP/AJD, aval
-  ICO, ayudas autonómicas y aranceles como tablas curadas en `src/data/` con fuente
-  y fecha. Sin scraping.
-- **Arquitectura**: motor de cálculo puro en `src/lib/mortgage/`, aislado de React.
+- **Definición cerrada**: alcance faseado (`business.md`), framework y fuentes de
+  datos (`decisions.md`).
+- **Tooling agnóstico**: `.gitattributes` (LF), `.editorconfig`, `.nvmrc`.
+- **Andamiaje** con `create-next-app@16.3.4`: Next 16 (App Router, Turbopack),
+  React 19, TypeScript, Tailwind v4, ESLint flat.
+- **i18n** con next-intl: `src/i18n/`, `src/proxy.ts`, `messages/{es,en}.json`,
+  rutas bajo `src/app/[locale]/`.
+- **Estado**: Zustand instalado (sin store todavía).
+- **Tests**: Vitest + RTL. `src/lib/mortgage/format.ts` + 3 tests en verde.
+  Entorno `node` por defecto (ver nota de Node abajo).
+- **Formato**: Prettier + `prettier-plugin-tailwindcss` + `eslint-config-prettier`.
+- Verificado: `npm run build`, `lint`, `typecheck`, `test` — todo pasa.
 
 ## Próximos pasos
 
-1. Andamiar el proyecto: `create-next-app` (TS, App Router, Tailwind, ESLint),
-   añadir Zustand y next-intl, estructura de carpetas de `architecture.md`.
-2. Configurar Vitest + React Testing Library y un primer test del motor.
-3. Configurar Prettier y, tras `package.json`, el hook `PostToolUse` de formateo.
-4. Configurar CI (GitHub Actions): lint + test + build en Node 20.
-5. Implementar v1:
-   1. `payment.ts` (cuota sistema francés) + tests.
-   2. `amortization.ts` (cuadro) + tests.
-   3. UI mínima mobile-first + i18n ES/EN.
-   4. Serialización del estado a la URL.
-6. `/init` para generar el `CLAUDE.md` del proyecto una vez haya código.
+1. CI (GitHub Actions): `lint` + `typecheck` + `test` + `build` en Node 20.19.
+2. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
+3. v1 · motor de cálculo:
+   1. `payment.ts` — cuota sistema francés (fijo y variable = euríbor + diferencial)
+      - tests.
+   2. `amortization.ts` — cuadro mes a mes + tests.
+4. v1 · UI mínima mobile-first sobre `[locale]`: formulario + resultado, textos en
+   `messages/`.
+5. v1 · serialización del estado de la simulación a la URL (`src/store/`).
+6. `/init` para generar el `CLAUDE.md` del proyecto.
 
-## Pendiente de verificar (no bloquea el andamiaje)
+## Pendiente de verificar / deuda
 
-- CORS del endpoint del BCE desde navegador. Si falla → *fetch* en build o
+- **Actualizar Node del equipo a >= 20.19** (`.nvmrc` ya lo pide). Hasta entonces no
+  corren los tests de componentes con jsdom.
+- CORS del endpoint del BCE desde navegador. Si falla → _fetch_ en build o
   `route handler`.
 - Contrastar tipos de ITP/AJD por comunidad con fuente primaria (antes de v2).
 - Vigencia y parámetros exactos del aval ICO y prórroga (antes de v3).
+- Limpiar SVG de plantilla en `public/` cuando se monte la UI real.
