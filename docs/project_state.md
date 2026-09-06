@@ -18,12 +18,13 @@ Hecho en esta sesión:
   rutas bajo `src/app/[locale]/`.
 - **Estado**: Zustand instalado (sin store todavía).
 - **Tests**: Vitest + RTL. `src/lib/mortgage/format.ts` + 3 tests en verde.
-  Entorno `node` por defecto (ver nota de Node abajo).
+  Entorno `node` por defecto; jsdom opt-in por fichero, verificado en Node 22.
 - **Formato**: Prettier + `prettier-plugin-tailwindcss` + `eslint-config-prettier`.
 - **CI**: `.github/workflows/ci.yml` — `npm ci` + `lint` + `typecheck` + `test` +
   `build` en cada push y PR a `main`, Node desde `.nvmrc`.
-- **Node**: `.nvmrc` = `22` (LTS). `engines.node >= 20.19.0`.
-- Verificado: `npm run build`, `lint`, `typecheck`, `test` — todo pasa.
+- **Node**: local en **22.23.2** vía nvm-sh (Git Bash). `.nvmrc` = `22`,
+  `engines.node >= 20.19.0`. `npm ci` limpio, sin avisos de engine.
+- Verificado en Node 22: `build`, `lint`, `typecheck`, `test` (incl. jsdom) — pasa.
 
 ## Próximos pasos
 
@@ -39,8 +40,10 @@ Hecho en esta sesión:
 
 ## Pendiente de verificar / deuda
 
-- **Actualizar Node en local a la 22** (`.nvmrc`). Recomendado vía `fnm` o
-  `nvm-windows`. Hasta entonces no corren los tests de componentes con jsdom.
+- **Node vía nvm-sh sobre Git Bash**: funciona ahí, pero PowerShell/cmd no ven
+  `node`. Si en algún momento se trabaja desde PowerShell, migrar a nvm-windows.
+- Realinear versiones dev ahora que hay Node 22 (vitest 5, `@vitejs/plugin-react`
+  6, jsdom actual) — opcional, en su propia tarea.
 - CORS del endpoint del BCE desde navegador. Si falla → _fetch_ en build o
   `route handler`.
 - Contrastar tipos de ITP/AJD por comunidad con fuente primaria (antes de v2).

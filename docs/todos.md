@@ -10,8 +10,7 @@ _Última actualización: 2026-09-06_
 - [x] Crear repositorio en GitHub y enlazar `origin`
 - [x] Andamiar proyecto: `create-next-app` + Zustand + next-intl + estructura
 - [x] Configurar Vitest + React Testing Library
-- [ ] Actualizar Node en local a la 22 (`.nvmrc`), vía `fnm` o `nvm-windows`.
-      Necesario para los tests de componentes con jsdom
+- [x] Actualizar Node en local a la 22 (nvm-sh sobre Git Bash; jsdom verificado)
 
 ## Prioridad media
 
