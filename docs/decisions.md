@@ -276,6 +276,31 @@ vez de propagar la excepción permite que la interfaz muestre un estado de
 invitación ("escribe el capital…") cuando el usuario vacía un campo, en lugar de
 romperse.
 
+## 2026-09-06 · Simulación en la URL: claves legibles y `history.replaceState`
+
+**Decisión:** el estado se serializa en la query string con nombres legibles
+(`?capital=240000&years=30&mode=variable&euribor=2.5&spread=0.9`), no con claves
+cortas. Solo se escriben los valores que difieren de los de partida y solo los
+que aplican al modo elegido, así que la simulación por defecto deja la URL limpia.
+La escritura usa `window.history.replaceState`, no el router de Next.
+
+**Motivo:**
+
+- **Claves legibles** porque el enlace se comparte por WhatsApp o correo y se lee
+  antes de abrirlo.
+- **Omitir los valores por defecto** evita que la URL se llene de ruido en cuanto
+  tocas un campo, y hace que `Restablecer valores` devuelva la dirección a `/es`.
+- **`replaceState` en vez de `router.replace`** porque aquí no hay navegación,
+  solo estamos anotando la URL actual: `router.replace` dispararía un re-render
+  del árbol en cada tecla y `push` llenaría el historial de entradas basura.
+  La escritura va con 300 ms de margen para no reescribir mientras se teclea.
+- **Los valores malformados se ignoran en silencio.** Un enlace manipulado o
+  truncado cae en los valores por defecto en lugar de romper la página, que es
+  obligatorio en una URL pública que cualquiera puede editar a mano.
+
+`urlState.ts` es lógica pura (sin React ni Next) y está cubierto con tests,
+incluidos los casos de ida y vuelta y las entradas manipuladas.
+
 ## 2026-09-06 · CI en GitHub Actions (no despliegue)
 
 **Decisión:** `.github/workflows/ci.yml` que en cada `push` y cada PR a `main`

@@ -24,8 +24,10 @@ Hecho en esta sesión:
   fijo/variable con euríbor + diferencial), resumen con cuota, barra de reparto
   capital/intereses, mes de cruce y cuadro de amortización desplegable. Selector
   de idioma. Mobile-first, modo oscuro y contraste AA verificados en navegador.
-- **Tests**: Vitest + RTL, 45 tests en verde (40 de motor, 5 de componente en
-  jsdom). Entorno `node` por defecto; jsdom opt-in por fichero.
+- **Simulación compartible**: el estado se serializa en la query string con
+  claves legibles y botón de copiar enlace. Cambiar de idioma la conserva.
+- **Tests**: Vitest + RTL, 59 tests en verde (motor, serializador de URL y
+  componente en jsdom). Entorno `node` por defecto; jsdom opt-in por fichero.
 - **Formato**: Prettier + `prettier-plugin-tailwindcss` + `eslint-config-prettier`.
 - **CI**: `.github/workflows/ci.yml` — `npm ci` + `lint` + `typecheck` + `test` +
   `build` en cada push y PR a `main`, Node desde `.nvmrc`.
@@ -35,11 +37,15 @@ Hecho en esta sesión:
 
 ## Próximos pasos
 
-1. v1 · serialización del estado de la simulación a la URL, para poder compartir
-   un enlace. Engancha en el store de Zustand.
-2. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
-3. v1 · serialización del estado de la simulación a la URL (`src/store/`).
-4. `/init` para generar el `CLAUDE.md` del proyecto.
+**v1 está funcionalmente completo.** Lo que queda:
+
+1. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
+2. Decidir despliegue (probable Vercel) y publicar v1.
+3. Empezar v2: precio de vivienda, % financiado y ahorro necesario, y las tablas
+   de ITP/AJD en `src/data/` (antes hay que contrastar los tipos con fuente
+   primaria, ver más abajo).
+4. v1 · serialización del estado de la simulación a la URL (`src/store/`).
+5. `/init` para generar el `CLAUDE.md` del proyecto.
 
 ## Pendiente de verificar / deuda
 

@@ -46,5 +46,10 @@
     "interest": "Interest",
     "principal": "Principal",
     "balance": "Balance"
+  },
+  "Share": {
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "failed": "Couldn't copy. Copy the address from the browser bar."
   }
 }

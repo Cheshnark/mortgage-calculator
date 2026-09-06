@@ -99,10 +99,13 @@ mortgage-calculator/
     │   ├── NumberField.tsx   ■  campo numérico con unidad
     │   ├── PaymentSummary.tsx ■ cuota, reparto capital/intereses, totales
     │   ├── AmortizationTable.tsx ■ cuadro mes a mes (+ .module.css)
-    │   └── LocaleSwitcher.tsx ■ cambio de idioma
+    │   ├── ShareLink.tsx     ■  monta useUrlSync y copia el enlace
+    │   └── LocaleSwitcher.tsx ■ cambio de idioma (conserva la simulación)
     └── store/                ■  Zustand
         ├── simulation.ts     ■  estado del formulario
-        └── useSimulationResult.ts ■ deriva el resultado del motor
+        ├── useSimulationResult.ts ■ deriva el resultado del motor
+        ├── urlState.ts       ■  (de)serialización a query string, pura
+        └── useUrlSync.ts     ■  mantiene la URL en sintonía con el estado
 ```
 
 Reglas de dependencia:

@@ -46,5 +46,10 @@
     "interest": "Intereses",
     "principal": "Capital",
     "balance": "Pendiente"
+  },
+  "Share": {
+    "copy": "Copiar enlace",
+    "copied": "Enlace copiado",
+    "failed": "No se pudo copiar. Copia la dirección de la barra del navegador."
   }
 }

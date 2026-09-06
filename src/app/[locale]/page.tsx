@@ -4,6 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import { AmortizationTable } from "@/components/AmortizationTable";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { PaymentSummary } from "@/components/PaymentSummary";
+import { ShareLink } from "@/components/ShareLink";
 import { SimulatorForm } from "@/components/SimulatorForm";
 
 type Props = {
@@ -39,6 +40,9 @@ export default function HomePage({ params }: Props) {
             {t("resultsHeading")}
           </h2>
           <PaymentSummary />
+          <div className="mt-8">
+            <ShareLink />
+          </div>
         </section>
 
         <section

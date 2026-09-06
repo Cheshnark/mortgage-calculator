@@ -3,11 +3,20 @@
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { useSimulationStore } from "@/store/simulation";
+import { toSearchParams } from "@/store/urlState";
 
 export function LocaleSwitcher() {
   const t = useTranslations("LocaleSwitcher");
   const active = useLocale();
   const pathname = usePathname();
+  const { principal, years, rateMode, fixedRate, euribor, spread } =
+    useSimulationStore();
+
+  // Cambiar de idioma no debe perder la simulación en curso.
+  const query = Object.fromEntries(
+    toSearchParams({ principal, years, rateMode, fixedRate, euribor, spread }),
+  );
 
   return (
     <nav aria-label={t("label")} className="flex items-center gap-1 text-sm">
@@ -16,7 +25,7 @@ export function LocaleSwitcher() {
         return (
           <Link
             key={locale}
-            href={pathname}
+            href={{ pathname, query }}
             locale={locale}
             aria-current={current ? "true" : undefined}
             className={
