@@ -4,7 +4,7 @@
 
 - [ ] Concretar alcance funcional en `business.md` (qué calcula exactamente)
 - [ ] Decidir React+Vite vs Next.js
-- [ ] Crear repositorio en GitHub y enlazar `origin`
+- [x] Crear repositorio en GitHub y enlazar `origin`
 
 ## Prioridad media
 
