@@ -84,13 +84,13 @@ mortgage-calculator/
     │       ├── format.ts     ■  formateo de importes EUR
     │       ├── payment.ts    ■  cuota sistema francés + tipo variable
     │       ├── amortization.ts ■  cuadro de amortización
-    │       ├── taxes.ts      ·  ITP / IVA+AJD sobre las tablas de src/data
+    │       ├── taxes.ts      ■  ITP / IVA+AJD sobre las tablas de src/data
     │       ├── fees.ts       ·  notaría/registro por aranceles + gestoría/tasación
     │       ├── subsidies.ts  ·  reglas de aval ICO y avales autonómicos
     │       └── financing.ts  ■  escenarios de % financiado / ahorro necesario
-    ├── data/                 ·  TABLAS CURADAS, versionadas, con fuente y fecha
+    ├── data/                 ◐  TABLAS CURADAS, versionadas, con fuente y fecha
     │   ├── euribor/          ·  semilla/fallback histórico
-    │   ├── taxes/            ·  ITP/AJD por CCAA y año
+    │   ├── taxes/            ■  regions.ts — ITP/AJD por CCAA (orientativo)
     │   ├── fees/             ·  escalas de aranceles notaría/registro
     │   └── subsidies/        ·  aval ICO + programas autonómicos
     ├── components/           ■  UI, sin lógica de cálculo
@@ -136,10 +136,16 @@ Convenciones del motor:
 
 ## Modelo de datos externos
 
-Patrón común a impuestos, aranceles y ayudas: JSON en `src/data/`, cada entrada con
-`sourceUrl` y `lastReviewed`. Sin scraping. Revisión manual periódica. La UI muestra
-la fecha de última revisión y un descargo de responsabilidad en las secciones de
-v2/v3.
+Patrón común a impuestos, aranceles y ayudas: módulos **TypeScript** en
+`src/data/` (no JSON, ver `decisions.md`), cada entrada con `sourceUrl`,
+`lastReviewed` y un `note` opcional con las salvedades del dato. Sin scraping.
+Revisión manual periódica. La UI muestra la fecha de última revisión y un
+descargo de responsabilidad en las secciones de v2/v3.
+
+La tabla fiscal (`src/data/taxes/regions.ts`) tiene su propio fichero de tests que
+valida la **integridad de los datos**, no el motor: tramos ordenados y cerrados,
+tipos en tanto por uno y no en porcentaje, reducciones que de verdad reducen, y
+fuente y fecha presentes en cada comunidad.
 
 El euríbor es la excepción: valor por defecto traído del **ECB Data Portal**
 (serie `FM.M.U2.EUR.RT.MM.EURIBOR1YD_.HSTA`). Siempre editable por el usuario.

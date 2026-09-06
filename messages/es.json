@@ -4,7 +4,7 @@
     "tagline": "Calcula la cuota mensual y mira cuánto de cada pago se va en intereses. Pensada para la compra de vivienda en España.",
     "formHeading": "Tu préstamo",
     "resultsHeading": "Resultado de la simulación",
-    "disclaimer": "Los importes son una estimación con fines informativos. No incluyen comisiones, seguros vinculados ni los gastos e impuestos de la compraventa."
+    "disclaimer": "Los importes son una estimación con fines informativos y no sustituyen el asesoramiento de tu banco o tu gestoría. No incluyen comisiones de apertura, seguros vinculados ni los gastos e impuestos de la compraventa. Contrasta siempre las cifras antes de tomar una decisión."
   },
   "LocaleSwitcher": {
     "label": "Idioma",

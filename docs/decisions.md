@@ -301,6 +301,41 @@ La escritura usa `window.history.replaceState`, no el router de Next.
 `urlState.ts` es lógica pura (sin React ni Next) y está cubierto con tests,
 incluidos los casos de ida y vuelta y las entradas manipuladas.
 
+## 2026-09-06 · Tabla fiscal: TypeScript en vez de JSON, y datos orientativos
+
+**Decisión:** las tablas de `src/data/` son módulos **TypeScript**, no JSON. Y la
+tabla de ITP/AJD se puebla con datos de **portales especializados**, no de fuente
+primaria, marcados como orientativos.
+
+**Motivo del formato:** TypeScript da comprobación de forma en compilación (un
+tramo mal escrito no llega a ejecutarse) y permite comentarios junto al dato, que
+en una tabla llena de salvedades legales valen más que el dato mismo. JSON habría
+necesitado un validador aparte para lo mismo.
+
+**Motivo de la fuente:** decisión explícita del equipo para no bloquear v2. El
+contraste con agencias tributarias queda como tarea en `todos.md`.
+
+**Lo que hay que saber de estos datos:**
+
+- Los portales **se contradicen** en Galicia, Cataluña, Cantabria, Comunidad
+  Valenciana, Ceuta y Melilla. Donde hay conflicto se tomó la fuente más
+  detallada y se dejó constancia en el campo `note` de esa comunidad.
+- **El AJD no lo desglosa por comunidad ninguna de las tres fuentes**
+  consultadas; todas dan el rango "0,5 %–1,5 %". Se usa un marcador uniforme del
+  1,5 %, deliberadamente en el extremo alto: en un cálculo de "cuánto ahorro
+  necesito", pasarse es más seguro que quedarse corto. En Madrid se cita
+  habitualmente un 0,75 %, así que ahí el marcador sobreestima bastante.
+- **Solo se modelan las reducciones con tipo y condición explícitos.** Cuando la
+  fuente da un rango ("entre el 4 % y el 6 %") o no concreta la edad, la
+  reducción se omite y se anota, en lugar de inventar el valor que falta.
+- Canarias tributa la obra nueva por **IGIC**, no por IVA: el cálculo de obra
+  nueva en esa comunidad no es fiable y está anotado.
+
+**Protección:** `regions.test.ts` valida la integridad de la tabla (tramos
+ordenados y cerrados, tipos en tanto por uno, reducciones que reducen, fuente y
+fecha presentes). No valida que los números sean _ciertos_ — eso no lo puede
+hacer un test.
+
 ## 2026-09-06 · CI en GitHub Actions (no despliegue)
 
 **Decisión:** `.github/workflows/ci.yml` que en cada `push` y cada PR a `main`
