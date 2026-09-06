@@ -210,6 +210,27 @@ entre 100 dos veces. Redondear al final y en un único sitio impide que el
 descuadre se acumule cuota a cuota en el cuadro. Y fallar ruidosamente en la
 frontera del motor es preferible a propagar `NaN` hasta la pantalla.
 
+## 2026-09-06 · Cuadro de amortización: céntimos enteros y ajuste de la última cuota
+
+**Decisión:** `amortizationSchedule` calcula internamente en **céntimos enteros** y
+convierte a euros solo al devolver. El descuadre de redondeo se absorbe **ajustando
+la última cuota**: en el mes final se cobra el capital pendiente más sus intereses,
+de modo que el pendiente cierre en 0,00 €.
+
+En el caso de referencia (150.000 € / 3 % / 25 años): cuota ordinaria 711,32 € y
+última cuota 710,01 €.
+
+**Motivo:** la cuota real que cobra el banco está redondeada a céntimos, así que
+aplicarla n veces nunca deja el pendiente exactamente en cero. Trabajar en enteros
+evita que el error flotante se acumule a lo largo de 300 iteraciones, y ajustar la
+última cuota es lo que hacen los bancos y lo que el usuario verá en su cuadro real.
+La alternativa (repartir el descuadre entre todas las cuotas) daría un cuadro que
+no coincide con ningún recibo.
+
+**Invariantes que garantizan los tests:** el pendiente final es exactamente 0, la
+suma del capital amortizado es exactamente el principal, y
+`totalPaid = principal + totalInterest`.
+
 ## 2026-09-06 · CI en GitHub Actions (no despliegue)
 
 **Decisión:** `.github/workflows/ci.yml` que en cada `push` y cada PR a `main`

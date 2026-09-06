@@ -63,7 +63,7 @@ mortgage-calculator/
     │   └── mortgage/         ■  MOTOR DE CÁLCULO — funciones puras, sin React
     │       ├── format.ts     ■  formateo de importes EUR
     │       ├── payment.ts    ■  cuota sistema francés + tipo variable
-    │       ├── amortization.ts ·  cuadro de amortización
+    │       ├── amortization.ts ■  cuadro de amortización
     │       ├── taxes.ts      ·  ITP / IVA+AJD sobre las tablas de src/data
     │       ├── fees.ts       ·  notaría/registro por aranceles + gestoría/tasación
     │       ├── subsidies.ts  ·  reglas de aval ICO y avales autonómicos
@@ -87,8 +87,10 @@ Convenciones del motor:
 
 - **Tipos de interés en tanto por uno** (`0.03` = 3 %). La conversión desde/hacia
   porcentaje es de la UI.
-- **Importes sin redondear.** El motor devuelve precisión completa; el redondeo a
-  céntimos y el ajuste de la última cuota los decide el cuadro de amortización.
+- **Importes sin redondear** en los cálculos base (`monthlyPayment`); el redondeo a
+  céntimos y el ajuste del descuadre los decide el cuadro de amortización.
+- **El cuadro trabaja en céntimos enteros** y solo convierte a euros al devolver,
+  para que el redondeo no derive cuota a cuota.
 - Entradas inválidas lanzan `RangeError` con mensaje explícito, no devuelven `NaN`.
 
 ## Tests
