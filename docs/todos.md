@@ -17,7 +17,7 @@ _Última actualización: 2026-09-06_
 - [x] Configurar Prettier (+ plugin Tailwind + `eslint-config-prettier`)
 - [ ] Hook `PostToolUse` que formatee con Prettier tras cada edición
 - [x] CI GitHub Actions: lint + typecheck + test + build (Node desde `.nvmrc`)
-- [ ] v1 · `payment.ts` (cuota sistema francés, fijo y variable) + tests
+- [x] v1 · `payment.ts` (cuota sistema francés, fijo y variable) + tests
 - [ ] v1 · `amortization.ts` (cuadro de amortización) + tests
 - [ ] v1 · UI mínima mobile-first sobre `[locale]` + textos en `messages/`
 - [ ] v1 · serialización del estado de la simulación a la URL (`src/store/`)

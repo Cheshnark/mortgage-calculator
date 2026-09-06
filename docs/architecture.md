@@ -62,7 +62,7 @@ mortgage-calculator/
     ├── lib/
     │   └── mortgage/         ■  MOTOR DE CÁLCULO — funciones puras, sin React
     │       ├── format.ts     ■  formateo de importes EUR
-    │       ├── payment.ts    ·  cuota sistema francés
+    │       ├── payment.ts    ■  cuota sistema francés + tipo variable
     │       ├── amortization.ts ·  cuadro de amortización
     │       ├── taxes.ts      ·  ITP / IVA+AJD sobre las tablas de src/data
     │       ├── fees.ts       ·  notaría/registro por aranceles + gestoría/tasación
@@ -82,6 +82,14 @@ Reglas de dependencia:
 - `src/lib/mortgage/` **no importa** de `src/app`, `src/components` ni `src/store`.
 - `src/lib/mortgage/` puede leer de `src/data/` (datos, no lógica).
 - La UI nunca calcula: llama al motor.
+
+Convenciones del motor:
+
+- **Tipos de interés en tanto por uno** (`0.03` = 3 %). La conversión desde/hacia
+  porcentaje es de la UI.
+- **Importes sin redondear.** El motor devuelve precisión completa; el redondeo a
+  céntimos y el ajuste de la última cuota los decide el cuadro de amortización.
+- Entradas inválidas lanzan `RangeError` con mensaje explícito, no devuelven `NaN`.
 
 ## Tests
 

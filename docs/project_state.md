@@ -17,8 +17,10 @@ Hecho en esta sesión:
 - **i18n** con next-intl: `src/i18n/`, `src/proxy.ts`, `messages/{es,en}.json`,
   rutas bajo `src/app/[locale]/`.
 - **Estado**: Zustand instalado (sin store todavía).
-- **Tests**: Vitest + RTL. `src/lib/mortgage/format.ts` + 3 tests en verde.
-  Entorno `node` por defecto; jsdom opt-in por fichero, verificado en Node 22.
+- **Motor de cálculo (v1, en marcha)**: `format.ts` (formateo EUR) y `payment.ts`
+  (cuota del sistema francés + composición del tipo variable con cláusula suelo).
+- **Tests**: Vitest + RTL, 22 tests en verde. Entorno `node` por defecto;
+  jsdom opt-in por fichero, verificado en Node 22.
 - **Formato**: Prettier + `prettier-plugin-tailwindcss` + `eslint-config-prettier`.
 - **CI**: `.github/workflows/ci.yml` — `npm ci` + `lint` + `typecheck` + `test` +
   `build` en cada push y PR a `main`, Node desde `.nvmrc`.
@@ -28,11 +30,9 @@ Hecho en esta sesión:
 
 ## Próximos pasos
 
-1. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
-2. v1 · motor de cálculo:
-   - `payment.ts` — cuota sistema francés (fijo y variable = euríbor + diferencial)
-     - tests.
-   - `amortization.ts` — cuadro mes a mes + tests.
+1. v1 · `amortization.ts` — cuadro mes a mes (intereses, capital, pendiente),
+   con la política de redondeo y ajuste de la última cuota + tests.
+2. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
 3. v1 · UI mínima mobile-first sobre `[locale]`: formulario + resultado, textos en
    `messages/`.
 4. v1 · serialización del estado de la simulación a la URL (`src/store/`).

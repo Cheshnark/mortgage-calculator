@@ -193,6 +193,23 @@ en Tailwind v4, usar `@apply`/`theme()` dentro de un CSS Module obliga a un
 `@reference "../app/globals.css";`; se prefiere tirar de las CSS custom properties
 del `@theme` (`var(--color-foreground)`…), que no lo necesitan.
 
+## 2026-09-06 · Convenciones del motor de cálculo
+
+**Decisión:** en `src/lib/mortgage/`:
+
+- Los tipos de interés viajan en **tanto por uno** (`0.03` = 3 %), no en
+  porcentaje. La UI convierte.
+- Las funciones devuelven **importes sin redondear**. El redondeo a céntimos y el
+  ajuste de descuadre en la última cuota son responsabilidad del cuadro de
+  amortización, no de `monthlyPayment`.
+- Las entradas inválidas lanzan `RangeError` con mensaje explícito. Nunca se
+  devuelve `NaN` silencioso.
+
+**Motivo:** una sola convención en todo el motor evita el error clásico de dividir
+entre 100 dos veces. Redondear al final y en un único sitio impide que el
+descuadre se acumule cuota a cuota en el cuadro. Y fallar ruidosamente en la
+frontera del motor es preferible a propagar `NaN` hasta la pantalla.
+
 ## 2026-09-06 · CI en GitHub Actions (no despliegue)
 
 **Decisión:** `.github/workflows/ci.yml` que en cada `push` y cada PR a `main`
