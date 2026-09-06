@@ -117,12 +117,15 @@ se pueden realinear.
 
 ## Entorno
 
-- Node.js: `.nvmrc` = **`20.19.0`** (mínimo que piden ESLint 9 y jsdom 27).
-  El equipo tiene **20.10.0** instalado → funciona el build, el lint y los tests de
-  lógica; los tests de componentes (jsdom) requieren actualizar. `package.json`
-  declara `engines.node >= 20.19.0`.
+- Node.js: `.nvmrc` = **`22`** (LTS actual; sirve para todo el stack). `package.json`
+  declara `engines.node >= 20.19.0` como mínimo real (lo que piden ESLint 9 y
+  jsdom 27). El equipo tenía **20.10.0**; pendiente de actualizar en local (ver
+  `project_state.md`).
 - `npm run build` (Turbopack), `npm run lint`, `npm run typecheck`, `npm test`,
   `npm run format` / `format:check`.
+- **CI**: `.github/workflows/ci.yml` (GitHub Actions). En cada `push` y cada PR a
+  `main`: `npm ci` + `lint` + `typecheck` + `test` + `build`, con la versión de
+  Node tomada de `.nvmrc`.
 - Git con `core.excludesfile` global en `~/.gitignore_global` (ignora `.env*` en
   todos los repos) y `.gitattributes` de proyecto que normaliza finales de línea a
   LF en el repo.

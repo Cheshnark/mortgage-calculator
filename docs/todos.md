@@ -10,14 +10,14 @@ _Última actualización: 2026-09-06_
 - [x] Crear repositorio en GitHub y enlazar `origin`
 - [x] Andamiar proyecto: `create-next-app` + Zustand + next-intl + estructura
 - [x] Configurar Vitest + React Testing Library
-- [ ] Actualizar Node del equipo a >= 20.19 (necesario para tests de componentes
-      con jsdom; `.nvmrc` y `engines` ya lo piden)
+- [ ] Actualizar Node en local a la 22 (`.nvmrc`), vía `fnm` o `nvm-windows`.
+      Necesario para los tests de componentes con jsdom
 
 ## Prioridad media
 
 - [x] Configurar Prettier (+ plugin Tailwind + `eslint-config-prettier`)
 - [ ] Hook `PostToolUse` que formatee con Prettier tras cada edición
-- [ ] CI GitHub Actions: lint + typecheck + test + build en Node 20.19
+- [x] CI GitHub Actions: lint + typecheck + test + build (Node desde `.nvmrc`)
 - [ ] v1 · `payment.ts` (cuota sistema francés, fijo y variable) + tests
 - [ ] v1 · `amortization.ts` (cuadro de amortización) + tests
 - [ ] v1 · UI mínima mobile-first sobre `[locale]` + textos en `messages/`

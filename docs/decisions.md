@@ -172,8 +172,10 @@ Ajustes que fue necesario hacer sobre la plantilla:
   arrastra `@csstools/css-calc` (ESM) por `require()` y rompe. El motor de cálculo
   es puro y no necesita DOM; los tests de componentes declararán
   `// @vitest-environment jsdom` cuando el equipo suba a Node >= 20.19.
-- **`.nvmrc` = `20.19.0`** (antes `20`). Es el mínimo que exigen ESLint 9 y jsdom 27. `package.json` declara `engines.node >= 20.19.0`. El equipo está en 20.10;
-  build, lint y tests de lógica funcionan, los de componentes no hasta actualizar.
+- **`.nvmrc` = `22`** (antes `20`). LTS actual, válida para todo el stack.
+  `package.json` declara `engines.node >= 20.19.0` como mínimo real (lo que exigen
+  ESLint 9 y jsdom 27). El equipo estaba en 20.10; build, lint y tests de lógica
+  funcionan ahí, los de componentes no hasta actualizar en local.
 - **`eslint-config-prettier`** añadido al final de `eslint.config.mjs` para que
   ESLint no pelee con Prettier.
 
@@ -190,3 +192,15 @@ donde escribirlo en `className` genera demasiado ruido.
 en Tailwind v4, usar `@apply`/`theme()` dentro de un CSS Module obliga a un
 `@reference "../app/globals.css";`; se prefiere tirar de las CSS custom properties
 del `@theme` (`var(--color-foreground)`…), que no lo necesitan.
+
+## 2026-09-06 · CI en GitHub Actions (no despliegue)
+
+**Decisión:** `.github/workflows/ci.yml` que en cada `push` y cada PR a `main`
+ejecuta `npm ci` + `lint` + `typecheck` + `test` + `build` en una máquina limpia,
+con la versión de Node tomada de `.nvmrc` (`node-version-file`). Sin matriz de
+versiones por ahora (un solo Node). Permisos `contents: read`; el job no publica
+nada.
+
+**Motivo:** tener una segunda máquina que siempre corre la suite completa y marca
+en rojo un commit/PR que rompe algo. El despliegue (CD) es aparte y se decidirá con
+la plataforma; la CI no toca servidores.

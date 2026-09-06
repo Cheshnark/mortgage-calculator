@@ -20,25 +20,27 @@ Hecho en esta sesión:
 - **Tests**: Vitest + RTL. `src/lib/mortgage/format.ts` + 3 tests en verde.
   Entorno `node` por defecto (ver nota de Node abajo).
 - **Formato**: Prettier + `prettier-plugin-tailwindcss` + `eslint-config-prettier`.
+- **CI**: `.github/workflows/ci.yml` — `npm ci` + `lint` + `typecheck` + `test` +
+  `build` en cada push y PR a `main`, Node desde `.nvmrc`.
+- **Node**: `.nvmrc` = `22` (LTS). `engines.node >= 20.19.0`.
 - Verificado: `npm run build`, `lint`, `typecheck`, `test` — todo pasa.
 
 ## Próximos pasos
 
-1. CI (GitHub Actions): `lint` + `typecheck` + `test` + `build` en Node 20.19.
-2. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
-3. v1 · motor de cálculo:
-   1. `payment.ts` — cuota sistema francés (fijo y variable = euríbor + diferencial)
-      - tests.
-   2. `amortization.ts` — cuadro mes a mes + tests.
-4. v1 · UI mínima mobile-first sobre `[locale]`: formulario + resultado, textos en
+1. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
+2. v1 · motor de cálculo:
+   - `payment.ts` — cuota sistema francés (fijo y variable = euríbor + diferencial)
+     - tests.
+   - `amortization.ts` — cuadro mes a mes + tests.
+3. v1 · UI mínima mobile-first sobre `[locale]`: formulario + resultado, textos en
    `messages/`.
-5. v1 · serialización del estado de la simulación a la URL (`src/store/`).
-6. `/init` para generar el `CLAUDE.md` del proyecto.
+4. v1 · serialización del estado de la simulación a la URL (`src/store/`).
+5. `/init` para generar el `CLAUDE.md` del proyecto.
 
 ## Pendiente de verificar / deuda
 
-- **Actualizar Node del equipo a >= 20.19** (`.nvmrc` ya lo pide). Hasta entonces no
-  corren los tests de componentes con jsdom.
+- **Actualizar Node en local a la 22** (`.nvmrc`). Recomendado vía `fnm` o
+  `nvm-windows`. Hasta entonces no corren los tests de componentes con jsdom.
 - CORS del endpoint del BCE desde navegador. Si falla → _fetch_ en build o
   `route handler`.
 - Contrastar tipos de ITP/AJD por comunidad con fuente primaria (antes de v2).
