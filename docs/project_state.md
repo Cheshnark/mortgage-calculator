@@ -4,24 +4,40 @@ _Última actualización: 2026-09-06_
 
 ## Dónde estamos
 
-Fase cero: entorno preparado, **sin una sola línea de código de aplicación**.
+Fase de definición **cerrada**. Sigue sin haber código de aplicación, pero ya no hay
+decisiones de arranque pendientes.
 
 Hecho:
 
-- Repositorio Git propio inicializado (rama `main`).
-- Remoto `origin` → `https://github.com/Cheshnark/mortgage-calculator.git`, `main` publicada y sincronizada.
-- `.gitignore` de proyecto creado.
-- Estructura `docs/` creada con los cinco ficheros obligatorios.
-
-Contexto relevante: antes existía un repositorio Git suelto en `C:\Users\Cheshnark\`
-que englobaba toda la carpeta personal. Se investigó (contenía un único commit con un
-ejemplo ajeno, `next-example`), se apartó y finalmente se borró. Ahora la política es
-**un repositorio por proyecto**.
+- Repositorio Git propio (rama `main`), remoto `origin` sincronizado.
+- `.gitignore`, y ahora `.gitattributes` (LF en repo), `.editorconfig`, `.nvmrc` (`20`).
+- `docs/` con las cinco áreas al día.
+- **Alcance definido y faseado** (`business.md`): v1 cuota + amortización, v2 coste
+  de compra + impuestos + gastos, v3 ayudas y avales.
+- **Framework decidido**: Next.js (App Router) + TypeScript + Tailwind + Zustand +
+  next-intl. Tests con Vitest + RTL. Ver `decisions.md`.
+- **Fuentes de datos externas resueltas**: euríbor vía API del BCE; ITP/AJD, aval
+  ICO, ayudas autonómicas y aranceles como tablas curadas en `src/data/` con fuente
+  y fecha. Sin scraping.
+- **Arquitectura**: motor de cálculo puro en `src/lib/mortgage/`, aislado de React.
 
 ## Próximos pasos
 
-1. Definir alcance funcional (ver `business.md` — está sin concretar).
-2. Decidir React+Vite vs Next.js (ver `decisions.md`).
-3. Andamiar el proyecto (`package.json`, Tailwind, Zustand).
-4. Configurar Vitest + React Testing Library.
-5. Hook de Prettier/ESLint tras cada edición (requiere `package.json`).
+1. Andamiar el proyecto: `create-next-app` (TS, App Router, Tailwind, ESLint),
+   añadir Zustand y next-intl, estructura de carpetas de `architecture.md`.
+2. Configurar Vitest + React Testing Library y un primer test del motor.
+3. Configurar Prettier y, tras `package.json`, el hook `PostToolUse` de formateo.
+4. Configurar CI (GitHub Actions): lint + test + build en Node 20.
+5. Implementar v1:
+   1. `payment.ts` (cuota sistema francés) + tests.
+   2. `amortization.ts` (cuadro) + tests.
+   3. UI mínima mobile-first + i18n ES/EN.
+   4. Serialización del estado a la URL.
+6. `/init` para generar el `CLAUDE.md` del proyecto una vez haya código.
+
+## Pendiente de verificar (no bloquea el andamiaje)
+
+- CORS del endpoint del BCE desde navegador. Si falla → *fetch* en build o
+  `route handler`.
+- Contrastar tipos de ITP/AJD por comunidad con fuente primaria (antes de v2).
+- Vigencia y parámetros exactos del aval ICO y prórroga (antes de v3).

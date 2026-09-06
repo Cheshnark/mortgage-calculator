@@ -1,0 +1,21 @@
+# Normaliza finales de línea: en el repo siempre LF, en disco lo que toque cada SO.
+# Necesario trabajando en Windows con core.autocrlf=true para evitar churn de CRLF
+# cuando entre CI en Linux u otro equipo.
+* text=auto eol=lf
+
+# Ficheros que nunca deben normalizarse.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.webp  binary
+*.pdf   binary
+*.woff  binary
+*.woff2 binary
+
+# Scripts que deben conservar su final de línea nativo.
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+*.sh    text eol=lf
