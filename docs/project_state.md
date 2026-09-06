@@ -44,8 +44,7 @@ Hecho en esta sesión:
 3. Empezar v2: precio de vivienda, % financiado y ahorro necesario, y las tablas
    de ITP/AJD en `src/data/` (antes hay que contrastar los tipos con fuente
    primaria, ver más abajo).
-4. v1 · serialización del estado de la simulación a la URL (`src/store/`).
-5. `/init` para generar el `CLAUDE.md` del proyecto.
+4. `/init` para generar el `CLAUDE.md` del proyecto.
 
 ## Pendiente de verificar / deuda
 
