@@ -37,14 +37,17 @@ Hecho en esta sesión:
 
 ## Próximos pasos
 
-**v1 está funcionalmente completo.** Lo que queda:
+**v1 está funcionalmente completo. v2 en marcha**: `financing.ts` ya calcula
+préstamo, entrada y ahorro necesario, incluida la regla de que el banco presta
+sobre el menor entre precio y tasación.
 
-1. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
-2. Decidir despliegue (probable Vercel) y publicar v1.
-3. Empezar v2: precio de vivienda, % financiado y ahorro necesario, y las tablas
-   de ITP/AJD en `src/data/` (antes hay que contrastar los tipos con fuente
-   primaria, ver más abajo).
-4. `/init` para generar el `CLAUDE.md` del proyecto.
+1. v2 · `fees.ts` — aranceles de notaría y registro, gestoría y tasación.
+2. v2 · **bloqueante**: tabla de ITP/AJD por CCAA contrastada con fuente
+   primaria. Sin eso, `taxes.ts` no se puede escribir con datos publicables.
+3. v2 · UI: precio, % financiado, obra nueva/usada, CCAA, desglose de costes.
+4. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
+5. Decidir despliegue (probable Vercel) y publicar v1.
+6. `/init` para generar el `CLAUDE.md` del proyecto.
 
 ## Pendiente de verificar / deuda
 

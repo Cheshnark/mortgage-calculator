@@ -22,6 +22,15 @@ _Última actualización: 2026-09-06_
 - [x] v1 · UI mínima mobile-first sobre `[locale]` + textos en `messages/`
 - [x] v1 · serialización del estado de la simulación a la URL (`src/store/`)
 
+## v2 — Coste de compra
+
+- [x] `financing.ts` (precio, % financiado, tasación, entrada, ahorro) + tests
+- [ ] `fees.ts` · aranceles de notaría y registro + gestoría y tasación
+- [ ] `src/data/taxes/` · tabla ITP/AJD por CCAA **contrastada con fuente
+      primaria** (bloqueante, ver Investigación)
+- [ ] `taxes.ts` · motor que aplica la tabla y las reducciones por perfil
+- [ ] UI de v2: precio, % financiado, obra nueva/usada, CCAA, desglose de costes
+
 ## Prioridad baja
 
 - [ ] `/init` para generar el `CLAUDE.md` del proyecto

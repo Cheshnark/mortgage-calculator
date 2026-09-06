@@ -87,7 +87,7 @@ mortgage-calculator/
     │       ├── taxes.ts      ·  ITP / IVA+AJD sobre las tablas de src/data
     │       ├── fees.ts       ·  notaría/registro por aranceles + gestoría/tasación
     │       ├── subsidies.ts  ·  reglas de aval ICO y avales autonómicos
-    │       └── financing.ts  ·  escenarios de % financiado / ahorro necesario
+    │       └── financing.ts  ■  escenarios de % financiado / ahorro necesario
     ├── data/                 ·  TABLAS CURADAS, versionadas, con fuente y fecha
     │   ├── euribor/          ·  semilla/fallback histórico
     │   ├── taxes/            ·  ITP/AJD por CCAA y año
