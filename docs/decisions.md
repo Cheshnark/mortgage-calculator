@@ -118,6 +118,11 @@ plano.
 secundaria. Antes de publicar v2 hay que contrastar cada comunidad con su Agencia
 Tributaria o el texto legal consolidado.
 
+> **Revisada el 2026-09-06.** El formato pasó de JSON a TypeScript y se decidió
+> poblar la tabla con datos de portales, marcados como orientativos, para no
+> bloquear v2. Ver "Tabla fiscal: TypeScript en vez de JSON, y datos
+> orientativos" más abajo.
+
 ### Aval ICO y ayudas autonómicas — dataset estático curado, marcado como orientativo
 
 **Decisión:**
