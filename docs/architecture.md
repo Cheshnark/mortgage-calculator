@@ -85,13 +85,13 @@ mortgage-calculator/
     │       ├── payment.ts    ■  cuota sistema francés + tipo variable
     │       ├── amortization.ts ■  cuadro de amortización
     │       ├── taxes.ts      ■  ITP / IVA+AJD sobre las tablas de src/data
-    │       ├── fees.ts       ·  notaría/registro por aranceles + gestoría/tasación
+    │       ├── fees.ts       ■  notaría/registro por aranceles + gestoría/tasación
     │       ├── subsidies.ts  ·  reglas de aval ICO y avales autonómicos
     │       └── financing.ts  ■  escenarios de % financiado / ahorro necesario
     ├── data/                 ◐  TABLAS CURADAS, versionadas, con fuente y fecha
     │   ├── euribor/          ·  semilla/fallback histórico
     │   ├── taxes/            ■  regions.ts — ITP/AJD por CCAA (orientativo)
-    │   ├── fees/             ·  escalas de aranceles notaría/registro
+    │   ├── fees/             ■  aranceles.ts — escalas RD 1426/1989 y 1427/1989
     │   └── subsidies/        ·  aval ICO + programas autonómicos
     ├── components/           ■  UI, sin lógica de cálculo
     │   ├── SimulatorForm.tsx ■  formulario (capital, plazo, tipo)

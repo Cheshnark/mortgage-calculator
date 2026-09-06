@@ -341,6 +341,34 @@ ordenados y cerrados, tipos en tanto por uno, reducciones que reducen, fuente y
 fecha presentes). No valida que los números sean _ciertos_ — eso no lo puede
 hacer un test.
 
+## 2026-09-06 · Gastos: arancel normativo más un multiplicador que no lo es
+
+**Decisión:** notaría y registro se calculan con las escalas de los aranceles
+oficiales (RD 1426/1989 y RD 1427/1989), progresivas, con la rebaja del 5 %
+vigente y el tope global del arancel registral. El resultado se presenta como
+**horquilla**: el suelo es el arancel puro y el techo es el arancel por
+`EXTRAS_HIGH_MULTIPLIER` (2,5). Gestoría y tasación son horquillas de mercado
+configurables.
+
+**Motivo del arancel:** a diferencia de la tabla fiscal, aquí sí hay fuente
+normativa estable desde 1989. Las escalas se verificaron contra el BOE y el
+cálculo del módulo se contrastó con una aplicación manual de la escala, al
+margen de la implementación: coinciden hasta el sexto decimal (200.000 € →
+358,435195 € de arancel notarial y 186,212547 € de registral, antes de rebaja).
+
+**El punto débil, y hay que decirlo:** `EXTRAS_HIGH_MULTIPLIER` **no es
+normativo**. El arancel es solo la base; la factura real de notaría suma copias,
+folios y diligencias que no están tasados. Para una vivienda de 200.000 € el
+arancel puro da ~340 €, mientras que los portales citan entre 600 € y 1.000 €.
+El 2,5 está calibrado para que la horquilla (~340–850 €) solape con lo
+observado, pero es un número elegido, no medido. Sustituir por facturas reales
+en cuanto haya una muestra.
+
+**Reparto de gastos (Ley 5/2019, LCCI):** de la escritura de _hipoteca_ el banco
+paga notaría, registro, gestoría y AJD; el comprador paga la tasación y todo lo
+de la escritura de _compraventa_. Por eso `purchaseFees` calcula solo los gastos
+de compraventa del comprador.
+
 ## 2026-09-06 · CI en GitHub Actions (no despliegue)
 
 **Decisión:** `.github/workflows/ci.yml` que en cada `push` y cada PR a `main`

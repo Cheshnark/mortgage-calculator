@@ -25,7 +25,7 @@ _Última actualización: 2026-09-06_
 ## v2 — Coste de compra
 
 - [x] `financing.ts` (precio, % financiado, tasación, entrada, ahorro) + tests
-- [ ] `fees.ts` · aranceles de notaría y registro + gestoría y tasación
+- [x] `fees.ts` · aranceles de notaría y registro + gestoría y tasación
 - [x] `src/data/taxes/regions.ts` · tabla ITP/AJD por CCAA (orientativa, de
       portales; ver la tarea de contraste en Investigación)
 - [x] `taxes.ts` · motor que aplica la tabla y las reducciones por perfil
@@ -52,8 +52,8 @@ _Última actualización: 2026-09-06_
 - [ ] v2 · Canarias tributa por IGIC, no IVA: la obra nueva allí no es fiable
 - [ ] v2 · Añadir al disclaimer la procedencia de los datos fiscales cuando la
       UI de v2 los muestre
-- [ ] v2 · Escalas exactas de aranceles de notaría (RD 1426/1989) y registro
-      (RD 1427/1989), con el −5 % vigente
+- [ ] v2 · Calibrar `EXTRAS_HIGH_MULTIPLIER` (2,5) con facturas reales de
+      notaría: es el número más débil del módulo de gastos, y no es normativo
 - [ ] v3 · Parámetros vigentes del aval ICO (edad, patrimonio, IPREM por provincia,
       precio máximo por CCAA, % avalado, vigencia/prórroga)
 - [ ] v3 · Inventario de programas autonómicos: cuáles actúan como aval (entran en

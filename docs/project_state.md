@@ -41,16 +41,17 @@ Hecho en esta sesión:
 ahorro necesario, con la regla de que el banco presta sobre el menor entre precio
 y tasación) y `taxes.ts` + `src/data/taxes/regions.ts` (ITP por tramos
 progresivos, IVA+AJD de obra nueva y reducciones por perfil, para las 19
-comunidades). Los datos fiscales son **orientativos**, de portales: ver
+comunidades) y `fees.ts` + `src/data/fees/aranceles.ts` (notaría y registro por
+arancel del BOE, gestoría y tasación por horquilla). Los datos fiscales son
+**orientativos**, de portales; los aranceles sí son normativos. Ver
 `decisions.md`.
 
-1. v2 · `fees.ts` — aranceles de notaría y registro, gestoría y tasación.
-2. v2 · UI: precio, % financiado, obra nueva/usada, comunidad, perfil del
+1. v2 · UI: precio, % financiado, obra nueva/usada, comunidad, perfil del
    comprador y desglose de costes. Al montarla, ampliar el disclaimer con la
    procedencia de los datos fiscales.
-3. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
-4. Decidir despliegue (probable Vercel) y publicar v1.
-5. `/init` para generar el `CLAUDE.md` del proyecto.
+2. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
+3. Decidir despliegue (probable Vercel) y publicar v1.
+4. `/init` para generar el `CLAUDE.md` del proyecto.
 
 ## Pendiente de verificar / deuda
 
