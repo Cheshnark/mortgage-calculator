@@ -231,6 +231,51 @@ no coincide con ningún recibo.
 suma del capital amortizado es exactamente el principal, y
 `totalPaid = principal + totalInterest`.
 
+## 2026-09-06 · Dirección visual de la interfaz
+
+**Decisión:** paleta de **azulejo** (verde-azul de cerámica española, `#1f6f78`)
+para el capital y **ocre** (`#b57f22`) para los intereses, sobre un fondo frío de
+yeso (`#eef1f0`) con tinta de temple verdoso. Tipografía única: **Archivo**
+(sustituye a Geist, que venía de `create-next-app`), con cifras tabulares en el
+cuadro. Sin biblioteca de componentes.
+
+**Motivo:** el par capital/intereses es la información central del producto, así
+que merece los dos únicos colores fuertes de la paleta y se usa de forma
+consistente en la barra, la leyenda y las columnas del cuadro. Se evitó
+deliberadamente el registro visual por defecto (crema + serif + terracota, o
+negro + verde ácido) porque no dice nada de una hipoteca española.
+
+Elemento memorable: la **barra de reparto capital/intereses** justo bajo la cuota,
+y la marca del **mes de cruce** — la primera cuota en que amortizas más capital que
+intereses (la 24 en el caso por defecto). Es un dato real que casi ninguna
+calculadora muestra y que explica de un vistazo cómo funciona el sistema francés.
+
+## 2026-09-06 · Contraste: `--ochre` frente a `--ochre-ink`
+
+**Decisión:** dos tonos de ocre. `--ochre` (`#b57f22`) solo para objetos gráficos
+(la barra de reparto, los puntos de la leyenda). `--ochre-ink` (`#8a5f14`) para
+texto, como la columna de intereses del cuadro. En modo oscuro ambos coinciden.
+En la misma línea, `--on-azulejo` da el color del texto sobre fondo azulejo sólido:
+blanco en claro, casi negro en oscuro.
+
+**Motivo:** medido sobre el fondo, el ocre de la barra da 3,5:1. Suficiente para un
+objeto gráfico (WCAG pide 3:1) pero **insuficiente para texto** (pide 4,5:1). Usar
+el mismo tono para las dos cosas dejaba la columna de intereses del cuadro por
+debajo del mínimo. Lo mismo pasaba con el texto blanco sobre la píldora de "Fijo"
+en modo oscuro: 2,3:1, porque ahí el azulejo es un tono claro.
+
+## 2026-09-06 · Estado de la simulación en Zustand
+
+**Decisión:** el estado del formulario vive en un store de Zustand
+(`src/store/simulation.ts`) y el resultado se deriva con `useSimulationResult`,
+que llama al motor y devuelve `null` si las entradas no son válidas.
+
+**Motivo:** el store es la costura natural donde enganchará la serialización a la
+URL en el siguiente paso, sin volver a tocar los componentes. Devolver `null` en
+vez de propagar la excepción permite que la interfaz muestre un estado de
+invitación ("escribe el capital…") cuando el usuario vacía un campo, en lugar de
+romperse.
+
 ## 2026-09-06 · CI en GitHub Actions (no despliegue)
 
 **Decisión:** `.github/workflows/ci.yml` que en cada `push` y cada PR a `main`

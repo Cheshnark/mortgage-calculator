@@ -1,6 +1,50 @@
 {
   "HomePage": {
-    "title": "Calculadora de hipotecas",
-    "tagline": "Calcula la cuota, el coste de compra y la financiación de tu hipoteca en España."
+    "title": "¿Cuánto pagarás por tu hipoteca?",
+    "tagline": "Calcula la cuota mensual y mira cuánto de cada pago se va en intereses. Pensada para la compra de vivienda en España.",
+    "formHeading": "Tu préstamo",
+    "resultsHeading": "Resultado de la simulación",
+    "disclaimer": "Los importes son una estimación con fines informativos. No incluyen comisiones, seguros vinculados ni los gastos e impuestos de la compraventa."
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "Form": {
+    "principal": "Capital que pides",
+    "years": "Plazo",
+    "yearsValue": "{count, plural, one {# año} other {# años}}",
+    "rateMode": "Tipo de interés",
+    "fixed": "Fijo",
+    "variable": "Variable",
+    "fixedRate": "TIN",
+    "euribor": "Euríbor",
+    "spread": "Diferencial",
+    "euriborHint": "Valor orientativo. Puedes cambiarlo.",
+    "reset": "Restablecer valores"
+  },
+  "Summary": {
+    "label": "Cuota mensual",
+    "perMonth": "al mes",
+    "rateApplied": "A un TIN del {rate}",
+    "capital": "Capital",
+    "interest": "Intereses",
+    "barLabel": "Del total que devolverás, un {capital} % es capital y un {interest} % intereses.",
+    "totalSentence": "En {months} cuotas devolverás {total}.",
+    "crossover": "Desde la cuota {month} amortizas más capital que intereses.",
+    "lastPayment": "La última cuota se ajusta a {amount} para saldar el préstamo.",
+    "empty": "Escribe el capital, el plazo y el tipo de interés para ver tu cuota."
+  },
+  "Schedule": {
+    "show": "Ver las {months} cuotas",
+    "hide": "Ocultar el cuadro",
+    "caption": "Cuadro de amortización, cuota a cuota.",
+    "captionWithCrossover": "Cuadro de amortización, cuota a cuota. La fila marcada es la cuota {month}, cuando empiezas a amortizar más capital que intereses.",
+    "month": "Cuota",
+    "payment": "Importe",
+    "interest": "Intereses",
+    "principal": "Capital",
+    "balance": "Pendiente"
   }
 }

@@ -19,7 +19,7 @@ _Última actualización: 2026-09-06_
 - [x] CI GitHub Actions: lint + typecheck + test + build (Node desde `.nvmrc`)
 - [x] v1 · `payment.ts` (cuota sistema francés, fijo y variable) + tests
 - [x] v1 · `amortization.ts` (cuadro de amortización) + tests
-- [ ] v1 · UI mínima mobile-first sobre `[locale]` + textos en `messages/`
+- [x] v1 · UI mínima mobile-first sobre `[locale]` + textos en `messages/`
 - [ ] v1 · serialización del estado de la simulación a la URL (`src/store/`)
 
 ## Prioridad baja

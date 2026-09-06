@@ -1,0 +1,76 @@
+.wrapper {
+  max-height: 60vh;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.table caption {
+  padding: 0.75rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem 0.75rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.table th:first-child,
+.table td:first-child {
+  text-align: left;
+}
+
+.table tbody td {
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 50%, transparent);
+}
+
+.table tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--paper) 50%, transparent);
+}
+
+.month {
+  color: var(--muted);
+}
+
+.interest {
+  color: var(--ochre-ink);
+}
+
+.principal {
+  color: var(--azulejo);
+}
+
+/* Mes en que la cuota pasa a amortizar más capital que intereses. */
+.crossover td {
+  background: var(--azulejo-soft);
+  border-top: 2px solid var(--azulejo);
+  font-weight: 600;
+}
+
+.crossover td:first-child::after {
+  content: "•";
+  margin-left: 0.375rem;
+  color: var(--azulejo);
+}

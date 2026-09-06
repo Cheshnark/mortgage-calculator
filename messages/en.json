@@ -1,6 +1,50 @@
 {
   "HomePage": {
-    "title": "Mortgage calculator",
-    "tagline": "Work out the monthly payment, purchase costs and financing of a Spanish mortgage."
+    "title": "What will your mortgage cost?",
+    "tagline": "Work out the monthly payment and see how much of each one goes to interest. Built for buying a home in Spain.",
+    "formHeading": "Your loan",
+    "resultsHeading": "Simulation result",
+    "disclaimer": "These figures are an estimate, for information only. They exclude arrangement fees, linked insurance and the taxes and costs of the purchase itself."
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "es": "Español",
+    "en": "English"
+  },
+  "Form": {
+    "principal": "Amount you borrow",
+    "years": "Term",
+    "yearsValue": "{count, plural, one {# year} other {# years}}",
+    "rateMode": "Interest rate",
+    "fixed": "Fixed",
+    "variable": "Variable",
+    "fixedRate": "Rate",
+    "euribor": "Euribor",
+    "spread": "Margin",
+    "euriborHint": "Indicative value. You can change it.",
+    "reset": "Reset values"
+  },
+  "Summary": {
+    "label": "Monthly payment",
+    "perMonth": "a month",
+    "rateApplied": "At a rate of {rate}",
+    "capital": "Principal",
+    "interest": "Interest",
+    "barLabel": "Of everything you repay, {capital}% is principal and {interest}% is interest.",
+    "totalSentence": "Across {months} payments you will repay {total}.",
+    "crossover": "From payment {month} onwards you repay more principal than interest.",
+    "lastPayment": "The final payment adjusts to {amount} to clear the loan.",
+    "empty": "Enter the amount, the term and the interest rate to see your payment."
+  },
+  "Schedule": {
+    "show": "Show all {months} payments",
+    "hide": "Hide the schedule",
+    "caption": "Amortisation schedule, payment by payment.",
+    "captionWithCrossover": "Amortisation schedule, payment by payment. The highlighted row is payment {month}, where you start repaying more principal than interest.",
+    "month": "No.",
+    "payment": "Payment",
+    "interest": "Interest",
+    "principal": "Principal",
+    "balance": "Balance"
   }
 }

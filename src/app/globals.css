@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
+/*
+ * Paleta: azulejo (verde-azul de la cerámica española) para el capital, ocre
+ * para los intereses. Fondo frío de yeso, tinta con temple verdoso.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --paper: #eef1f0;
+  --surface: #ffffff;
+  --ink: #17272b;
+  --muted: #556764;
+  --azulejo: #1f6f78;
+  --azulejo-soft: #d5e6e7;
+  /* Texto sobre un fondo azulejo sólido. */
+  --on-azulejo: #ffffff;
+  /* --ochre pinta la barra y los puntos (objeto gráfico, mínimo 3:1). */
+  --ochre: #b57f22;
+  /* --ochre-ink es la versión legible como texto (mínimo 4,5:1). */
+  --ochre-ink: #8a5f14;
+  --ochre-soft: #f2e6c9;
+  --line: #d8dedc;
+  --focus: #1f6f78;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --paper: #0f1719;
+    --surface: #162124;
+    --ink: #edf2f1;
+    --muted: #93a5a2;
+    --azulejo: #57b8c1;
+    --azulejo-soft: #17383c;
+    /* En oscuro el azulejo es claro: el texto encima debe ser oscuro. */
+    --on-azulejo: #0f1719;
+    --ochre: #dfae5c;
+    --ochre-ink: #dfae5c;
+    --ochre-soft: #382d16;
+    --line: #223134;
+    --focus: #57b8c1;
   }
 }
 
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-azulejo: var(--azulejo);
+  --color-azulejo-soft: var(--azulejo-soft);
+  --color-on-azulejo: var(--on-azulejo);
+  --color-ochre: var(--ochre);
+  --color-ochre-ink: var(--ochre-ink);
+  --color-ochre-soft: var(--ochre-soft);
+  --color-line: var(--line);
+  --font-sans: var(--font-archivo);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+}
+
+/* Foco visible y consistente en todo el simulador. */
+:where(a, button, input, select, summary):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

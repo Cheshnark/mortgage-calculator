@@ -30,12 +30,32 @@ El cálculo es 100 % en cliente.
 
 Tailwind para estructura, espaciado y ajustes puntuales. **CSS Modules**
 (`*.module.css`) para lo que genera mucho ruido en `className`: bloques con muchos
-estados, animaciones, `grid` complejos.
+estados, animaciones, `grid` complejos. Hasta ahora el único módulo es
+`AmortizationTable.module.css` (cabecera fija, cebra, fila del cruce).
 
 Con Tailwind v4, si un CSS Module necesita `@apply` o `theme()` hay que añadir
-`@reference "../app/globals.css";` al principio del módulo. Alternativa preferida:
-usar las CSS custom properties que expone el `@theme` de `globals.css`
-(`var(--color-foreground)`, etc.), que no requieren `@reference`.
+`@reference "../app/globals.css";` al principio del módulo. Alternativa preferida
+y la que se usa: leer directamente las CSS custom properties de `globals.css`
+(`var(--azulejo)`, `var(--line)`…), que no requieren `@reference`.
+
+### Tokens de color
+
+Definidos en `:root` de `globals.css` y expuestos a Tailwind con `@theme inline`,
+con variante para `prefers-color-scheme: dark`.
+
+| Token                  | Uso                                                              |
+| ---------------------- | ---------------------------------------------------------------- |
+| `--paper`, `--surface` | fondos                                                           |
+| `--ink`, `--muted`     | texto                                                            |
+| `--azulejo`            | capital, enlaces, acento                                         |
+| `--on-azulejo`         | texto sobre azulejo sólido (blanco en claro, oscuro en oscuro)   |
+| `--ochre`              | intereses **como objeto gráfico** (barra, puntos)                |
+| `--ochre-ink`          | intereses **como texto**: versión oscurecida para llegar a 4,5:1 |
+| `--line`               | bordes y separadores                                             |
+
+La separación `--ochre` / `--ochre-ink` no es cosmética: el ocre de la barra tiene
+3,5:1 sobre el fondo, suficiente para un objeto gráfico pero insuficiente para
+texto. Ver `decisions.md`.
 
 ## Estructura
 
@@ -46,16 +66,16 @@ mortgage-calculator/
 ├── .editorconfig  .gitattributes  .nvmrc  .prettierignore   ■
 ├── eslint.config.mjs  prettier.config.mjs  postcss.config.mjs ■
 ├── next.config.ts            ■  next-intl plugin + config Next
-├── vitest.config.mts         ■  (.mts: se carga como ESM en Node 20.10)
+├── vitest.config.mts         ■  (.mts fuerza carga como ESM)
 ├── messages/                 ■  es.json, en.json  (traducciones next-intl)
 ├── public/                   ■
 ├── docs/                     ■
 └── src/
     ├── app/
-    │   ├── globals.css       ■  @import "tailwindcss" + @theme
+    │   ├── globals.css       ■  tokens de color + @theme de Tailwind
     │   └── [locale]/         ■  routing por idioma
-    │       ├── layout.tsx    ■  root layout (html/body), valida locale
-    │       └── page.tsx      ■  home (placeholder i18n)
+    │       ├── layout.tsx    ■  root layout (html/body), fuente, metadatos
+    │       └── page.tsx      ■  simulador (composición, server component)
     ├── proxy.ts              ■  middleware de next-intl (Next 16: proxy.ts)
     ├── i18n/                 ■  routing.ts · navigation.ts · request.ts
     ├── test/setup.ts         ■  matchers de @testing-library/jest-dom
@@ -73,8 +93,16 @@ mortgage-calculator/
     │   ├── taxes/            ·  ITP/AJD por CCAA y año
     │   ├── fees/             ·  escalas de aranceles notaría/registro
     │   └── subsidies/        ·  aval ICO + programas autonómicos
-    ├── components/           ·  UI, sin lógica de cálculo
-    └── store/                ·  Zustand + serialización del estado a la URL
+    ├── components/           ■  UI, sin lógica de cálculo
+    │   ├── SimulatorForm.tsx ■  formulario (capital, plazo, tipo)
+    │   ├── CurrencyField.tsx ■  importe con separador de millar
+    │   ├── NumberField.tsx   ■  campo numérico con unidad
+    │   ├── PaymentSummary.tsx ■ cuota, reparto capital/intereses, totales
+    │   ├── AmortizationTable.tsx ■ cuadro mes a mes (+ .module.css)
+    │   └── LocaleSwitcher.tsx ■ cambio de idioma
+    └── store/                ■  Zustand
+        ├── simulation.ts     ■  estado del formulario
+        └── useSimulationResult.ts ■ deriva el resultado del motor
 ```
 
 Reglas de dependencia:
@@ -97,8 +125,8 @@ Convenciones del motor:
 
 - Runner: Vitest. `npm test` (una pasada) y `npm run test:watch`.
 - **Entorno por defecto: `node`.** El motor de cálculo es lógica pura y no necesita
-  DOM. Los tests de componentes deben empezar con `// @vitest-environment jsdom`;
-  jsdom necesita **Node >= 20.19** (el equipo está en 20.10, ver Entorno).
+  DOM y así los tests son más rápidos. Los tests de componentes deben empezar con
+  `// @vitest-environment jsdom` (ver `CurrencyField.test.tsx`).
 - Alias `@/*` disponible en tests vía `vite-tsconfig-paths`.
 - Requisito de cobertura: lógica intensiva (cuotas, amortización, impuestos,
   aranceles, formateo). No se cubren componentes de forma exhaustiva.

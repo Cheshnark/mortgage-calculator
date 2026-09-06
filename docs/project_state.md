@@ -20,8 +20,12 @@ Hecho en esta sesión:
 - **Motor de cálculo v1 completo**: `format.ts` (formateo EUR), `payment.ts` (cuota
   del sistema francés + tipo variable con cláusula suelo) y `amortization.ts`
   (cuadro mes a mes, en céntimos enteros, con ajuste de la última cuota).
-- **Tests**: Vitest + RTL, 40 tests en verde. Entorno `node` por defecto;
-  jsdom opt-in por fichero, verificado en Node 22.
+- **UI v1**: simulador funcionando en `/es` y `/en`. Formulario (capital, plazo,
+  fijo/variable con euríbor + diferencial), resumen con cuota, barra de reparto
+  capital/intereses, mes de cruce y cuadro de amortización desplegable. Selector
+  de idioma. Mobile-first, modo oscuro y contraste AA verificados en navegador.
+- **Tests**: Vitest + RTL, 45 tests en verde (40 de motor, 5 de componente en
+  jsdom). Entorno `node` por defecto; jsdom opt-in por fichero.
 - **Formato**: Prettier + `prettier-plugin-tailwindcss` + `eslint-config-prettier`.
 - **CI**: `.github/workflows/ci.yml` — `npm ci` + `lint` + `typecheck` + `test` +
   `build` en cada push y PR a `main`, Node desde `.nvmrc`.
@@ -31,9 +35,8 @@ Hecho en esta sesión:
 
 ## Próximos pasos
 
-1. v1 · UI mínima mobile-first sobre `[locale]`: formulario (capital, plazo, tipo
-   fijo/variable) + resultado (cuota, total intereses, coste total) y el cuadro
-   como vista secundaria. Textos en `messages/`.
+1. v1 · serialización del estado de la simulación a la URL, para poder compartir
+   un enlace. Engancha en el store de Zustand.
 2. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
 3. v1 · serialización del estado de la simulación a la URL (`src/store/`).
 4. `/init` para generar el `CLAUDE.md` del proyecto.
