@@ -9,6 +9,7 @@ const input = (patch: Partial<PurchaseInput> = {}): PurchaseInput => ({
   savings: INITIAL_STATE.savings,
   condition: INITIAL_STATE.condition,
   regionCode: INITIAL_STATE.regionCode,
+  agencyFee: INITIAL_STATE.agencyFee,
   age: INITIAL_STATE.age,
   firstHome: INITIAL_STATE.firstHome,
   primaryResidence: INITIAL_STATE.primaryResidence,
@@ -86,6 +87,29 @@ describe("computePurchase", () => {
     expect(financing.principal).toBe(144_000);
     expect(financing.downPayment).toBe(56_000);
     expect(financing.effectiveLtv).toBeCloseTo(0.72, 6);
+  });
+
+  it("suma los honorarios de agencia cuando la casilla está marcada", () => {
+    const conAgencia = compute({ price: 200_000, agencyFee: true });
+    const sinAgencia = compute({ price: 200_000, agencyFee: false });
+
+    const linea = conAgencia.fees.lines.find((line) => line.id === "agencia");
+    // 3 % del precio más el 21 % de IVA.
+    expect(linea?.amount).toBeCloseTo(200_000 * 0.03 * 1.21, 6);
+    expect(sinAgencia.fees.lines.some((line) => line.id === "agencia")).toBe(
+      false,
+    );
+    expect(
+      conAgencia.savingsNeeded.amount - sinAgencia.savingsNeeded.amount,
+    ).toBeCloseTo(200_000 * 0.03 * 1.21, 6);
+  });
+
+  it("la agencia no es horquilla: es un porcentaje pactado", () => {
+    const linea = compute({ agencyFee: true }).fees.lines.find(
+      (line) => line.id === "agencia",
+    );
+    expect(linea?.low).toBe(linea?.amount);
+    expect(linea?.high).toBe(linea?.amount);
   });
 
   it("suma impuestos y gastos en el ahorro necesario", () => {

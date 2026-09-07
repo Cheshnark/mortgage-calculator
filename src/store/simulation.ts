@@ -33,6 +33,8 @@ export interface SimulationState {
   condition: PropertyCondition;
   /** Código de comunidad autónoma, de `src/data/taxes/regions.ts`. */
   regionCode: string;
+  /** La compra la intermedia una agencia y sus honorarios los paga el comprador. */
+  agencyFee: boolean;
   /** Plazo en años. */
   years: number;
   rateMode: RateMode;
@@ -64,7 +66,9 @@ export interface SimulationActions {
  *
  * El perfil del comprador arranca **vacío** a propósito: sin marcar nada no se
  * aplica ninguna reducción de ITP, así que la cifra de ahorro necesario sale
- * por arriba. Pasarse es más seguro que quedarse corto.
+ * por arriba. Pasarse es más seguro que quedarse corto. Por lo mismo, los
+ * honorarios de agencia vienen marcados aunque lo normal sea que los pague el
+ * vendedor (ver `docs/decisions.md`).
  */
 export const INITIAL_STATE: SimulationState = {
   price: 200_000,
@@ -73,6 +77,7 @@ export const INITIAL_STATE: SimulationState = {
   savings: Number.NaN,
   condition: "used",
   regionCode: DEFAULT_REGION_CODE,
+  agencyFee: true,
   years: 25,
   rateMode: "fixed",
   fixedRate: 3,

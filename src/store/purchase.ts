@@ -31,6 +31,7 @@ export type PurchaseInput = Pick<
   | "savings"
   | "condition"
   | "regionCode"
+  | "agencyFee"
   | "age"
   | "firstHome"
   | "primaryResidence"
@@ -91,7 +92,10 @@ export function computePurchase(
       },
     });
 
-    const fees = purchaseFees({ price: state.price });
+    const fees = purchaseFees({
+      price: state.price,
+      agencyFee: state.agencyFee,
+    });
 
     const upfrontCosts: Range = {
       amount: taxes.total + fees.total.amount,

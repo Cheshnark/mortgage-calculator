@@ -22,6 +22,7 @@ const KEYS = {
   savings: "ahorro",
   condition: "vivienda",
   regionCode: "ccaa",
+  agencyFee: "agencia",
   years: "years",
   rateMode: "mode",
   fixedRate: "rate",
@@ -47,8 +48,9 @@ const NUMERIC_FIELDS = [
   "age",
 ] as const;
 
-/** Campos del perfil del comprador. Se escriben solo cuando están activos. */
+/** Casillas: se escriben solo cuando difieren de su valor de partida. */
 const BOOLEAN_FIELDS = [
+  "agencyFee",
   "firstHome",
   "primaryResidence",
   "largeFamily",

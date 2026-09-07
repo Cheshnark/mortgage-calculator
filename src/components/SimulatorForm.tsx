@@ -77,6 +77,19 @@ export function SimulatorForm() {
           options={REGION_OPTIONS}
           hint={t("regionHint")}
         />
+
+        <div className="flex flex-col gap-1.5">
+          <CheckboxField
+            id="agencyFee"
+            label={t("agencyFee")}
+            checked={state.agencyFee}
+            onChange={(checked) => set("agencyFee", checked)}
+            describedBy="agencyFee-hint"
+          />
+          <p id="agencyFee-hint" className="text-muted text-xs leading-relaxed">
+            {t("agencyFeeHint")}
+          </p>
+        </div>
       </Section>
 
       <Section title={t("sectionFinancing")}>

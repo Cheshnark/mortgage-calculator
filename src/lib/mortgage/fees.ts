@@ -1,4 +1,6 @@
 import {
+  AGENCY_FEE_RATE,
+  AGENCY_FEE_VAT,
   APPRAISAL_RANGE,
   ARANCEL_REBATE,
   EXTRAS_HIGH_MULTIPLIER,
@@ -16,6 +18,9 @@ import {
  * y todo lo de la escritura de *compraventa*. Por eso este módulo calcula, por
  * defecto, solo los gastos de la compraventa.
  *
+ * Los honorarios de agencia inmobiliaria son opcionales y van aparte: no los
+ * fija ninguna norma y lo habitual es que los pague el vendedor.
+ *
  * Todos los importes salen como **horquilla**: el arancel es una base
  * regulada, pero la factura real incluye copias y folios que no lo están.
  */
@@ -28,7 +33,7 @@ export interface FeeRange {
 }
 
 export interface FeeLine extends FeeRange {
-  id: "notaria" | "registro" | "gestoria" | "tasacion";
+  id: "notaria" | "registro" | "gestoria" | "tasacion" | "agencia";
 }
 
 export interface FeesInput {
@@ -38,6 +43,14 @@ export interface FeesInput {
   gestoria?: FeeRange;
   /** Sustituye la horquilla de tasación por defecto. */
   appraisal?: FeeRange;
+  /**
+   * Suma los honorarios de la agencia inmobiliaria, IVA incluido.
+   *
+   * Por defecto `false`: lo normal en España es que los pague el vendedor, así
+   * que el motor no los supone. Es la interfaz la que decide preseleccionarlo
+   * (ver `docs/decisions.md`).
+   */
+  agencyFee?: boolean;
 }
 
 export interface FeesResult {
@@ -94,12 +107,24 @@ function toRange(base: number): FeeRange {
 }
 
 /**
+ * Honorarios de la agencia con el IVA ya incluido.
+ *
+ * @throws RangeError si el precio no es un número positivo.
+ */
+export function agencyCommission(price: number): number {
+  if (!Number.isFinite(price) || price <= 0) {
+    throw new RangeError(`price debe ser un número > 0 (recibido: ${price})`);
+  }
+  return price * AGENCY_FEE_RATE * (1 + AGENCY_FEE_VAT);
+}
+
+/**
  * Calcula los gastos de compraventa a cargo del comprador.
  *
  * @throws RangeError si el precio no es válido.
  */
 export function purchaseFees(input: FeesInput): FeesResult {
-  const { price, gestoria, appraisal } = input;
+  const { price, gestoria, appraisal, agencyFee = false } = input;
 
   const notaryBase = arancelAfterRebate(price, NOTARY_SCALE);
   const registryBase = arancelAfterRebate(price, REGISTRY_SCALE);
@@ -119,6 +144,13 @@ export function purchaseFees(input: FeesInput): FeesResult {
     { id: "gestoria", ...gestoriaRange },
     { id: "tasacion", ...appraisalRange },
   ];
+
+  if (agencyFee) {
+    // Porcentaje pactado, no horquilla: aquí lo que varía es el trato con la
+    // agencia, no la incertidumbre de la estimación.
+    const amount = agencyCommission(price);
+    lines.push({ id: "agencia", amount, low: amount, high: amount });
+  }
 
   const sum = (pick: (line: FeeLine) => number) =>
     lines.reduce((acc, line) => acc + pick(line), 0);

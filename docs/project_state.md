@@ -19,14 +19,17 @@ entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
   de obra nueva y reducciones por perfil, para las 19 comunidades. Datos
   **orientativos**, de portales.
 - `fees.ts` + `src/data/fees/aranceles.ts` — notaría y registro por arancel del
-  BOE (normativo), gestoría y tasación por horquilla de mercado.
+  BOE (normativo), gestoría y tasación por horquilla de mercado, y honorarios de
+  agencia (3 % + IVA) como línea opcional.
 
 ### Interfaz
 
 - **Formulario en tres bloques**: la vivienda (precio, obra nueva o segunda
   mano, comunidad), la financiación (porcentaje financiado, plazo, tipo fijo o
   variable) y un desplegable opcional con ahorro, tasación y perfil del
-  comprador. El capital del préstamo ya no se pide: se deriva del precio y del
+  comprador. Una casilla, marcada por defecto, añade los honorarios de agencia
+  inmobiliaria; el texto de ayuda avisa de que en España los suele pagar el
+  vendedor. El capital del préstamo ya no se pide: se deriva del precio y del
   porcentaje financiado (ver `decisions.md`).
 - **Resumen de cuota** con barra de reparto capital/intereses y mes de cruce.
 - **Desglose de la compra**: ahorro necesario con su horquilla, comparación con
@@ -42,7 +45,7 @@ entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
 
 ### Calidad
 
-- **Tests**: Vitest + RTL, **390 en verde** (motor, tabla fiscal, aranceles,
+- **Tests**: Vitest + RTL, **397 en verde** (motor, tabla fiscal, aranceles,
   serializador de URL, `computePurchase` y componente en jsdom). Entorno `node`
   por defecto; jsdom opt-in por fichero.
 - **CI**: `.github/workflows/ci.yml` — `npm ci` + `lint` + `typecheck` + `test` +

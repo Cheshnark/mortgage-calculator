@@ -1,12 +1,14 @@
 import { describe, it, expect } from "vitest";
 import {
+  AGENCY_FEE_RATE,
+  AGENCY_FEE_VAT,
   APPRAISAL_RANGE,
   ARANCEL_REBATE,
   GESTORIA_RANGE,
   NOTARY_SCALE,
   REGISTRY_SCALE,
 } from "@/data/fees/aranceles";
-import { applyArancel, purchaseFees } from "./fees";
+import { agencyCommission, applyArancel, purchaseFees } from "./fees";
 
 /**
  * Los valores de referencia se calcularon aplicando a mano la escala del BOE,
@@ -148,5 +150,43 @@ describe("purchaseFees", () => {
 
   it("propaga el RangeError de un precio inválido", () => {
     expect(() => purchaseFees({ price: 0 })).toThrow(RangeError);
+  });
+
+  describe("honorarios de agencia", () => {
+    it("no los suma si no se piden", () => {
+      const { lines } = purchaseFees({ price });
+      expect(lines.some((line) => line.id === "agencia")).toBe(false);
+    });
+
+    it("los suma como porcentaje del precio con IVA", () => {
+      const { lines } = purchaseFees({ price, agencyFee: true });
+      const agencia = lines.find((line) => line.id === "agencia");
+      expect(agencia?.amount).toBeCloseTo(
+        price * AGENCY_FEE_RATE * (1 + AGENCY_FEE_VAT),
+        6,
+      );
+    });
+
+    it("los arrastra a los tres extremos del total", () => {
+      const sin = purchaseFees({ price });
+      const con = purchaseFees({ price, agencyFee: true });
+      const honorarios = agencyCommission(price);
+
+      expect(con.total.low - sin.total.low).toBeCloseTo(honorarios, 6);
+      expect(con.total.amount - sin.total.amount).toBeCloseTo(honorarios, 6);
+      expect(con.total.high - sin.total.high).toBeCloseTo(honorarios, 6);
+    });
+  });
+});
+
+describe("agencyCommission", () => {
+  it("aplica el 3 % y le suma el 21 % de IVA", () => {
+    // 200.000 € → 6.000 € de honorarios + 1.260 € de IVA.
+    expect(agencyCommission(200_000)).toBeCloseTo(7_260, 6);
+  });
+
+  it("rechaza un precio no válido", () => {
+    expect(() => agencyCommission(0)).toThrow(RangeError);
+    expect(() => agencyCommission(Number.NaN)).toThrow(RangeError);
   });
 });

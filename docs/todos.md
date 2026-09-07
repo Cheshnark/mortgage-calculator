@@ -33,6 +33,7 @@ _Última actualización: 2026-09-07_
       comprador y desglose de costes
 - [x] Ampliar la URL compartible con los campos de v2
 - [x] Ampliar el disclaimer con la procedencia de los datos fiscales
+- [x] Honorarios de agencia inmobiliaria (3 % + IVA) como línea opcional
 
 ## Prioridad baja
 
@@ -57,6 +58,9 @@ _Última actualización: 2026-09-07_
 - [ ] v2 · Canarias tributa por IGIC, no IVA: la obra nueva allí no es fiable
 - [ ] v2 · Calibrar `EXTRAS_HIGH_MULTIPLIER` (2,5) con facturas reales de
       notaría: es el número más débil del módulo de gastos, y no es normativo
+- [ ] v2 · Contrastar el 3 % de agencia: el mercado va del 3 % al 5 % y hay
+      tarifas planas. Si se confirma la dispersión, pasarlo a horquilla o a
+      porcentaje editable
 - [ ] v3 · Parámetros vigentes del aval ICO (edad, patrimonio, IPREM por provincia,
       precio máximo por CCAA, % avalado, vigencia/prórroga)
 - [ ] v3 · Inventario de programas autonómicos: cuáles actúan como aval (entran en

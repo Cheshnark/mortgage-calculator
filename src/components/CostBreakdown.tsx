@@ -32,7 +32,7 @@ export function CostBreakdown() {
   const t = useTranslations("Costs");
   const locale = useLocale();
   const purchase = usePurchaseResult();
-  const { price, condition } = useSimulationStore();
+  const { price, condition, agencyFee } = useSimulationStore();
 
   if (!purchase) {
     return <p className="text-muted text-base text-balance">{t("empty")}</p>;
@@ -163,6 +163,7 @@ export function CostBreakdown() {
           </p>
         ) : null}
         {fees.aboveRegulatedRange ? <p>{t("aboveRegulated")}</p> : null}
+        {agencyFee ? <p>{t("agencyNote")}</p> : null}
         {condition === "new" ? <p>{t("newBuildNote")}</p> : null}
         {/* Las notas de la tabla fiscal están redactadas solo en español. */}
         {condition === "new" && region.newBuildNote ? (

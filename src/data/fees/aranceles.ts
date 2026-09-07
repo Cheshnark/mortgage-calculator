@@ -1,5 +1,6 @@
 /**
- * Aranceles de notaría y registro, y constantes de gestoría y tasación.
+ * Aranceles de notaría y registro, y constantes de gestoría, tasación y
+ * agencia inmobiliaria.
  *
  * A diferencia de la tabla fiscal, estas escalas **sí son fuente normativa**:
  * RD 1426/1989 (notarios) y RD 1427/1989 (registradores). Llevan sin cambiar
@@ -94,3 +95,20 @@ export const GESTORIA_RANGE = { low: 300, high: 400 } as const;
 
 /** Horquilla de tasación, en euros. Precio libre de mercado. */
 export const APPRAISAL_RANGE = { low: 250, high: 600 } as const;
+
+/**
+ * Honorarios de agencia inmobiliaria, en tanto por uno sobre el precio, y el
+ * IVA que se les aplica.
+ *
+ * ⚠️ NO NORMATIVO y, sobre todo, **no siempre a cargo del comprador**: la
+ * práctica dominante en España es que los pague el vendedor, que es quien
+ * encarga la venta. El comprador los asume en casos concretos (agencias que
+ * cobran a las dos partes, o un _personal shopper_ inmobiliario que contrata
+ * él). Por eso en la interfaz es una casilla que se puede desmarcar.
+ *
+ * El 3 % es el porcentaje más citado; el mercado se mueve entre el 3 % y el
+ * 5 %, y hay agencias con tarifa plana. El 21 % es el IVA general, que sí es
+ * normativo: los honorarios de una agencia son una prestación de servicios.
+ */
+export const AGENCY_FEE_RATE = 0.03;
+export const AGENCY_FEE_VAT = 0.21;

@@ -438,3 +438,34 @@ numerosa y discapacidad empiezan sin marcar, y la edad vacía.
 de ahorro necesario sale por arriba. Es la misma lógica que llevó a poner el
 marcador de AJD en el extremo alto: en un cálculo de "cuánto necesito
 ahorrado", quedarse corto le arruina la operación al comprador y pasarse no.
+
+## 2026-09-07 · Honorarios de agencia: opcionales, pero marcados por defecto
+
+**Decisión:** los honorarios de agencia inmobiliaria (**3 % del precio más el
+21 % de IVA**) son una línea más del desglose, gobernada por una casilla que en
+la interfaz viene **marcada**. En el motor, en cambio, `purchaseFees` no los
+suma salvo que se le pidan (`agencyFee: true`).
+
+**La salvedad, que hay que decir:** en España estos honorarios los paga
+normalmente **el vendedor**, que es quien encarga la venta. El comprador los
+asume en casos concretos: agencias que cobran a las dos partes, o un _personal
+shopper_ inmobiliario contratado por él. Con la casilla marcada por defecto, la
+cifra de ahorro necesario sale alta para la mayoría de compras.
+
+**Motivo de marcarla igualmente:** decisión explícita del equipo, y coherente
+con el resto del módulo (el marcador de AJD en el extremo alto, el perfil del
+comprador vacío). En un cálculo de "cuánto necesito ahorrado", quedarse corto
+le arruina la operación al comprador y pasarse no. La casilla lleva un texto de
+ayuda que explica quién paga normalmente, y el desglose repite el aviso mientras
+la línea esté activa, para que desmarcarla sea una decisión informada y no un
+descubrimiento.
+
+**Motivo de que el motor no los suponga:** `src/lib/mortgage/` no debe tener
+opinión de producto. Que el valor por defecto de la interfaz y el del motor
+difieran es deliberado y está documentado en los dos sitios.
+
+**El 3 % no es normativo.** Es el porcentaje más citado; el mercado se mueve
+entre el 3 % y el 5 %, y hay agencias con tarifa plana. A diferencia de notaría
+y registro, aquí no se aplica horquilla: lo que varía no es la incertidumbre de
+la estimación, sino el trato concreto con la agencia. El 21 % de IVA sí es
+normativo: los honorarios son una prestación de servicios.
