@@ -43,6 +43,12 @@ export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" && nvm use
 Por lo mismo, `.claude/launch.json` apunta al binario por ruta absoluta y está
 fuera de git.
 
+**`npm run dev` se abre por `localhost`, nunca por la IP de red.** Next 16
+bloquea el WebSocket de HMR cuando el origen no es exactamente `localhost`
+(aviso solo en la terminal del servidor); sin HMR, Fast Refresh deja de
+aplicar cambios y la página parece congelada. `npm run start` no lo sufre
+porque no usa HMR. Detalle en `docs/architecture.md` → Entorno.
+
 ## Documentación: es la fuente de verdad
 
 `docs/` manda sobre el historial del chat. **Después de cualquier tarea

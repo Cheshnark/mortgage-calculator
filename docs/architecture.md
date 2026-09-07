@@ -198,3 +198,12 @@ se pueden realinear.
   todos los repos) y `.gitattributes` de proyecto que normaliza finales de línea a
   LF en el repo.
 - Trabajo **solo en local**, sin sincronización en la nube más allá de `origin`.
+- **`npm run dev` se abre por `http://localhost:3000`, nunca por la IP de red.**
+  Next 16 bloquea por defecto el WebSocket de HMR cuando el origen no es
+  exactamente `localhost` (aviso `Blocked cross-origin request to Next.js dev
+resource /_next/hmr`, visible solo en la terminal del servidor, no en la
+  consola del navegador). Sin HMR, Fast Refresh deja de aplicar los cambios y
+  la página da sensación de haberse quedado colgada — aunque `npm run start`
+  nunca lo nota, porque no usa HMR. Si algún día hace falta compartir el
+  entorno de dev en red, la vía es `allowedDevOrigins` en `next.config.ts`, no
+  cambiar cómo se abre localmente.
