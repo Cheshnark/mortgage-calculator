@@ -28,7 +28,10 @@ npx vitest run -t "aplica los tramos progresivos"
 ```
 
 Antes de dar por cerrada una tarea: `lint`, `typecheck`, `test` y `build`. Es lo
-mismo que corre la CI en cada push y PR a `main`.
+mismo que corre la CI en cada push y PR a `main` — la CI **no** corre
+`format:check`; el formato lo garantiza un hook `PostToolUse`
+(`.claude/settings.json` + `.claude/hooks/format-on-edit.mjs`) que corre
+Prettier tras cada `Write`/`Edit`, no hace falta invocarlo a mano.
 
 ### Node en esta máquina
 

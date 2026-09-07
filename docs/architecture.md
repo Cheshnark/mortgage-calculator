@@ -193,7 +193,11 @@ se pueden realinear.
   `npm run format` / `format:check`.
 - **CI**: `.github/workflows/ci.yml` (GitHub Actions). En cada `push` y cada PR a
   `main`: `npm ci` + `lint` + `typecheck` + `test` + `build`, con la versión de
-  Node tomada de `.nvmrc`.
+  Node tomada de `.nvmrc`. **No** corre `format:check`; el formato se
+  garantiza con el hook de abajo, no en CI.
+- **Formateo automático**: `.claude/settings.json` registra un hook
+  `PostToolUse` (`Write|Edit`) que corre Prettier sobre cada fichero editado
+  (`.claude/hooks/format-on-edit.mjs`). Ver `decisions.md`.
 - Git con `core.excludesfile` global en `~/.gitignore_global` (ignora `.env*` en
   todos los repos) y `.gitattributes` de proyecto que normaliza finales de línea a
   LF en el repo.

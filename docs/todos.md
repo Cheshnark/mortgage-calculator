@@ -15,7 +15,8 @@ _Última actualización: 2026-09-07_
 ## Prioridad media
 
 - [x] Configurar Prettier (+ plugin Tailwind + `eslint-config-prettier`)
-- [ ] Hook `PostToolUse` que formatee con Prettier tras cada edición
+- [x] Hook `PostToolUse` que formatee con Prettier tras cada edición
+      (`.claude/settings.json` + `.claude/hooks/format-on-edit.mjs`)
 - [x] CI GitHub Actions: lint + typecheck + test + build (Node desde `.nvmrc`)
 - [x] v1 · `payment.ts` (cuota sistema francés, fijo y variable) + tests
 - [x] v1 · `amortization.ts` (cuadro de amortización) + tests

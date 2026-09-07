@@ -58,9 +58,8 @@ entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
 
 ## Próximos pasos
 
-1. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
-2. Decidir despliegue (probable Vercel) y publicar.
-3. v3: aval ICO y programas autonómicos.
+1. Decidir despliegue (probable Vercel) y publicar.
+2. v3: aval ICO y programas autonómicos.
 
 ## Pendiente de verificar / deuda
 

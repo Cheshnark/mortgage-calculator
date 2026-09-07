@@ -536,3 +536,36 @@ no tiene: víctimas de violencia de género o de terrorismo, familias
 monoparentales, residencia previa en el territorio, límites de renta o
 patrimonio del comprador, superficie de la vivienda, y si la vivienda es VPO
 (es un atributo de la vivienda, no del comprador, y el motor no lo modela).
+
+## 2026-09-07 · Hook de formateo automático tras cada edición
+
+**Decisión:** `.claude/settings.json` (versionado) registra un hook
+`PostToolUse` sobre `Write|Edit` que corre Prettier sobre el fichero recién
+tocado. El propio comando vive en `.claude/hooks/format-on-edit.mjs` en vez
+de como un one-liner en el JSON: parsea el payload del hook y llama a
+Prettier con `--ignore-unknown` (así un fichero que Prettier no sabe
+formatear no revienta el hook), tragándose cualquier error para no bloquear
+nunca la edición que lo disparó.
+
+**Motivo:** la CI de este proyecto corre `lint` + `typecheck` + `test` +
+`build`, pero **no** `format:check` — nada detecta un olvido de formatear
+antes de un commit. Y ya ha pasado dentro de esta misma sesión de trabajo:
+una prueba de Fast Refresh dejó cinco líneas en blanco de más al final de
+`PaymentSummary.tsx` que pasaron desapercibidas hasta un chequeo manual.
+Con el hook, el formato deja de depender de que quien edite (persona o
+agente) se acuerde de correrlo.
+
+**Detalle técnico que costó descubrir:** `execFileSync("npx", [...])` sin
+`shell: true` falla en silencio en Windows, porque no resuelve `npx.cmd`
+sin pasar por el shell (a diferencia de un `.exe`). El script lo lleva
+explícito y comentado para que no se "corrija" de vuelta.
+
+**Lección para el próximo proyecto — esto debería ir desde el arranque, no
+añadirse a mitad de camino:** igual que `.gitattributes`, `.editorconfig` y
+`.nvmrc` se pusieron en el primer commit para que nadie tuviera que
+acordarse de normalizarlos a mano, el hook de formateo pertenece a esa
+misma categoría de higiene de repositorio. Configurarlo tarde significa que
+todo el código escrito antes pudo colar inconsistencias de formato sin que
+nada lo señalara. La próxima vez, este hook (y el equivalente de `lint` si
+se quiere ser estricto) va en el andamiaje inicial, junto al resto de
+`.editorconfig`/`.gitattributes`.
