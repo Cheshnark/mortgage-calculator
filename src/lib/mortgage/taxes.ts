@@ -52,8 +52,16 @@ export interface RegionTaxes {
   sourceUrl: string;
   /** Fecha de la última revisión de estos datos, en formato `AAAA-MM`. */
   lastReviewed: string;
-  /** Salvedad sobre la fiabilidad del dato, si la hay. Se muestra en la UI. */
+  /**
+   * Salvedad sobre el ITP de segunda mano, si la hay. Se muestra en la UI.
+   */
   note?: string;
+  /**
+   * Salvedad sobre el IVA o el AJD de obra nueva. Va aparte de `note` porque
+   * la UI enseña una u otra según el tipo de vivienda: la cautela del AJD no
+   * pinta nada en una compra de segunda mano.
+   */
+  newBuildNote?: string;
 }
 
 export interface BuyerProfile {

@@ -2,20 +2,18 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { formatEUR, formatRate } from "@/lib/mortgage/format";
-import { useSimulationStore } from "@/store/simulation";
 import { useSimulationResult } from "@/store/useSimulationResult";
 
 export function PaymentSummary() {
   const t = useTranslations("Summary");
   const locale = useLocale();
   const result = useSimulationResult();
-  const principal = useSimulationStore((state) => state.principal);
 
   if (!result) {
     return <p className="text-muted text-lg text-balance">{t("empty")}</p>;
   }
 
-  const { schedule, annualRate, crossoverMonth } = result;
+  const { schedule, annualRate, crossoverMonth, principal } = result;
   const capitalShare = (principal / schedule.totalPaid) * 100;
   const interestShare = 100 - capitalShare;
 

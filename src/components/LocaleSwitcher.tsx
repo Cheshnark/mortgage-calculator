@@ -10,13 +10,10 @@ export function LocaleSwitcher() {
   const t = useTranslations("LocaleSwitcher");
   const active = useLocale();
   const pathname = usePathname();
-  const { principal, years, rateMode, fixedRate, euribor, spread } =
-    useSimulationStore();
+  const state = useSimulationStore();
 
   // Cambiar de idioma no debe perder la simulación en curso.
-  const query = Object.fromEntries(
-    toSearchParams({ principal, years, rateMode, fixedRate, euribor, spread }),
-  );
+  const query = Object.fromEntries(toSearchParams(state));
 
   return (
     <nav aria-label={t("label")} className="flex items-center gap-1 text-sm">

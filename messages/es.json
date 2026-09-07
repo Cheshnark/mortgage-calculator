@@ -1,10 +1,12 @@
 {
   "HomePage": {
-    "title": "¿Cuánto pagarás por tu hipoteca?",
-    "tagline": "Calcula la cuota mensual y mira cuánto de cada pago se va en intereses. Pensada para la compra de vivienda en España.",
-    "formHeading": "Tu préstamo",
+    "title": "¿Cuánto te cuesta comprar tu casa?",
+    "tagline": "Calcula la cuota, la entrada y el ahorro que necesitas de verdad: impuestos, notaría, registro y gestoría incluidos. Pensada para la compra de vivienda en España.",
+    "formHeading": "Tu compra",
     "resultsHeading": "Resultado de la simulación",
-    "disclaimer": "Los importes son una estimación con fines informativos y no sustituyen el asesoramiento de tu banco o tu gestoría. No incluyen comisiones de apertura, seguros vinculados ni los gastos e impuestos de la compraventa. Contrasta siempre las cifras antes de tomar una decisión."
+    "costsHeading": "Lo que necesitas para firmar",
+    "disclaimer": "Los importes son una estimación con fines informativos y no sustituyen el asesoramiento de tu banco o tu gestoría. No incluyen comisiones de apertura ni seguros vinculados. Contrasta siempre las cifras antes de tomar una decisión.",
+    "dataDisclaimer": "Los tipos de ITP, IVA y AJD proceden de portales especializados, no de fuente primaria, y son orientativos: cada comunidad autónoma los fija por ley y cambian. La notaría y el registro se calculan con los aranceles oficiales (RD 1426/1989 y RD 1427/1989), pero la factura real incluye copias y folios que no están tasados, de ahí la horquilla. Los gastos de la escritura de hipoteca los paga el banco desde la Ley 5/2019 y no se suman aquí."
   },
   "LocaleSwitcher": {
     "label": "Idioma",
@@ -12,7 +14,17 @@
     "en": "English"
   },
   "Form": {
-    "principal": "Capital que pides",
+    "sectionProperty": "La vivienda",
+    "price": "Precio de la vivienda",
+    "condition": "Tipo de vivienda",
+    "used": "Segunda mano",
+    "new": "Obra nueva",
+    "region": "Comunidad autónoma",
+    "regionHint": "Determina el ITP de segunda mano o el AJD de obra nueva.",
+    "sectionFinancing": "La financiación",
+    "ltv": "Cuánto financias",
+    "ltvValue": "{value} %",
+    "ltvAboveHint": "Por encima del 100 % financias también parte de los gastos. Requiere aval o garantía adicional.",
     "years": "Plazo",
     "yearsValue": "{count, plural, one {# año} other {# años}}",
     "rateMode": "Tipo de interés",
@@ -22,6 +34,19 @@
     "euribor": "Euríbor",
     "spread": "Diferencial",
     "euriborHint": "Valor orientativo. Puedes cambiarlo.",
+    "profileSummary": "Ahorro, tasación y tu perfil",
+    "profileHint": "Todo esto es opcional. El perfil solo afecta al ITP de segunda mano: cada comunidad tiene sus propios tipos reducidos y no todos están modelados.",
+    "savings": "Ahorro disponible",
+    "savingsHint": "Para saber si te llega para la entrada y los gastos.",
+    "appraisal": "Valor de tasación",
+    "appraisalHint": "Si queda por debajo del precio, el banco presta sobre ella y tu entrada sube.",
+    "age": "Edad",
+    "optional": "Opcional",
+    "buyerProfile": "Tu situación",
+    "firstHome": "Es mi primera vivienda",
+    "primaryResidence": "Será mi residencia habitual",
+    "largeFamily": "Familia numerosa",
+    "disability": "Discapacidad reconocida",
     "reset": "Restablecer valores"
   },
   "Summary": {
@@ -34,7 +59,32 @@
     "totalSentence": "En {months} cuotas devolverás {total}.",
     "crossover": "Desde la cuota {month} amortizas más capital que intereses.",
     "lastPayment": "La última cuota se ajusta a {amount} para saldar el préstamo.",
-    "empty": "Escribe el capital, el plazo y el tipo de interés para ver tu cuota."
+    "empty": "Escribe el precio de la vivienda para ver tu cuota."
+  },
+  "Costs": {
+    "savingsNeeded": "Ahorro necesario",
+    "range": "entre {low} y {high}",
+    "savingsShort": "Con tu ahorro te faltan {amount}.",
+    "savingsEnough": "Con tu ahorro te sobran {amount}.",
+    "price": "Precio",
+    "loan": "Préstamo",
+    "downPayment": "Entrada",
+    "breakdownHeading": "Impuestos y gastos",
+    "itp": "ITP",
+    "iva": "IVA",
+    "ajd": "AJD",
+    "notaria": "Notaría",
+    "registro": "Registro de la propiedad",
+    "gestoria": "Gestoría",
+    "tasacion": "Tasación",
+    "total": "Total",
+    "ofPrice": "{share} del precio",
+    "reductionApplied": "Se te aplica un tipo reducido del {rate}: pagas {saving} menos que con el tipo general.",
+    "appraisalCaps": "La tasación queda por debajo del precio, así que el banco presta sobre {base}: financias un {ltv} del precio y el resto lo pones tú.",
+    "aboveRegulated": "Por encima de seis millones de euros el arancel notarial deja de estar tasado y se pacta libremente: la estimación de notaría no es fiable.",
+    "newBuildNote": "En obra nueva el IVA es estatal y el AJD lo fija cada comunidad. El AJD que se aplica aquí es un marcador uniforme del 1,5 %, deliberadamente alto.",
+    "source": "Datos fiscales de {region}, revisados en {reviewed}. <link>Ver la fuente</link>.",
+    "empty": "Escribe el precio de la vivienda para ver los impuestos y gastos."
   },
   "Schedule": {
     "show": "Ver las {months} cuotas",

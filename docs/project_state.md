@@ -1,66 +1,74 @@
 # Estado del proyecto
 
-_Última actualización: 2026-09-06_
+_Última actualización: 2026-09-07_
 
 ## Dónde estamos
 
-Proyecto **andamiado y verde**. La app arranca, sirve `/es` y `/en`, y `/` redirige
-a `/es`. Aún no hay lógica de negocio más allá de un formateador de importes.
+**v2 completa y verde.** La app calcula el coste real de comprar: cuota,
+entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
 
-Hecho en esta sesión:
+### Motor de cálculo (`src/lib/mortgage/`, `src/data/`)
 
-- **Definición cerrada**: alcance faseado (`business.md`), framework y fuentes de
-  datos (`decisions.md`).
-- **Tooling agnóstico**: `.gitattributes` (LF), `.editorconfig`, `.nvmrc`.
-- **Andamiaje** con `create-next-app@16.3.4`: Next 16 (App Router, Turbopack),
-  React 19, TypeScript, Tailwind v4, ESLint flat.
-- **i18n** con next-intl: `src/i18n/`, `src/proxy.ts`, `messages/{es,en}.json`,
-  rutas bajo `src/app/[locale]/`.
-- **Estado**: Zustand instalado (sin store todavía).
-- **Motor de cálculo v1 completo**: `format.ts` (formateo EUR), `payment.ts` (cuota
-  del sistema francés + tipo variable con cláusula suelo) y `amortization.ts`
-  (cuadro mes a mes, en céntimos enteros, con ajuste de la última cuota).
-- **UI v1**: simulador funcionando en `/es` y `/en`. Formulario (capital, plazo,
-  fijo/variable con euríbor + diferencial), resumen con cuota, barra de reparto
-  capital/intereses, mes de cruce y cuadro de amortización desplegable. Selector
-  de idioma. Mobile-first, modo oscuro y contraste AA verificados en navegador.
-- **Simulación compartible**: el estado se serializa en la query string con
-  claves legibles y botón de copiar enlace. Cambiar de idioma la conserva.
-- **Tests**: Vitest + RTL, 59 tests en verde (motor, serializador de URL y
-  componente en jsdom). Entorno `node` por defecto; jsdom opt-in por fichero.
-- **Formato**: Prettier + `prettier-plugin-tailwindcss` + `eslint-config-prettier`.
+- `format.ts` — importes en EUR y tipos en porcentaje, con caché de `Intl`.
+- `payment.ts` — cuota del sistema francés; tipo variable con cláusula suelo.
+- `amortization.ts` — cuadro mes a mes en céntimos enteros, con ajuste de la
+  última cuota.
+- `financing.ts` — préstamo, entrada y ahorro necesario. El banco presta sobre
+  el menor entre precio y tasación.
+- `taxes.ts` + `src/data/taxes/regions.ts` — ITP por tramos progresivos, IVA+AJD
+  de obra nueva y reducciones por perfil, para las 19 comunidades. Datos
+  **orientativos**, de portales.
+- `fees.ts` + `src/data/fees/aranceles.ts` — notaría y registro por arancel del
+  BOE (normativo), gestoría y tasación por horquilla de mercado.
+
+### Interfaz
+
+- **Formulario en tres bloques**: la vivienda (precio, obra nueva o segunda
+  mano, comunidad), la financiación (porcentaje financiado, plazo, tipo fijo o
+  variable) y un desplegable opcional con ahorro, tasación y perfil del
+  comprador. El capital del préstamo ya no se pide: se deriva del precio y del
+  porcentaje financiado (ver `decisions.md`).
+- **Resumen de cuota** con barra de reparto capital/intereses y mes de cruce.
+- **Desglose de la compra**: ahorro necesario con su horquilla, comparación con
+  el ahorro disponible, precio/préstamo/entrada, y línea a línea los impuestos y
+  gastos con el porcentaje que suponen sobre el precio.
+- **Avisos en contexto**: reducción de ITP aplicada y lo que ahorra, tasación
+  por debajo del precio, arancel notarial fuera de escala, salvedades de la
+  comunidad y enlace a la fuente con su fecha de revisión.
+- **Simulación compartible**: los dieciséis campos se serializan en la query
+  string con claves legibles. Cambiar de idioma la conserva.
+- Mobile-first, modo oscuro y contraste AA. Verificado en navegador a 390 px y a
+  1280 px, en claro y oscuro, en los dos idiomas.
+
+### Calidad
+
+- **Tests**: Vitest + RTL, **390 en verde** (motor, tabla fiscal, aranceles,
+  serializador de URL, `computePurchase` y componente en jsdom). Entorno `node`
+  por defecto; jsdom opt-in por fichero.
 - **CI**: `.github/workflows/ci.yml` — `npm ci` + `lint` + `typecheck` + `test` +
   `build` en cada push y PR a `main`, Node desde `.nvmrc`.
-- **Node**: local en **22.23.2** vía nvm-sh (Git Bash). `.nvmrc` = `22`,
-  `engines.node >= 20.19.0`. `npm ci` limpio, sin avisos de engine.
-- Verificado en Node 22: `build`, `lint`, `typecheck`, `test` (incl. jsdom) — pasa.
+- Verificado en Node 22: `build`, `lint`, `typecheck`, `test` — pasa.
 
 ## Próximos pasos
 
-**v1 completo. v2 con el motor ya montado**: `financing.ts` (préstamo, entrada y
-ahorro necesario, con la regla de que el banco presta sobre el menor entre precio
-y tasación) y `taxes.ts` + `src/data/taxes/regions.ts` (ITP por tramos
-progresivos, IVA+AJD de obra nueva y reducciones por perfil, para las 19
-comunidades) y `fees.ts` + `src/data/fees/aranceles.ts` (notaría y registro por
-arancel del BOE, gestoría y tasación por horquilla). Los datos fiscales son
-**orientativos**, de portales; los aranceles sí son normativos. Ver
-`decisions.md`.
-
-1. v2 · UI: precio, % financiado, obra nueva/usada, comunidad, perfil del
-   comprador y desglose de costes. Al montarla, ampliar el disclaimer con la
-   procedencia de los datos fiscales.
+1. Contrastar la tabla fiscal con fuente primaria **antes de publicar**. Es la
+   deuda más seria del proyecto: los números que se enseñan salen de portales.
 2. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
-3. Decidir despliegue (probable Vercel) y publicar v1.
+3. Decidir despliegue (probable Vercel) y publicar.
 4. `/init` para generar el `CLAUDE.md` del proyecto.
+5. v3: aval ICO y programas autonómicos.
 
 ## Pendiente de verificar / deuda
 
 - **Node vía nvm-sh sobre Git Bash**: funciona ahí, pero PowerShell/cmd no ven
-  `node`. Si en algún momento se trabaja desde PowerShell, migrar a nvm-windows.
+  `node`. Por eso `.claude/launch.json` lleva la ruta absoluta al binario y está
+  fuera de git. Si en algún momento se trabaja desde PowerShell, migrar a
+  nvm-windows.
 - Realinear versiones dev ahora que hay Node 22 (vitest 5, `@vitejs/plugin-react`
   6, jsdom actual) — opcional, en su propia tarea.
 - CORS del endpoint del BCE desde navegador. Si falla → _fetch_ en build o
   `route handler`.
-- Contrastar tipos de ITP/AJD por comunidad con fuente primaria (antes de v2).
+- Contrastar tipos de ITP/AJD por comunidad con fuente primaria.
+- Las notas de `regions.ts` se muestran **solo en español**, también en `/en`.
 - Vigencia y parámetros exactos del aval ICO y prórroga (antes de v3).
-- Limpiar SVG de plantilla en `public/` cuando se monte la UI real.
+- Limpiar SVG de plantilla en `public/`.

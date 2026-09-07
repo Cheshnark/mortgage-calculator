@@ -15,7 +15,9 @@ import type { RegionTaxes } from "@/lib/mortgage/taxes";
  *   consultadas**; todas se limitan a decir "entre 0,5 % y 1,5 % según CCAA".
  *   Se usa `PLACEHOLDER_AJD` uniforme, deliberadamente en el extremo alto: en
  *   un cálculo de "cuánto ahorro necesito", pasarse es más seguro que quedarse
- *   corto. Sustituir en cuanto haya datos reales.
+ *   corto. Sustituir en cuanto haya datos reales. La advertencia genérica la
+ *   pone la interfaz, traducida; aquí solo van las salvedades propias de una
+ *   comunidad, en `newBuildNote`.
  * - **Solo se modelan las reducciones con tipo y condición explícitos** en la
  *   fuente. Donde la fuente da un rango ("entre el 4 % y el 6 %") o no
  *   concreta la edad, la reducción se omite y se anota.
@@ -32,9 +34,6 @@ const VAT_NEW_BUILD = 0.1;
 
 /** Marcador uniforme de AJD mientras no haya datos por comunidad. */
 const PLACEHOLDER_AJD = 0.015;
-
-const AJD_NOTE =
-  "El AJD es un marcador uniforme del 1,5 %: ninguna de las fuentes consultadas lo desglosa por comunidad.";
 
 const newBuild = { vat: VAT_NEW_BUILD, stampDuty: PLACEHOLDER_AJD };
 
@@ -54,7 +53,6 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: AJD_NOTE,
   },
   {
     code: "ARA",
@@ -70,7 +68,7 @@ export const REGIONS: RegionTaxes[] = [
     reductions: [],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} La fuente no detalla reducciones por perfil.`,
+    note: "La fuente no detalla reducciones por perfil.",
   },
   {
     code: "AST",
@@ -84,7 +82,7 @@ export const REGIONS: RegionTaxes[] = [
     reductions: [],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} Hay reducciones para jóvenes y familias numerosas (entre el 4 % y el 6 %) que no se modelan porque la fuente no concreta el tipo ni la edad.`,
+    note: "Hay reducciones para jóvenes y familias numerosas (entre el 4 % y el 6 %) que no se modelan porque la fuente no concreta el tipo ni la edad.",
   },
   {
     code: "BAL",
@@ -100,7 +98,6 @@ export const REGIONS: RegionTaxes[] = [
     reductions: [{ id: "joven", rate: 0, conditions: { maxAge: 30 } }],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: AJD_NOTE,
   },
   {
     code: "CAN",
@@ -118,7 +115,7 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} En Canarias la obra nueva tributa por IGIC, no por IVA; el cálculo de obra nueva de esta comunidad no es fiable.`,
+    newBuildNote: `En Canarias la obra nueva tributa por IGIC, no por IVA; el cálculo de obra nueva de esta comunidad no es fiable.`,
   },
   {
     code: "CANT",
@@ -135,7 +132,7 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} Hay un tipo reducido para jóvenes del 4 % que no se modela porque la fuente no da la edad límite. Otra fuente apunta un 10 % por encima de 300.000 €, sin confirmar.`,
+    note: "Hay un tipo reducido para jóvenes del 4 % que no se modela porque la fuente no da la edad límite. Otra fuente apunta un 10 % por encima de 300.000 €, sin confirmar.",
   },
   {
     code: "CYL",
@@ -151,7 +148,7 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} No se modela el 0,01 % para menores de 36 en municipios rurales.`,
+    note: "No se modela el 0,01 % para menores de 36 en municipios rurales.",
   },
   {
     code: "CLM",
@@ -171,7 +168,7 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} Hay un tipo del 5 % para jóvenes que no se modela porque la fuente no da la edad límite.`,
+    note: "Hay un tipo del 5 % para jóvenes que no se modela porque la fuente no da la edad límite.",
   },
   {
     code: "CAT",
@@ -186,7 +183,7 @@ export const REGIONS: RegionTaxes[] = [
     reductions: [{ id: "joven", rate: 0.05, conditions: { maxAge: 35 } }],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} Las fuentes discrepan en los tramos: otra da 10 % hasta 1.000.000 € y 11 % por encima.`,
+    note: "Las fuentes discrepan en los tramos: otra da 10 % hasta 1.000.000 € y 11 % por encima.",
   },
   {
     code: "EXT",
@@ -206,7 +203,6 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: AJD_NOTE,
   },
   {
     code: "GAL",
@@ -222,7 +218,7 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} Las fuentes discrepan: otra da un 9 % general y un 10 % por encima de 400.000 €.`,
+    note: "Las fuentes discrepan: otra da un 9 % general y un 10 % por encima de 400.000 €.",
   },
   {
     code: "MAD",
@@ -234,7 +230,8 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} En Madrid se cita habitualmente un AJD del 0,75 %, bastante por debajo del marcador. No se modela la bonificación del 10 % por residencia habitual hasta 250.000 €.`,
+    newBuildNote: `En Madrid se cita habitualmente un AJD del 0,75 %, bastante por debajo del marcador.`,
+    note: "No se modela la bonificación del 10 % por residencia habitual hasta 250.000 €.",
   },
   {
     code: "MUR",
@@ -247,7 +244,6 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: AJD_NOTE,
   },
   {
     code: "NAV",
@@ -257,7 +253,7 @@ export const REGIONS: RegionTaxes[] = [
     reductions: [],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} Régimen foral. Hay un 5 % para familias con hijos sujeto a límites de renta, que el motor no modela.`,
+    note: "Régimen foral. Hay un 5 % para familias con hijos sujeto a límites de renta, que el motor no modela.",
   },
   {
     code: "RIO",
@@ -273,7 +269,7 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} No se modela el 3 % para menores de 40 en municipios rurales.`,
+    note: "No se modela el 3 % para menores de 40 en municipios rurales.",
   },
   {
     code: "VAL",
@@ -297,7 +293,7 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} El tipo general bajó del 10 % al 9 % el 1 de junio de 2026 según la fuente; otra fuente todavía da el 10 %.`,
+    note: "El tipo general bajó del 10 % al 9 % el 1 de junio de 2026 según la fuente; otra fuente todavía da el 10 %.",
   },
   {
     code: "PV",
@@ -313,7 +309,7 @@ export const REGIONS: RegionTaxes[] = [
     ],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} Régimen foral: el tipo lo fija cada diputación, así que varía entre Álava, Bizkaia y Gipuzkoa.`,
+    note: "Régimen foral: el tipo lo fija cada diputación, así que varía entre Álava, Bizkaia y Gipuzkoa.",
   },
   {
     code: "CEU",
@@ -323,7 +319,7 @@ export const REGIONS: RegionTaxes[] = [
     reductions: [],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} Dato poco fiable: una fuente da el 6 % y otra el 1 %. Ceuta aplica bonificaciones que ninguna de las dos detalla.`,
+    note: "Dato poco fiable: una fuente da el 6 % y otra el 1 %. Ceuta aplica bonificaciones que ninguna de las dos detalla.",
   },
   {
     code: "MEL",
@@ -333,7 +329,7 @@ export const REGIONS: RegionTaxes[] = [
     reductions: [],
     sourceUrl: RANKIA,
     lastReviewed: LAST_REVIEWED,
-    note: `${AJD_NOTE} Dato poco fiable: una fuente da el 6 % y otra el 1 %. Melilla aplica bonificaciones que ninguna de las dos detalla.`,
+    note: "Dato poco fiable: una fuente da el 6 % y otra el 1 %. Melilla aplica bonificaciones que ninguna de las dos detalla.",
   },
 ];
 

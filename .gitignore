@@ -48,3 +48,7 @@ Thumbs.db
 *.pem
 .vscode/
 .idea/
+
+# === Configuración local de herramientas ===
+# Ruta absoluta a Node: nvm-sh solo expone node en Git Bash (ver docs/project_state.md).
+/.claude/launch.json

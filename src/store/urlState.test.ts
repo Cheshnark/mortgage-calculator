@@ -13,8 +13,8 @@ describe("toSearchParams", () => {
   });
 
   it("escribe solo los valores que cambian", () => {
-    const params = toSearchParams(state({ principal: 200_000 }));
-    expect(params.toString()).toBe("capital=200000");
+    const params = toSearchParams(state({ price: 300_000 }));
+    expect(params.toString()).toBe("precio=300000");
   });
 
   it("en modo fijo omite el euríbor y el diferencial", () => {
@@ -36,19 +36,44 @@ describe("toSearchParams", () => {
     expect(params.has("rate")).toBe(false);
   });
 
-  it("omite los campos vacíos en vez de escribir NaN", () => {
-    const params = toSearchParams(state({ principal: Number.NaN }));
-    expect(params.has("capital")).toBe(false);
+  it("omite los campos opcionales vacíos en vez de escribir NaN", () => {
+    const params = toSearchParams(state());
+    expect(params.has("tasacion")).toBe(false);
+    expect(params.has("ahorro")).toBe(false);
+    expect(params.has("edad")).toBe(false);
+  });
+
+  it("escribe la vivienda, la comunidad y el perfil", () => {
+    const params = toSearchParams(
+      state({
+        condition: "new",
+        regionCode: "CAT",
+        age: 32,
+        firstHome: true,
+        savings: 60_000,
+      }),
+    );
+    expect(params.get("vivienda")).toBe("new");
+    expect(params.get("ccaa")).toBe("CAT");
+    expect(params.get("edad")).toBe("32");
+    expect(params.get("primera")).toBe("1");
+    expect(params.get("ahorro")).toBe("60000");
+  });
+
+  it("omite las casillas del perfil que siguen sin marcar", () => {
+    const params = toSearchParams(state({ firstHome: true }));
+    expect(params.has("habitual")).toBe(false);
+    expect(params.has("numerosa")).toBe(false);
   });
 });
 
 describe("fromSearchParams", () => {
   it("lee los campos presentes", () => {
     const patch = fromSearchParams(
-      new URLSearchParams("capital=200000&years=30&mode=variable&euribor=2.5"),
+      new URLSearchParams("precio=300000&years=30&mode=variable&euribor=2.5"),
     );
     expect(patch).toEqual({
-      principal: 200_000,
+      price: 300_000,
       years: 30,
       rateMode: "variable",
       euribor: 2.5,
@@ -62,7 +87,7 @@ describe("fromSearchParams", () => {
   describe("entradas manipuladas", () => {
     it("ignora los números no válidos", () => {
       const patch = fromSearchParams(
-        new URLSearchParams("capital=abc&years=&spread=NaN"),
+        new URLSearchParams("precio=abc&years=&spread=NaN"),
       );
       expect(patch).toEqual({});
     });
@@ -72,14 +97,29 @@ describe("fromSearchParams", () => {
       expect(patch.rateMode).toBeUndefined();
     });
 
+    it("ignora un tipo de vivienda desconocido", () => {
+      const patch = fromSearchParams(new URLSearchParams("vivienda=chalet"));
+      expect(patch.condition).toBeUndefined();
+    });
+
+    it("ignora una comunidad que no está en la tabla", () => {
+      const patch = fromSearchParams(new URLSearchParams("ccaa=NARNIA"));
+      expect(patch.regionCode).toBeUndefined();
+    });
+
+    it("ignora un valor de casilla que no sea 0 o 1", () => {
+      const patch = fromSearchParams(new URLSearchParams("primera=sí"));
+      expect(patch.firstHome).toBeUndefined();
+    });
+
     it("ignora infinitos", () => {
-      const patch = fromSearchParams(new URLSearchParams("capital=Infinity"));
+      const patch = fromSearchParams(new URLSearchParams("precio=Infinity"));
       expect(patch).toEqual({});
     });
 
     it("conserva los campos válidos aunque otros no lo sean", () => {
       const patch = fromSearchParams(
-        new URLSearchParams("capital=abc&years=30"),
+        new URLSearchParams("precio=abc&years=30"),
       );
       expect(patch).toEqual({ years: 30 });
     });
@@ -90,18 +130,32 @@ describe("ida y vuelta", () => {
   it.each([
     [
       "fijo con valores propios",
-      { principal: 240_000, years: 30, fixedRate: 2.75 },
+      { price: 240_000, ltv: 90, years: 30, fixedRate: 2.75 },
     ],
     [
       "variable con valores propios",
       {
         rateMode: "variable" as const,
-        principal: 90_000,
+        price: 90_000,
         euribor: -0.2,
         spread: 1.15,
       },
     ],
     ["solo el plazo", { years: 40 }],
+    [
+      "compra completa con perfil",
+      {
+        price: 180_000,
+        ltv: 100,
+        condition: "new" as const,
+        regionCode: "VAL",
+        appraisalValue: 175_000,
+        savings: 45_000,
+        age: 29,
+        firstHome: true,
+        primaryResidence: true,
+      },
+    ],
   ])("recupera el estado original: %s", (_caso, patch) => {
     const original = state(patch);
     const recovered = state(fromSearchParams(toSearchParams(original)));

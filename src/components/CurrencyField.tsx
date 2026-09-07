@@ -6,8 +6,11 @@ import { useLocale } from "next-intl";
 interface CurrencyFieldProps {
   id: string;
   label: string;
+  /** `NaN` deja el campo vacío: así se representan los importes opcionales. */
   value: number;
   onChange: (value: number) => void;
+  placeholder?: string;
+  hint?: string;
 }
 
 /**
@@ -20,9 +23,12 @@ export function CurrencyField({
   label,
   value,
   onChange,
+  placeholder,
+  hint,
 }: CurrencyFieldProps) {
   const locale = useLocale();
   const [draft, setDraft] = useState<string | null>(null);
+  const hintId = hint ? `${id}-hint` : undefined;
 
   const formatted = Number.isNaN(value)
     ? ""
@@ -40,6 +46,8 @@ export function CurrencyField({
           inputMode="numeric"
           autoComplete="off"
           value={draft ?? formatted}
+          placeholder={placeholder}
+          aria-describedby={hintId}
           onFocus={() => setDraft(Number.isNaN(value) ? "" : String(value))}
           onBlur={() => setDraft(null)}
           onChange={(event) => {
@@ -54,6 +62,11 @@ export function CurrencyField({
           €
         </span>
       </div>
+      {hint ? (
+        <p id={hintId} className="text-muted text-xs">
+          {hint}
+        </p>
+      ) : null}
     </div>
   );
 }

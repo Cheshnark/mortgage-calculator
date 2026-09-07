@@ -2,6 +2,7 @@ import { use } from "react";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { AmortizationTable } from "@/components/AmortizationTable";
+import { CostBreakdown } from "@/components/CostBreakdown";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { PaymentSummary } from "@/components/PaymentSummary";
 import { ShareLink } from "@/components/ShareLink";
@@ -47,7 +48,7 @@ export default function HomePage({ params }: Props) {
 
         <section
           aria-labelledby="form-heading"
-          className="lg:sticky lg:top-8 lg:col-start-1 lg:row-start-1 lg:self-start"
+          className="lg:sticky lg:top-8 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:self-start"
         >
           <h2
             id="form-heading"
@@ -58,13 +59,27 @@ export default function HomePage({ params }: Props) {
           <SimulatorForm />
         </section>
 
-        <section className="lg:col-start-2 lg:row-start-2">
+        <section
+          aria-labelledby="costs-heading"
+          className="lg:col-start-2 lg:row-start-2"
+        >
+          <h2
+            id="costs-heading"
+            className="text-ink mb-5 text-lg font-semibold tracking-tight"
+          >
+            {t("costsHeading")}
+          </h2>
+          <CostBreakdown />
+        </section>
+
+        <section className="lg:col-start-2 lg:row-start-3">
           <AmortizationTable />
         </section>
       </div>
 
-      <footer className="border-line text-muted mt-16 max-w-[60ch] border-t pt-6 text-sm leading-relaxed">
-        {t("disclaimer")}
+      <footer className="border-line text-muted mt-16 flex max-w-[60ch] flex-col gap-3 border-t pt-6 text-sm leading-relaxed">
+        <p>{t("disclaimer")}</p>
+        <p>{t("dataDisclaimer")}</p>
       </footer>
     </main>
   );

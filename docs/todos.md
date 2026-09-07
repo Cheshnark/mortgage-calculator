@@ -1,6 +1,6 @@
 # Pendientes
 
-_Última actualización: 2026-09-06_
+_Última actualización: 2026-09-07_
 
 ## Prioridad alta
 
@@ -29,13 +29,18 @@ _Última actualización: 2026-09-06_
 - [x] `src/data/taxes/regions.ts` · tabla ITP/AJD por CCAA (orientativa, de
       portales; ver la tarea de contraste en Investigación)
 - [x] `taxes.ts` · motor que aplica la tabla y las reducciones por perfil
-- [ ] UI de v2: precio, % financiado, obra nueva/usada, CCAA, desglose de costes
+- [x] UI de v2: precio, % financiado, obra nueva/usada, CCAA, perfil del
+      comprador y desglose de costes
+- [x] Ampliar la URL compartible con los campos de v2
+- [x] Ampliar el disclaimer con la procedencia de los datos fiscales
 
 ## Prioridad baja
 
 - [ ] `/init` para generar el `CLAUDE.md` del proyecto
 - [ ] Decidir despliegue (probable Vercel)
-- [ ] Limpiar los SVG de plantilla en `public/` al montar la UI real
+- [ ] Limpiar los SVG de plantilla en `public/`
+- [ ] Traducir al inglés las notas de `regions.ts`, que ahora se muestran solo
+      en español (marcadas con `lang="es"`)
 - [ ] Revisar realinear versiones (vitest 5, plugin-react 6, jsdom) al subir Node
 
 ## Investigación / verificación
@@ -50,8 +55,6 @@ _Última actualización: 2026-09-06_
 - [ ] v2 · Reducciones omitidas por falta de dato (Asturias, Cantabria y
       Castilla-La Mancha: la fuente no concreta tipo o edad)
 - [ ] v2 · Canarias tributa por IGIC, no IVA: la obra nueva allí no es fiable
-- [ ] v2 · Añadir al disclaimer la procedencia de los datos fiscales cuando la
-      UI de v2 los muestre
 - [ ] v2 · Calibrar `EXTRAS_HIGH_MULTIPLIER` (2,5) con facturas reales de
       notaría: es el número más débil del módulo de gastos, y no es normativo
 - [ ] v3 · Parámetros vigentes del aval ICO (edad, patrimonio, IPREM por provincia,

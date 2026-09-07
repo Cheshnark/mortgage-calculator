@@ -7,8 +7,11 @@ import {
 } from "@/lib/mortgage/amortization";
 import { variableRate } from "@/lib/mortgage/payment";
 import { useSimulationStore } from "./simulation";
+import { usePurchaseResult } from "./usePurchaseResult";
 
 export interface SimulationResult {
+  /** Capital del préstamo, derivado del precio y del porcentaje financiado. */
+  principal: number;
   /** TIN aplicado, en tanto por uno. */
   annualRate: number;
   months: number;
@@ -29,17 +32,21 @@ function findCrossover(schedule: AmortizationSchedule): number | null {
 }
 
 /**
- * Deriva el resultado de la simulación a partir del estado del formulario.
+ * Deriva el préstamo a partir del escenario de financiación y del resto del
+ * formulario.
  *
  * Devuelve `null` cuando las entradas no son válidas (campos vacíos o valores
  * fuera de rango), para que la interfaz muestre un estado de invitación en vez
  * de romperse. El motor de cálculo lanza `RangeError` en esos casos.
  */
 export function useSimulationResult(): SimulationResult | null {
-  const { principal, years, rateMode, fixedRate, euribor, spread } =
-    useSimulationStore();
+  const { years, rateMode, fixedRate, euribor, spread } = useSimulationStore();
+  const purchase = usePurchaseResult();
+  const principal = purchase?.financing.principal;
 
   return useMemo(() => {
+    if (principal === undefined) return null;
+
     const annualRate =
       rateMode === "fixed"
         ? fixedRate / 100
@@ -49,6 +56,7 @@ export function useSimulationResult(): SimulationResult | null {
     try {
       const schedule = amortizationSchedule({ principal, annualRate, months });
       return {
+        principal,
         annualRate,
         months,
         schedule,

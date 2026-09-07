@@ -17,8 +17,6 @@ const WRITE_DELAY_MS = 300;
  * historial de entradas basura.
  */
 export function useUrlSync(): void {
-  const { principal, years, rateMode, fixedRate, euribor, spread } =
-    useSimulationStore();
   const hydrated = useRef(false);
 
   // Lectura inicial: la URL manda sobre los valores por defecto.
@@ -31,26 +29,31 @@ export function useUrlSync(): void {
   }, []);
 
   // Escritura: solo después de hidratar, para no pisar la URL entrante.
+  // Se suscribe al store en vez de leerlo con el hook porque el formulario ya
+  // tiene dieciséis campos y enumerarlos aquí otra vez es una fuente de olvidos.
   useEffect(() => {
-    if (!hydrated.current) return;
+    let timer: ReturnType<typeof setTimeout>;
 
-    const timer = setTimeout(() => {
-      const query = toSearchParams({
-        principal,
-        years,
-        rateMode,
-        fixedRate,
-        euribor,
-        spread,
-      }).toString();
-      const { pathname, hash } = window.location;
-      window.history.replaceState(
-        null,
-        "",
-        query ? `${pathname}?${query}${hash}` : `${pathname}${hash}`,
-      );
-    }, WRITE_DELAY_MS);
+    const write = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (!hydrated.current) return;
+        const query = toSearchParams(useSimulationStore.getState()).toString();
+        const { pathname, hash } = window.location;
+        window.history.replaceState(
+          null,
+          "",
+          query ? `${pathname}?${query}${hash}` : `${pathname}${hash}`,
+        );
+      }, WRITE_DELAY_MS);
+    };
 
-    return () => clearTimeout(timer);
-  }, [principal, years, rateMode, fixedRate, euribor, spread]);
+    const unsubscribe = useSimulationStore.subscribe(write);
+    write();
+
+    return () => {
+      clearTimeout(timer);
+      unsubscribe();
+    };
+  }, []);
 }

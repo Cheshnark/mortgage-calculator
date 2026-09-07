@@ -1,6 +1,6 @@
 # Arquitectura
 
-_Última actualización: 2026-09-06_
+_Última actualización: 2026-09-07_
 
 ## Stack
 
@@ -94,16 +94,23 @@ mortgage-calculator/
     │   ├── fees/             ■  aranceles.ts — escalas RD 1426/1989 y 1427/1989
     │   └── subsidies/        ·  aval ICO + programas autonómicos
     ├── components/           ■  UI, sin lógica de cálculo
-    │   ├── SimulatorForm.tsx ■  formulario (capital, plazo, tipo)
+    │   ├── SimulatorForm.tsx ■  formulario: vivienda, financiación y perfil
     │   ├── CurrencyField.tsx ■  importe con separador de millar
     │   ├── NumberField.tsx   ■  campo numérico con unidad
+    │   ├── SliderField.tsx   ■  deslizador con valor formateado al lado
+    │   ├── SelectField.tsx   ■  desplegable (comunidad autónoma)
+    │   ├── SegmentedField.tsx ■ radios con aspecto de pastillas
+    │   ├── CheckboxField.tsx ■  casilla del perfil del comprador
     │   ├── PaymentSummary.tsx ■ cuota, reparto capital/intereses, totales
+    │   ├── CostBreakdown.tsx ■  ahorro necesario, impuestos, gastos y avisos
     │   ├── AmortizationTable.tsx ■ cuadro mes a mes (+ .module.css)
     │   ├── ShareLink.tsx     ■  monta useUrlSync y copia el enlace
     │   └── LocaleSwitcher.tsx ■ cambio de idioma (conserva la simulación)
     └── store/                ■  Zustand
         ├── simulation.ts     ■  estado del formulario
-        ├── useSimulationResult.ts ■ deriva el resultado del motor
+        ├── purchase.ts       ■  estado → motor (impuestos, gastos, financiación), pura
+        ├── usePurchaseResult.ts ■ desglose de la compra
+        ├── useSimulationResult.ts ■ préstamo derivado de la financiación
         ├── urlState.ts       ■  (de)serialización a query string, pura
         └── useUrlSync.ts     ■  mantiene la URL en sintonía con el estado
 ```
@@ -113,6 +120,18 @@ Reglas de dependencia:
 - `src/lib/mortgage/` **no importa** de `src/app`, `src/components` ni `src/store`.
 - `src/lib/mortgage/` puede leer de `src/data/` (datos, no lógica).
 - La UI nunca calcula: llama al motor.
+- La traducción del formulario a las entradas del motor vive en
+  `src/store/purchase.ts`, que es **pura y está cubierta con tests**: ahí es
+  donde se convierten los porcentajes a tanto por uno y donde los campos
+  opcionales vacíos (`NaN`) pasan a `undefined`.
+
+Cadena de cálculo de v2, en un solo sentido:
+
+```
+precio → impuestos (taxes) + gastos (fees)
+       → financiación (financing): préstamo, entrada, ahorro necesario
+       → cuota y cuadro (payment, amortization)
+```
 
 Convenciones del motor:
 
@@ -138,7 +157,9 @@ Convenciones del motor:
 
 Patrón común a impuestos, aranceles y ayudas: módulos **TypeScript** en
 `src/data/` (no JSON, ver `decisions.md`), cada entrada con `sourceUrl`,
-`lastReviewed` y un `note` opcional con las salvedades del dato. Sin scraping.
+`lastReviewed` y notas opcionales con las salvedades del dato: `note` para lo
+que afecta al ITP de segunda mano y `newBuildNote` para lo que afecta a la obra
+nueva, porque la interfaz enseña una u otra según el tipo de vivienda. Sin scraping.
 Revisión manual periódica. La UI muestra la fecha de última revisión y un
 descargo de responsabilidad en las secciones de v2/v3.
 

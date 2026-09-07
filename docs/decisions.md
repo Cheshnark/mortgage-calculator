@@ -385,3 +385,56 @@ nada.
 **Motivo:** tener una segunda máquina que siempre corre la suite completa y marca
 en rojo un commit/PR que rompe algo. El despliegue (CD) es aparte y se decidirá con
 la plataforma; la CI no toca servidores.
+
+## 2026-09-07 · El precio sustituye al capital como entrada del formulario
+
+**Decisión:** el formulario ya no pide el capital del préstamo. Pide **precio de
+la vivienda** y **porcentaje financiado**, y el capital se deriva del escenario
+de financiación (`financingScenario`). Quien quiera simular un préstamo suelto
+pone ese importe como precio y financia el 100 %.
+
+**Motivo:** `business.md` fija que el producto no es una calculadora de cuota,
+sino una herramienta para entender el coste real de comprar. Mantener el capital
+como entrada además del precio obligaba a decidir cuál manda cuando los dos
+están puestos, y a explicar la diferencia a un usuario que, por definición, no
+sabe de finanzas. La cadena queda en un solo sentido: precio → impuestos y
+gastos → préstamo y entrada → cuota.
+
+**Consecuencia:** la clave `capital` de la URL desaparece y la sustituye
+`precio`. Los enlaces de v1 no se migran: la app no está desplegada, así que no
+hay ninguno en circulación.
+
+## 2026-09-07 · El ahorro necesario también es una horquilla
+
+**Decisión:** `computePurchase` evalúa el escenario de financiación tres veces,
+con el suelo, la estimación central y el techo de los gastos, y devuelve el
+ahorro necesario, los gastos y el coste total como horquillas.
+
+**Motivo:** la cifra que el usuario se lleva a casa es "cuánto necesito
+ahorrado". Enseñar esa cifra al céntimo cuando dos de sus sumandos (notaría y
+registro) son estimaciones con un factor 2,5 de margen sería fingir una
+precisión que no existe. La cifra central sigue presidiendo, con la horquilla
+debajo en letra pequeña.
+
+## 2026-09-07 · Las salvedades de la tabla fiscal, separadas por tipo de vivienda
+
+**Decisión:** `RegionTaxes` tiene dos campos de nota: `note` para el ITP de
+segunda mano y `newBuildNote` para la obra nueva. La advertencia genérica sobre
+el marcador uniforme de AJD sale de los datos y pasa a la interfaz, traducida.
+
+**Motivo:** la nota única mezclaba las dos cosas, así que a quien simulaba una
+compra de segunda mano se le avisaba de un AJD que no iba a pagar. Y la
+advertencia genérica estaba repetida literalmente en las diecinueve entradas de
+la tabla, solo en español: en la interfaz se escribe una vez y se traduce.
+En `newBuildNote` quedan solo las salvedades propias de una comunidad (el IGIC
+de Canarias, el 0,75 % que se cita en Madrid).
+
+## 2026-09-07 · El perfil del comprador arranca vacío
+
+**Decisión:** las casillas de primera vivienda, residencia habitual, familia
+numerosa y discapacidad empiezan sin marcar, y la edad vacía.
+
+**Motivo:** sin perfil no se aplica ninguna reducción de ITP, así que la cifra
+de ahorro necesario sale por arriba. Es la misma lógica que llevó a poner el
+marcador de AJD en el extremo alto: en un cálculo de "cuánto necesito
+ahorrado", quedarse corto le arruina la operación al comprador y pasarse no.

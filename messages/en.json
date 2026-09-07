@@ -1,10 +1,12 @@
 {
   "HomePage": {
-    "title": "What will your mortgage cost?",
-    "tagline": "Work out the monthly payment and see how much of each one goes to interest. Built for buying a home in Spain.",
-    "formHeading": "Your loan",
+    "title": "What does buying your home really cost?",
+    "tagline": "Work out the monthly payment, the deposit and the savings you actually need — taxes, notary, land registry and conveyancing included. Built for buying a home in Spain.",
+    "formHeading": "Your purchase",
     "resultsHeading": "Simulation result",
-    "disclaimer": "These figures are an estimate, for information only, and are no substitute for advice from your bank or conveyancer. They exclude arrangement fees, linked insurance and the taxes and costs of the purchase itself. Always check the numbers before making a decision."
+    "costsHeading": "What you need to sign",
+    "disclaimer": "These figures are an estimate, for information only, and are no substitute for advice from your bank or conveyancer. They exclude arrangement fees and linked insurance. Always check the numbers before making a decision.",
+    "dataDisclaimer": "The transfer tax (ITP), VAT and stamp duty (AJD) rates come from specialist portals rather than primary sources, and are indicative: each autonomous community sets them by law and they change. Notary and land registry fees are calculated from the official scales (RD 1426/1989 and RD 1427/1989), but a real invoice adds copies and pages that are not regulated, hence the range. Since Law 5/2019 the bank pays the costs of the mortgage deed, so they are not added here."
   },
   "LocaleSwitcher": {
     "label": "Language",
@@ -12,7 +14,17 @@
     "en": "English"
   },
   "Form": {
-    "principal": "Amount you borrow",
+    "sectionProperty": "The property",
+    "price": "Purchase price",
+    "condition": "Type of property",
+    "used": "Resale",
+    "new": "New build",
+    "region": "Autonomous community",
+    "regionHint": "Sets the transfer tax on resale homes, or the stamp duty on new builds.",
+    "sectionFinancing": "The financing",
+    "ltv": "How much you borrow",
+    "ltvValue": "{value}%",
+    "ltvAboveHint": "Above 100% you are also financing part of the costs. Needs a guarantee or extra security.",
     "years": "Term",
     "yearsValue": "{count, plural, one {# year} other {# years}}",
     "rateMode": "Interest rate",
@@ -22,6 +34,19 @@
     "euribor": "Euribor",
     "spread": "Margin",
     "euriborHint": "Indicative value. You can change it.",
+    "profileSummary": "Savings, valuation and your profile",
+    "profileHint": "All optional. Your profile only affects the transfer tax on resale homes: each community has its own reduced rates and not all of them are modelled.",
+    "savings": "Savings available",
+    "savingsHint": "To check whether they cover the deposit and the costs.",
+    "appraisal": "Valuation",
+    "appraisalHint": "If it comes in below the price, the bank lends against it and your deposit goes up.",
+    "age": "Age",
+    "optional": "Optional",
+    "buyerProfile": "Your situation",
+    "firstHome": "This is my first home",
+    "primaryResidence": "It will be my main residence",
+    "largeFamily": "Large family",
+    "disability": "Recognised disability",
     "reset": "Reset values"
   },
   "Summary": {
@@ -34,7 +59,32 @@
     "totalSentence": "Across {months} payments you will repay {total}.",
     "crossover": "From payment {month} onwards you repay more principal than interest.",
     "lastPayment": "The final payment adjusts to {amount} to clear the loan.",
-    "empty": "Enter the amount, the term and the interest rate to see your payment."
+    "empty": "Enter the purchase price to see your payment."
+  },
+  "Costs": {
+    "savingsNeeded": "Savings needed",
+    "range": "between {low} and {high}",
+    "savingsShort": "You are {amount} short.",
+    "savingsEnough": "You have {amount} to spare.",
+    "price": "Price",
+    "loan": "Loan",
+    "downPayment": "Deposit",
+    "breakdownHeading": "Taxes and costs",
+    "itp": "Transfer tax (ITP)",
+    "iva": "VAT",
+    "ajd": "Stamp duty (AJD)",
+    "notaria": "Notary",
+    "registro": "Land registry",
+    "gestoria": "Conveyancing",
+    "tasacion": "Valuation",
+    "total": "Total",
+    "ofPrice": "{share} of the price",
+    "reductionApplied": "A reduced rate of {rate} applies: you pay {saving} less than at the general rate.",
+    "appraisalCaps": "The valuation comes in below the price, so the bank lends against {base}: you finance {ltv} of the price and cover the rest yourself.",
+    "aboveRegulated": "Above six million euros the notary scale no longer applies and fees are freely agreed: the notary estimate is not reliable.",
+    "newBuildNote": "On new builds VAT is set nationally and stamp duty by each community. The stamp duty used here is a uniform 1.5% placeholder, deliberately on the high side.",
+    "source": "Tax data for {region}, reviewed {reviewed}. <link>See the source</link>.",
+    "empty": "Enter the purchase price to see the taxes and costs."
   },
   "Schedule": {
     "show": "Show all {months} payments",
