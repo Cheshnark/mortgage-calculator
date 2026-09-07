@@ -16,8 +16,12 @@ entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
 - `financing.ts` — préstamo, entrada y ahorro necesario. El banco presta sobre
   el menor entre precio y tasación.
 - `taxes.ts` + `src/data/taxes/regions.ts` — ITP por tramos progresivos, IVA+AJD
-  de obra nueva y reducciones por perfil, para las 19 comunidades. Datos
-  **orientativos**, de portales.
+  de obra nueva y reducciones por perfil, para las 19 comunidades. **Contrastado
+  con fuente primaria** el 2026-09-07 (ver `decisions.md`): corrigió un tipo
+  general erróneo (País Vasco), un tramo que faltaba (Castilla y León) y dos
+  reducciones que no coincidían con ninguna fuente (Canarias, Baleares). Sigue
+  habiendo comunidades sin fuente oficial disponible; el detalle está en
+  `note` de cada una y en `todos.md`.
 - `fees.ts` + `src/data/fees/aranceles.ts` — notaría y registro por arancel del
   BOE (normativo), gestoría y tasación por horquilla de mercado, y honorarios de
   agencia (3 % + IVA) como línea opcional.
@@ -54,11 +58,9 @@ entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
 
 ## Próximos pasos
 
-1. Contrastar la tabla fiscal con fuente primaria **antes de publicar**. Es la
-   deuda más seria del proyecto: los números que se enseñan salen de portales.
-2. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
-3. Decidir despliegue (probable Vercel) y publicar.
-4. v3: aval ICO y programas autonómicos.
+1. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
+2. Decidir despliegue (probable Vercel) y publicar.
+3. v3: aval ICO y programas autonómicos.
 
 ## Pendiente de verificar / deuda
 
@@ -70,7 +72,11 @@ entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
   6, jsdom actual) — opcional, en su propia tarea.
 - CORS del endpoint del BCE desde navegador. Si falla → _fetch_ en build o
   `route handler`.
-- Contrastar tipos de ITP/AJD por comunidad con fuente primaria.
+- Tipos de ITP/AJD sin fuente oficial disponible: Cantabria (límite de precio),
+  Melilla (6 % u 8 %), La Rioja y Murcia (edad del tipo joven), Galicia (tipo
+  general plano o por tramos). Detalle en `note` de cada comunidad.
+- `TaxReduction` solo modela tipos planos; Aragón y Cantabria dan sus
+  reducciones como descuento sobre la cuota y no se modelan por eso.
 - Las notas de `regions.ts` se muestran **solo en español**, también en `/en`.
 - Vigencia y parámetros exactos del aval ICO y prórroga (antes de v3).
 - Limpiar SVG de plantilla en `public/`.

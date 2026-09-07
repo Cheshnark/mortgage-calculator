@@ -26,8 +26,8 @@ _Última actualización: 2026-09-07_
 
 - [x] `financing.ts` (precio, % financiado, tasación, entrada, ahorro) + tests
 - [x] `fees.ts` · aranceles de notaría y registro + gestoría y tasación
-- [x] `src/data/taxes/regions.ts` · tabla ITP/AJD por CCAA (orientativa, de
-      portales; ver la tarea de contraste en Investigación)
+- [x] `src/data/taxes/regions.ts` · tabla ITP/AJD por CCAA (contrastada con
+      fuente primaria donde existe; ver Investigación para lo pendiente)
 - [x] `taxes.ts` · motor que aplica la tabla y las reducciones por perfil
 - [x] UI de v2: precio, % financiado, obra nueva/usada, CCAA, perfil del
       comprador y desglose de costes
@@ -49,13 +49,26 @@ _Última actualización: 2026-09-07_
 
 - [ ] Verificar CORS del endpoint del BCE desde navegador; si falla, decidir entre
       _fetch_ en build (JSON + cron CI) o `route handler` proxy
-- [ ] v2 · Contrastar la tabla de `regions.ts` con Agencia Tributaria o texto
-      legal consolidado. Los portales se contradicen en Galicia, Cataluña,
-      Cantabria, C. Valenciana, Ceuta y Melilla
-- [ ] v2 · **AJD por comunidad**: ninguna fuente lo desglosa; ahora hay un
-      marcador uniforme del 1,5 %. En Madrid se cita habitualmente un 0,75 %
-- [ ] v2 · Reducciones omitidas por falta de dato (Asturias, Cantabria y
-      Castilla-La Mancha: la fuente no concreta tipo o edad)
+- [x] v2 · Contrastar la tabla de `regions.ts` con fuente primaria. Hecho
+      2026-09-07 para las 19 comunidades; detalle y errores corregidos en
+      `decisions.md` ("Contraste de la tabla fiscal con fuente primaria").
+      Sigue sin fuente oficial: el límite de precio en Cantabria (200.000 €
+      o 300.000 €), si Melilla es 6 % u 8 %, la edad joven en La Rioja (36 o 40) y en Murcia (40 o 41), la fecha de la subida de límite en
+      Castilla-La Mancha, y si el tipo general de Galicia es plano o por
+      tramos
+- [ ] v2 · **Ampliar `TaxReduction`** para soportar un descuento sobre la
+      cuota (no solo un tipo plano): Aragón y Cantabria dan sus reducciones
+      así y hoy no se modelan por eso. Puede haber más comunidades con el
+      mismo patrón que aún no se ha detectado
+- [x] v2 · **AJD por comunidad**: sigue sin dato en casi todas; Madrid ya
+      tiene el suyo propio confirmado (0,75 %, dos fuentes)
+- [ ] v2 · AJD de obra nueva en Comunitat Valenciana: subió a 1,4 % general
+      desde junio de 2026, sin confirmar si aplica igual a vivienda nueva
+- [ ] v2 · Reducciones no modeladas por perfiles que el motor no tiene: VPO
+      (atributo de la vivienda), víctimas de violencia de género o de
+      terrorismo, monoparental, residencia previa, límites de renta o
+      patrimonio, superficie de la vivienda — comunidad a comunidad en
+      `note` de `regions.ts`
 - [ ] v2 · Canarias tributa por IGIC, no IVA: la obra nueva allí no es fiable
 - [ ] v2 · Calibrar `EXTRAS_HIGH_MULTIPLIER` (2,5) con facturas reales de
       notaría: es el número más débil del módulo de gastos, y no es normativo

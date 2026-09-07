@@ -469,3 +469,70 @@ entre el 3 % y el 5 %, y hay agencias con tarifa plana. A diferencia de notaría
 y registro, aquí no se aplica horquilla: lo que varía no es la incertidumbre de
 la estimación, sino el trato concreto con la agencia. El 21 % de IVA sí es
 normativo: los honorarios son una prestación de servicios.
+
+## 2026-09-07 · Contraste de la tabla fiscal con fuente primaria (parcial)
+
+**Decisión:** revisadas las 19 comunidades de `src/data/taxes/regions.ts`
+contra webs oficiales de agencias tributarias donde existen y publican el
+dato, y contra varios portales independientes coincidentes donde no. Cada
+`sourceUrl` dice ahora cuál de las dos cosas es.
+
+**Errores reales que corrigió el contraste, no solo incertidumbre:**
+
+- **País Vasco**: el tipo general que se usaba (7 %) es en realidad el tipo
+  para _otros_ inmuebles (segundas residencias, locales, terrenos). El de
+  vivienda es el 4 %, con reducción al 2,5 % para residencia habitual.
+  Confirmado por tres fuentes independientes, entre ellas euskadi.eus.
+- **Castilla y León**: faltaba un tramo completo. La escala tenía solo dos
+  tramos (8 % / 10 %); la real tiene tres (8 % hasta 250.000 €, 10 % hasta
+  500.000 €, 11 % en adelante).
+- **Canarias**: la reducción "joven, 1 %, <40 años" no coincide con ninguna
+  fuente consultada. Todas dan un tipo efectivo del 4 % (5 % con 20 % de
+  bonificación), con edad y precio límite que además se contradicen entre
+  fuentes (35/150.000 € o 40/200.000 €): se ha retirado en vez de inventar
+  un punto intermedio.
+- **Baleares**: la exención "joven, 0 %, <30 años" existe, pero exige
+  residencia previa de 3 años, límites de renta y financiar ≥60 % con
+  hipoteca — condiciones que el motor no tiene, y su vigencia en 2026 no
+  está confirmada. Sustituida por las reducciones del 4 % (vivienda
+  habitual) y 2 % (joven <36, familia numerosa) que sí se pueden defender.
+
+**Hallazgo estructural, no de un dato sino del modelo:** Aragón y Cantabria
+dan sus reducciones por perfil como un **descuento sobre la cuota** ya
+calculada con la escala de tramos (p. ej. Aragón: 12,5 % o 50 % de
+bonificación), no como un tipo plano sobre el precio. `TaxReduction` solo
+modela lo segundo (`purchaseTax` sustituye el precio × `rate`, ignorando los
+tramos). Forzar el dato real en ese modelo daría un resultado incorrecto para
+cualquier precio que no esté en el primer tramo, así que esas reducciones
+**no se modelan**, y queda explícito en `note` por qué. Es la primera vez que
+se topa con esto: hasta ahora todas las reducciones modeladas encajaban con
+un tipo plano. Ver `docs/todos.md` si en el futuro se quiere ampliar
+`TaxReduction` para soportar también descuentos sobre cuota.
+
+**Dos casos que sí se pudieron precisar más de lo que el modelo permitía
+antes:**
+
+- **Madrid**: su bonificación del 10 % sobre la cuota **sí** se pudo modelar,
+  porque el tipo general de Madrid es plano (no por tramos): un descuento del
+  10 % sobre una cuota plana equivale exactamente a un tipo plano del 5,4 %.
+  Además se fijó un AJD propio de Madrid (0,75 %, confirmado por dos fuentes)
+  en vez del marcador genérico del 1,5 %.
+- **Ceuta y Melilla**: no son iguales, y la fuente es una ley estatal (RDLeg
+  1/1993, art. 57 bis), no un portal. Ceuta tiene una bonificación del 50 %
+  sobre la cuota para inmuebles en la ciudad, que en la práctica es siempre
+  el caso; Melilla no la tiene en el ITP de vivienda usada. Antes ambas
+  estaban al 6 % sin distinción.
+
+**Lo que sigue sin confirmar con fuente oficial**, anotado comunidad a
+comunidad en `note`: el límite de precio de Cantabria (200.000 € o
+300.000 €, la ACAT no publica sus tipos), si el tipo general de Melilla es
+6 % u 8 % (las fuentes recientes se inclinan por 6 %, se mantiene), la edad
+límite del joven en La Rioja (36 o 40) y en Murcia (40 o 41), la fecha exacta
+de la subida de límite en Castilla-La Mancha, y si el tipo general de
+Galicia es plano u por tramos.
+
+**Lo que ninguna comunidad modela**, por perfiles o condiciones que el motor
+no tiene: víctimas de violencia de género o de terrorismo, familias
+monoparentales, residencia previa en el territorio, límites de renta o
+patrimonio del comprador, superficie de la vivienda, y si la vivienda es VPO
+(es un atributo de la vivienda, no del comprador, y el motor no lo modela).

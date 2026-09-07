@@ -55,7 +55,9 @@ describe("computePurchase", () => {
   it("en obra nueva cobra IVA y AJD en vez de ITP", () => {
     const { taxes } = compute({ condition: "new", price: 200_000 });
     expect(taxes.lines.map((line) => line.id)).toEqual(["iva", "ajd"]);
-    expect(taxes.total).toBeCloseTo(200_000 * 0.1 + 200_000 * 0.015, 6);
+    // Madrid (región por defecto) tiene su propio AJD confirmado (0,75 %),
+    // no el marcador genérico del 1,5 %.
+    expect(taxes.total).toBeCloseTo(200_000 * 0.1 + 200_000 * 0.0075, 6);
   });
 
   it("aplica la reducción por perfil cuando el comprador cumple", () => {
@@ -64,6 +66,7 @@ describe("computePurchase", () => {
       regionCode: "VAL",
       age: 30,
       firstHome: true,
+      primaryResidence: true,
     });
     // Tipo joven del 6 % frente al 9 % general.
     expect(taxes.appliedReduction?.id).toBe("joven");
