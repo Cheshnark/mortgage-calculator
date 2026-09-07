@@ -37,7 +37,8 @@ _Última actualización: 2026-09-07_
 
 ## Prioridad baja
 
-- [ ] `/init` para generar el `CLAUDE.md` del proyecto
+- [x] `/init` para generar el `CLAUDE.md` del proyecto (importa `AGENTS.md`,
+      que genera y mantiene `next dev`)
 - [ ] Decidir despliegue (probable Vercel)
 - [ ] Limpiar los SVG de plantilla en `public/`
 - [ ] Traducir al inglés las notas de `regions.ts`, que ahora se muestran solo

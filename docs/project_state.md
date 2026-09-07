@@ -58,8 +58,7 @@ entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
    deuda más seria del proyecto: los números que se enseñan salen de portales.
 2. Hook `PostToolUse` de formateo (Prettier) tras cada edición.
 3. Decidir despliegue (probable Vercel) y publicar.
-4. `/init` para generar el `CLAUDE.md` del proyecto.
-5. v3: aval ICO y programas autonómicos.
+4. v3: aval ICO y programas autonómicos.
 
 ## Pendiente de verificar / deuda
 
