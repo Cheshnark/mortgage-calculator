@@ -102,10 +102,8 @@
     "balance": "Pendiente"
   },
   "Share": {
-    "heading": "Comparte esta simulación",
-    "description": "Copia el enlace: quien lo abra verá exactamente estos números.",
-    "copy": "Copiar enlace",
-    "copied": "Enlace copiado al portapapeles",
+    "label": "Comparte esta simulación",
+    "copied": "Enlace copiado, quien lo abra verá exactamente estos números.",
     "failed": "No se pudo copiar. Copia la dirección de la barra del navegador."
   }
 }

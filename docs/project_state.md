@@ -54,10 +54,10 @@ tests, y `out/` servido en navegador (`/es`, `/en`, `/` → `/es`, `/xx` → 404
   comunidad y enlace a la fuente con su fecha de revisión.
 - **Simulación compartible**: los dieciséis campos se serializan en la query
   string con claves legibles. Cambiar de idioma la conserva. El `ShareLink` es
-  un panel destacado (fondo azulejo, icono, botón sólido) con encabezado
-  "Comparte esta simulación" y una línea que explica que quien abra el enlace
-  verá los mismos números; antes era un botón discreto que pasaba
-  desapercibido.
+  un botón compacto (icono + "Comparte esta simulación", sólido azulejo); al
+  pulsar copia la URL y muestra un popover ("Enlace copiado, quien lo abra verá
+  exactamente estos números") que se cierra solo a los 3,5 s. El popover va en
+  `position: absolute`, no desplaza el layout.
 - Mobile-first, modo oscuro y contraste AA. Verificado en navegador a 390 px y a
   1280 px, en claro y oscuro, en los dos idiomas.
 
