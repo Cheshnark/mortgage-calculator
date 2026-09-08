@@ -1,6 +1,6 @@
 # Arquitectura
 
-_Última actualización: 2026-09-07_
+_Última actualización: 2026-09-08_
 
 ## Stack
 
@@ -17,14 +17,18 @@ Decidido e instalado (ver motivos en `decisions.md`):
 | Tests          | Vitest + React Testing Library  | 4 / 16  |
 | Lint / formato | ESLint (flat) + Prettier        | 9 / 3   |
 
+**Despliegue**: export estático (`output: "export"` en `next.config.ts`) servido
+en servidor propio con Caddy. Sin proceso Node en producción. Detalle en
+`docs/deploy.md`; motivo en `decisions.md` → _2026-09-08_.
+
 Sin decidir:
 
-- **Despliegue** — probablemente Vercel por afinidad con Next, pero abierto.
-- **Estrategia final del euríbor** — _fetch_ en build vs `route handler`. Depende de
-  si el BCE permite CORS desde el navegador (pendiente de verificar).
+- **Estrategia final del euríbor** — _fetch_ en build (resuelto: en build, nunca
+  en runtime, para no romper el export estático). Queda por ver si se lee del
+  BCE al compilar o de una semilla en `src/data/euribor/`.
 
-Sin backend propio salvo, como mucho, un `route handler` mínimo para el euríbor.
-El cálculo es 100 % en cliente.
+Sin backend propio. El cálculo es 100 % en cliente y el dato del euríbor se
+congela en cada build.
 
 ## Estilos: Tailwind + CSS Modules
 
@@ -73,10 +77,11 @@ mortgage-calculator/
 └── src/
     ├── app/
     │   ├── globals.css       ■  tokens de color + @theme de Tailwind
+    │   ├── layout.tsx        ■  layout raíz mínimo (return children); existe para que / tenga página
+    │   ├── page.tsx          ■  / → redirect al idioma por defecto (export estático)
     │   └── [locale]/         ■  routing por idioma
-    │       ├── layout.tsx    ■  root layout (html/body), fuente, metadatos
+    │       ├── layout.tsx    ■  html/body, fuente, metadatos, generateStaticParams, dynamicParams=false
     │       └── page.tsx      ■  simulador (composición, server component)
-    ├── proxy.ts              ■  middleware de next-intl (Next 16: proxy.ts)
     ├── i18n/                 ■  routing.ts · navigation.ts · request.ts
     ├── test/setup.ts         ■  matchers de @testing-library/jest-dom
     ├── lib/

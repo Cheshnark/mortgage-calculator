@@ -175,6 +175,8 @@ Ajustes que fue necesario hacer sobre la plantilla:
 
 - **`middleware.ts` → `proxy.ts`.** Next 16 deprecó el nombre `middleware`; el
   convenio ahora es `proxy.ts`. La función sigue siendo la de `next-intl/middleware`.
+  _Revisado el 2026-09-08: `src/proxy.ts` se elimina al pasar a export estático.
+  Ver entrada de esa fecha._
 - **`vitest.config.mts`** (no `.ts`). Con Node 20.10 el cargador de config de Vite
   hace `require()` de dependencias ESM-only y falla; la extensión `.mts` fuerza
   carga como ESM.
@@ -569,3 +571,43 @@ todo el código escrito antes pudo colar inconsistencias de formato sin que
 nada lo señalara. La próxima vez, este hook (y el equivalente de `lint` si
 se quiere ser estricto) va en el andamiaje inicial, junto al resto de
 `.editorconfig`/`.gitattributes`.
+
+## 2026-09-08 · Despliegue: export estático en servidor propio, no Vercel
+
+**Decisión:** `next.config.ts` con `output: "export"`. `npm run build` genera
+`out/` (HTML/CSS/JS), que se sube por `rsync` a un servidor propio y se sirve
+con Caddy (TLS automático). Sin proceso Node, sin middleware, sin route
+handlers en producción. Se elimina `src/proxy.ts`; `next-intl` pasa a modo sin
+middleware (se añaden `src/app/layout.tsx` mínimo y `src/app/page.tsx` que
+redirige `/` → `/es`, y `dynamicParams = false` en `[locale]/layout.tsx`).
+Guía operativa en `docs/deploy.md`; `Caddyfile.example` en la raíz.
+
+**Motivo:** la app es 100 % cálculo en cliente. El único trozo de servidor era
+el redirect de idioma del middleware de `next-intl`, y eso se resuelve con una
+regla del propio servidor web (`redir / /es`) más el fallback en cliente de
+`out/index.html`. Con Vercel en plan Pro, sin tope de gasto configurado, un
+pico de tráfico o un bot factura por _Fast Data Transfer_, _Edge Requests_ y
+_Edge Middleware invocations_ (este último corría en **cada** petición de
+página por el middleware). El export estático en servidor propio quita de la
+mesa esa clase entera de riesgo económico y de dependencia de plataforma. El
+coste es perder la negociación por `Accept-Language` y la cookie `NEXT_LOCALE`:
+un visitante con navegador en inglés que entra a `/` cae en `/es`. Para una
+herramienta centrada en España es asumible, y es reversible (re-crear
+`src/proxy.ts`).
+
+**Qué se descartó:**
+
+- **Vercel** (Hobby o Pro). Hobby tiene cláusula de uso no comercial y pausa el
+  proyecto al llegar al límite; Pro puede generar overage sin tope por defecto.
+  Para una app estática no compensa el riesgo.
+- **`output: "standalone"` + Node detrás de Caddy.** Conserva el middleware y
+  deja abierta la puerta a ISR / fetch en runtime, pero mete un proceso que
+  mantener, actualizar y monitorizar. Solo tendría sentido si hiciera falta
+  frescura del euríbor al cargar la página, y no hace falta: se congela en cada
+  build (ver `architecture.md`).
+- **Fetch del euríbor en runtime** (route handler o client-side). Incompatible
+  con export estático en el primer caso; innecesario en ambos.
+
+**Consecuencia para v3:** el dato del euríbor se resuelve en build. Actualizarlo
+es recompilar y volver a subir. Automatizar el `rsync` post-CI queda pendiente
+(`todos.md`).

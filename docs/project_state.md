@@ -1,11 +1,21 @@
 # Estado del proyecto
 
-_Última actualización: 2026-09-07_
+_Última actualización: 2026-09-08_
 
 ## Dónde estamos
 
-**v2 completa y verde.** La app calcula el coste real de comprar: cuota,
-entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
+**v2 completa y verde, y despliegue decidido.** La app calcula el coste real de
+comprar: cuota, entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
+
+### Despliegue: export estático en servidor propio
+
+`next.config.ts` con `output: "export"`. `npm run build` → `out/` → `rsync` a un
+servidor propio servido con Caddy. Sin proceso Node, sin middleware, sin route
+handlers en producción. Se eliminó `src/proxy.ts`; `next-intl` va en modo sin
+middleware (`src/app/layout.tsx` mínimo + `src/app/page.tsx` que redirige `/` a
+`/es`). Guía en `docs/deploy.md`, `Caddyfile.example` en la raíz, motivo en
+`decisions.md` → _2026-09-08_. Verificado: `build`, `lint`, `typecheck`, 397
+tests, y `out/` servido en navegador (`/es`, `/en`, `/` → `/es`, `/xx` → 404).
 
 ### Motor de cálculo (`src/lib/mortgage/`, `src/data/`)
 
@@ -58,8 +68,9 @@ entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
 
 ## Próximos pasos
 
-1. Decidir despliegue (probable Vercel) y publicar.
-2. v3: aval ICO y programas autonómicos.
+1. Aprovisionar el servidor (dominio, Caddy) y hacer el primer `rsync` de `out/`.
+2. Automatizar el `rsync` tras la CI (deploy en verde a `main`).
+3. v3: aval ICO y programas autonómicos.
 
 ## Pendiente de verificar / deuda
 

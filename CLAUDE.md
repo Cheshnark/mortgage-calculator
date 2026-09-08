@@ -148,8 +148,12 @@ comprador vacío por defecto y la casilla de agencia marcada.
 `next-intl` con rutas `/es` (por defecto) y `/en`. Los textos viven en
 `messages/{es,en}.json`; **añadir una clave obliga a tocar los dos ficheros**.
 
-El middleware es `src/proxy.ts`: Next 16 deprecó el nombre `middleware.ts`, no es
-un despiste.
+**Sin middleware**: la app se despliega como export estático (`output: "export"`),
+así que `next-intl` va en modo sin `proxy.ts` (equivale a `localePrefix: 'always'`
++ `localeDetection: false`). `src/app/[locale]/layout.tsx` prerenderiza los
+idiomas (`generateStaticParams` + `dynamicParams = false`); `src/app/page.tsx`
+redirige `/` al idioma por defecto. No hay negociación por `Accept-Language`.
+Detalle en `docs/deploy.md`.
 
 ### Estado y URL
 

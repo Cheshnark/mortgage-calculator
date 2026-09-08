@@ -1,0 +1,53 @@
+# Ejemplo de servido del export estático (`out/`) con Caddy.
+# Copia a `Caddyfile`, ajusta el dominio y la ruta, y `caddy run`.
+# Caddy saca y renueva el certificado TLS solo.
+
+ejemplo.com {
+	root * /var/www/mortgage-calculator/out
+	encode zstd gzip
+
+	# `/` no tiene contenido propio: al idioma por defecto.
+	# (El out/index.html ya redirige por JS; esto lo hace sin depender del cliente.)
+	redir / /es 302
+
+	# Assets con hash en el nombre: cache larga e inmutable.
+	@immutable path /_next/static/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	# HTML: revalidar siempre para que un re-deploy se vea al instante.
+	@html {
+		path *.html /es /en
+	}
+	header @html Cache-Control "public, max-age=0, must-revalidate"
+
+	# Resuelve /es -> es.html, /en -> en.html, y sirve el resto tal cual.
+	try_files {path} {path}/index.html {path}.html
+	file_server
+
+	# 404 propio de Next con el código correcto.
+	handle_errors {
+		@notfound expression {err.status_code} == 404
+		rewrite @notfound /404.html
+		file_server
+	}
+}
+
+# --- Equivalente en nginx (fragmento) ---
+# server {
+#   listen 80;
+#   server_name ejemplo.com;
+#   root /var/www/mortgage-calculator/out;
+#   gzip on; gzip_types text/css application/javascript application/json image/svg+xml;
+#
+#   location = / { return 302 /es; }
+#
+#   location /_next/static/ {
+#     add_header Cache-Control "public, max-age=31536000, immutable";
+#   }
+#
+#   location / {
+#     try_files $uri $uri.html $uri/index.html /404.html;
+#   }
+#
+#   error_page 404 /404.html;
+# }

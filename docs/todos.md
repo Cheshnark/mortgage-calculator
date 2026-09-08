@@ -1,6 +1,6 @@
 # Pendientes
 
-_Última actualización: 2026-09-07_
+_Última actualización: 2026-09-08_
 
 ## Prioridad alta
 
@@ -40,8 +40,13 @@ _Última actualización: 2026-09-07_
 
 - [x] `/init` para generar el `CLAUDE.md` del proyecto (importa `AGENTS.md`,
       que genera y mantiene `next dev`)
-- [ ] Decidir despliegue (probable Vercel)
-- [ ] Limpiar los SVG de plantilla en `public/`
+- [x] Decidir despliegue: export estático (`output: "export"`) en servidor
+      propio con Caddy, no Vercel. Ver `docs/deploy.md` y `decisions.md`
+      (2026-09-08)
+- [ ] Aprovisionar servidor + dominio + Caddy y hacer el primer `rsync` de `out/`
+- [ ] Automatizar el `rsync` de `out/` tras la CI en verde a `main`
+- [ ] Limpiar los SVG de plantilla en `public/` (`next.svg`, `vercel.svg`,
+      `file.svg`, `globe.svg`, `window.svg`) — se copian a `out/` en cada build
 - [ ] Traducir al inglés las notas de `regions.ts`, que ahora se muestran solo
       en español (marcadas con `lang="es"`)
 - [ ] Revisar realinear versiones (vitest 5, plugin-react 6, jsdom) al subir Node

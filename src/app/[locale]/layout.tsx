@@ -16,6 +16,10 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// Export estático: solo se prerenderizan los locales conocidos; cualquier
+// otro segmento es 404 sin pasar por el servidor.
+export const dynamicParams = false;
+
 export async function generateMetadata({
   params,
 }: {
