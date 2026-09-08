@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLocale } from "next-intl";
+import styles from "./CurrencyField.module.css";
 
 interface CurrencyFieldProps {
   id: string;
@@ -36,10 +37,10 @@ export function CurrencyField({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-ink text-sm font-medium">
+      <label htmlFor={id} className={styles.label}>
         {label}
       </label>
-      <div className="border-line bg-surface focus-within:border-azulejo flex items-center gap-2 rounded-lg border px-3 py-2">
+      <div className={`${styles.box} flex items-center gap-2 px-3 py-2`}>
         <input
           id={id}
           type="text"
@@ -56,14 +57,14 @@ export function CurrencyField({
             const digits = raw.replace(/\D/g, "");
             onChange(digits === "" ? Number.NaN : Number(digits));
           }}
-          className="text-ink w-full bg-transparent text-lg font-semibold tabular-nums outline-none"
+          className={`${styles.input} w-full`}
         />
-        <span aria-hidden="true" className="text-muted shrink-0 text-sm">
+        <span aria-hidden="true" className={`${styles.suffix} shrink-0`}>
           €
         </span>
       </div>
       {hint ? (
-        <p id={hintId} className="text-muted text-xs">
+        <p id={hintId} className={styles.hint}>
           {hint}
         </p>
       ) : null}

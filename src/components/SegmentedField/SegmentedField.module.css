@@ -1,0 +1,35 @@
+.legend {
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.track {
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.option {
+  border-radius: 0.375rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    color 150ms,
+    background-color 150ms;
+}
+
+.optionIdle {
+  color: var(--muted);
+}
+
+.optionIdle:hover {
+  color: var(--ink);
+}
+
+.optionChecked {
+  background: var(--azulejo);
+  color: var(--on-azulejo);
+}

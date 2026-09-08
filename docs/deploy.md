@@ -34,14 +34,14 @@ requisito (ver `business.md` / `todos.md`).
 con TLS automático) y el equivalente en nginx como fragmento. Puntos que el
 servidor tiene que cubrir:
 
-| Necesidad                    | Cómo                                                             |
-| ---------------------------- | -------------------------------------------------------------- |
-| `/` → idioma por defecto     | `redir / /es 302` (Caddy) / `location = / { return 302 /es; }` |
-| `/es` y `/en` sin `.html`    | `try_files {path} {path}.html …`                               |
-| 404 con código correcto      | `handle_errors` → `/404.html`                                  |
-| Cache de `/_next/static/*`   | `immutable`, un año                                            |
-| Cache de HTML                | `max-age=0, must-revalidate`                                   |
-| Compresión                   | `encode zstd gzip` (la hace el proxy, no Next)                 |
+| Necesidad                  | Cómo                                                           |
+| -------------------------- | -------------------------------------------------------------- |
+| `/` → idioma por defecto   | `redir / /es 302` (Caddy) / `location = / { return 302 /es; }` |
+| `/es` y `/en` sin `.html`  | `try_files {path} {path}.html …`                               |
+| 404 con código correcto    | `handle_errors` → `/404.html`                                  |
+| Cache de `/_next/static/*` | `immutable`, un año                                            |
+| Cache de HTML              | `max-age=0, must-revalidate`                                   |
+| Compresión                 | `encode zstd gzip` (la hace el proxy, no Next)                 |
 
 Sin servidor delante (abrir `out/` con un servidor tonto, GitHub Pages, etc.)
 `/` también funciona: `out/index.html` redirige a `/es` por JS al hidratar. El
@@ -55,7 +55,7 @@ modo export estático (equivale a `localePrefix: 'always'` +
 `localeDetection: false`):
 
 - `src/app/[locale]/layout.tsx` — `generateStaticParams` + `dynamicParams = false`
-  + `setRequestLocale`. Prerenderiza `/es` y `/en`; cualquier otro segmento es
+  - `setRequestLocale`. Prerenderiza `/es` y `/en`; cualquier otro segmento es
   404.
 - `src/app/layout.tsx` — layout raíz mínimo (`return children`), solo existe para
   que `/` tenga página.

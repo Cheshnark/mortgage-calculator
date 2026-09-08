@@ -32,10 +32,21 @@ congela en cada build.
 
 ## Estilos: Tailwind + CSS Modules
 
-Tailwind para estructura, espaciado y ajustes puntuales. **CSS Modules**
-(`*.module.css`) para lo que genera mucho ruido en `className`: bloques con muchos
-estados, animaciones, `grid` complejos. Hasta ahora el único módulo es
-`AmortizationTable.module.css` (cabecera fija, cebra, fila del cruce).
+Reparto estricto (revisado 2026-09-08, ver `decisions.md`):
+
+- **Tailwind** solo para **caja, colocación y espaciado**: `display`, `flex`,
+  `grid`, `position` y offsets, `gap`, `margin`, `padding`, `width`/`max-width`,
+  `overflow`. Excepción tolerada: `sr-only` (utilidad de visibilidad).
+- **CSS Modules** (`*.module.css`, uno por componente) para **todo lo demás**:
+  tipografía (tamaño, peso, `tracking`, `leading`, `tabular-nums`,
+  `text-balance`/`pretty`), color de texto/fondo/borde, bordes y `radius`,
+  sombras, transiciones y animaciones. Los estados condicionales (activo,
+  hover, `[open]`) son clases del módulo que el JSX alterna.
+
+**Cada componente vive en su carpeta** `src/components/<Nombre>/` con
+`<Nombre>.tsx`, `<Nombre>.module.css` y, si lo tiene, `<Nombre>.test.tsx`. Los
+12 componentes tienen módulo. El import es la ruta explícita
+`@/components/<Nombre>/<Nombre>` (sin barrel).
 
 Con Tailwind v4, si un CSS Module necesita `@apply` o `theme()` hay que añadir
 `@reference "../app/globals.css";` al principio del módulo. Alternativa preferida
@@ -98,19 +109,21 @@ mortgage-calculator/
     │   ├── taxes/            ■  regions.ts — ITP/AJD por CCAA (orientativo)
     │   ├── fees/             ■  aranceles.ts — escalas RD 1426/1989 y 1427/1989
     │   └── subsidies/        ·  aval ICO + programas autonómicos
-    ├── components/           ■  UI, sin lógica de cálculo
-    │   ├── SimulatorForm.tsx ■  formulario: vivienda, financiación y perfil
-    │   ├── CurrencyField.tsx ■  importe con separador de millar
-    │   ├── NumberField.tsx   ■  campo numérico con unidad
-    │   ├── SliderField.tsx   ■  deslizador con valor formateado al lado
-    │   ├── SelectField.tsx   ■  desplegable (comunidad autónoma)
-    │   ├── SegmentedField.tsx ■ radios con aspecto de pastillas
-    │   ├── CheckboxField.tsx ■  casilla del perfil del comprador
-    │   ├── PaymentSummary.tsx ■ cuota, reparto capital/intereses, totales
-    │   ├── CostBreakdown.tsx ■  ahorro necesario, impuestos, gastos y avisos
-    │   ├── AmortizationTable.tsx ■ cuadro mes a mes (+ .module.css)
-    │   ├── ShareLink.tsx     ■  monta useUrlSync y copia el enlace
-    │   └── LocaleSwitcher.tsx ■ cambio de idioma (conserva la simulación)
+    ├── components/           ■  UI, sin lógica de cálculo. Una carpeta por
+    │   │                         componente: <Nombre>.tsx + <Nombre>.module.css
+    │   │                         (+ <Nombre>.test.tsx si lo hay)
+    │   ├── SimulatorForm/    ■  formulario: vivienda, financiación y perfil
+    │   ├── CurrencyField/    ■  importe con separador de millar (+ test)
+    │   ├── NumberField/      ■  campo numérico con unidad
+    │   ├── SliderField/      ■  deslizador con valor formateado al lado
+    │   ├── SelectField/      ■  desplegable (comunidad autónoma)
+    │   ├── SegmentedField/   ■  radios con aspecto de pastillas
+    │   ├── CheckboxField/    ■  casilla del perfil del comprador
+    │   ├── PaymentSummary/   ■  cuota, reparto capital/intereses, totales
+    │   ├── CostBreakdown/    ■  ahorro necesario, impuestos, gastos y avisos
+    │   ├── AmortizationTable/ ■ cuadro mes a mes
+    │   ├── ShareLink/        ■  monta useUrlSync y copia el enlace
+    │   └── LocaleSwitcher/   ■  cambio de idioma (conserva la simulación)
     └── store/                ■  Zustand
         ├── simulation.ts     ■  estado del formulario
         ├── purchase.ts       ■  estado → motor (impuestos, gastos, financiación), pura

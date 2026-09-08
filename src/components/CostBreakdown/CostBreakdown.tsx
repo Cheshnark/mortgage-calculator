@@ -5,6 +5,7 @@ import { formatEUR, formatRate } from "@/lib/mortgage/format";
 import { useSimulationStore } from "@/store/simulation";
 import { usePurchaseResult } from "@/store/usePurchaseResult";
 import type { Range } from "@/store/purchase";
+import styles from "./CostBreakdown.module.css";
 
 /** Una horquilla se enseña como cifra central; los extremos van en letra chica. */
 function RangeValue({ range, locale }: { range: Range; locale: string }) {
@@ -13,11 +14,9 @@ function RangeValue({ range, locale }: { range: Range; locale: string }) {
 
   return (
     <span className="flex flex-col items-end">
-      <span className="text-ink font-semibold tabular-nums">
-        {formatEUR(range.amount, locale)}
-      </span>
+      <span className={styles.value}>{formatEUR(range.amount, locale)}</span>
       {isRange ? (
-        <span className="text-muted text-xs tabular-nums">
+        <span className={styles.rangeText}>
           {t("range", {
             low: formatEUR(range.low, locale),
             high: formatEUR(range.high, locale),
@@ -35,7 +34,7 @@ export function CostBreakdown() {
   const { price, condition, agencyFee } = useSimulationStore();
 
   if (!purchase) {
-    return <p className="text-muted text-base text-balance">{t("empty")}</p>;
+    return <p className={styles.empty}>{t("empty")}</p>;
   }
 
   const { region, taxes, fees, financing, upfrontCosts, savingsNeeded } =
@@ -48,11 +47,11 @@ export function CostBreakdown() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="text-muted text-sm font-medium">{t("savingsNeeded")}</p>
-        <p className="text-ink mt-1 text-4xl font-bold tracking-tight tabular-nums sm:text-5xl">
+        <p className={styles.label}>{t("savingsNeeded")}</p>
+        <p className={`${styles.savings} mt-1`}>
           {formatEUR(savingsNeeded.amount, locale)}
         </p>
-        <p className="text-muted mt-1.5 text-sm tabular-nums">
+        <p className={`${styles.savingsRange} mt-1.5`}>
           {t("range", {
             low: formatEUR(savingsNeeded.low, locale),
             high: formatEUR(savingsNeeded.high, locale),
@@ -60,8 +59,8 @@ export function CostBreakdown() {
         </p>
         {financing.savingsGap !== null ? (
           <p
-            className={`mt-3 text-base font-medium text-pretty ${
-              financing.savingsGap < 0 ? "text-ochre-ink" : "text-azulejo"
+            className={`${styles.gap} mt-3 ${
+              financing.savingsGap < 0 ? styles.gapShort : styles.gapEnough
             }`}
           >
             {financing.savingsGap < 0
@@ -75,47 +74,43 @@ export function CostBreakdown() {
         ) : null}
       </div>
 
-      <dl className="border-line grid grid-cols-2 gap-x-6 gap-y-4 border-y py-5 sm:grid-cols-3">
+      <dl
+        className={`${styles.stats} grid grid-cols-2 gap-x-6 gap-y-4 py-5 sm:grid-cols-3`}
+      >
         <div>
-          <dt className="text-muted text-sm">{t("price")}</dt>
-          <dd className="text-ink text-lg font-semibold tabular-nums">
-            {formatEUR(price, locale)}
-          </dd>
+          <dt className={styles.statTerm}>{t("price")}</dt>
+          <dd className={styles.statValue}>{formatEUR(price, locale)}</dd>
         </div>
         <div>
-          <dt className="text-muted text-sm">{t("loan")}</dt>
-          <dd className="text-ink text-lg font-semibold tabular-nums">
+          <dt className={styles.statTerm}>{t("loan")}</dt>
+          <dd className={styles.statValue}>
             {formatEUR(financing.principal, locale)}
           </dd>
         </div>
         <div>
-          <dt className="text-muted text-sm">{t("downPayment")}</dt>
-          <dd className="text-ink text-lg font-semibold tabular-nums">
+          <dt className={styles.statTerm}>{t("downPayment")}</dt>
+          <dd className={styles.statValue}>
             {formatEUR(financing.downPayment, locale)}
           </dd>
         </div>
       </dl>
 
       <div className="flex flex-col gap-3">
-        <h3 className="text-ink text-base font-semibold">
-          {t("breakdownHeading")}
-        </h3>
+        <h3 className={styles.heading}>{t("breakdownHeading")}</h3>
 
-        <dl className="flex flex-col gap-3 text-sm">
+        <dl className={`${styles.lines} flex flex-col gap-3`}>
           {taxes.lines.map((line) => (
             <div
               key={line.id}
               className="flex items-baseline justify-between gap-4"
             >
-              <dt className="text-muted">
+              <dt className={styles.lineTerm}>
                 {t(line.id)}
-                <span className="ml-1.5 text-xs tabular-nums">
+                <span className={`${styles.lineRate} ml-1.5`}>
                   {formatRate(line.effectiveRate, locale)}
                 </span>
               </dt>
-              <dd className="text-ink font-semibold tabular-nums">
-                {formatEUR(line.amount, locale)}
-              </dd>
+              <dd className={styles.value}>{formatEUR(line.amount, locale)}</dd>
             </div>
           ))}
 
@@ -124,17 +119,19 @@ export function CostBreakdown() {
               key={line.id}
               className="flex items-start justify-between gap-4"
             >
-              <dt className="text-muted pt-0.5">{t(line.id)}</dt>
+              <dt className={`${styles.lineTerm} pt-0.5`}>{t(line.id)}</dt>
               <dd>
                 <RangeValue range={line} locale={locale} />
               </dd>
             </div>
           ))}
 
-          <div className="border-line flex items-start justify-between gap-4 border-t pt-3">
-            <dt className="text-ink pt-0.5 font-semibold">
+          <div
+            className={`${styles.total} flex items-start justify-between gap-4 pt-3`}
+          >
+            <dt className={`${styles.totalTerm} pt-0.5`}>
               {t("total")}
-              <span className="text-muted ml-1.5 text-xs font-normal tabular-nums">
+              <span className={`${styles.totalShare} ml-1.5`}>
                 {t("ofPrice", { share: formatRate(costsShare, locale) })}
               </span>
             </dt>
@@ -145,9 +142,9 @@ export function CostBreakdown() {
         </dl>
       </div>
 
-      <div className="text-muted flex flex-col gap-2 text-sm leading-relaxed text-pretty">
+      <div className={`${styles.notes} flex flex-col gap-2`}>
         {reduction ? (
-          <p className="text-azulejo font-medium">
+          <p className={styles.noteHighlight}>
             {t("reductionApplied", {
               rate: formatRate(reduction.rate, locale),
               saving: formatEUR(reductionSaving, locale),
@@ -181,7 +178,7 @@ export function CostBreakdown() {
                 href={region.sourceUrl}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-azulejo underline underline-offset-2"
+                className={styles.link}
               >
                 {chunks}
               </a>

@@ -205,6 +205,45 @@ en Tailwind v4, usar `@apply`/`theme()` dentro de un CSS Module obliga a un
 `@reference "../app/globals.css";`; se prefiere tirar de las CSS custom properties
 del `@theme` (`var(--color-foreground)`…), que no lo necesitan.
 
+_Revisado el 2026-09-08: el reparto se hizo estricto y se aplicó a los 12
+componentes. Ver entrada de esa fecha._
+
+## 2026-09-08 · Reparto estricto Tailwind / CSS Modules y carpeta por componente
+
+**Decisión:** frontera dura entre las dos herramientas:
+
+- **Tailwind** solo para caja, colocación y espaciado: `display`, `flex`,
+  `grid`, `position` y offsets, `gap`, `margin`, `padding`, `width`/`max-width`,
+  `overflow`. Única excepción tolerada: `sr-only`.
+- **CSS Module** (`<Nombre>.module.css`, uno por componente) para tipografía,
+  color de texto/fondo/borde, bordes y `radius`, sombras, transiciones y
+  animaciones. Los estados condicionales (activo, hover, `[open]`) son clases
+  del módulo alternadas desde el JSX, no ternarios de clases Tailwind.
+
+Y **una carpeta por componente**: `src/components/<Nombre>/` con `<Nombre>.tsx`,
+`<Nombre>.module.css` y `<Nombre>.test.tsx` si lo tiene. Import por ruta
+explícita `@/components/<Nombre>/<Nombre>`.
+
+**Motivo:** la decisión de 2026-09-06 dejaba "ajustes puntuales" en Tailwind y en
+la práctica se acabó estilando _todo_ con utilidades —tipografía, color,
+animaciones incluidas—, que es justo lo que el CSS Module debía absorber. El
+`className` de `CostBreakdown` llegó a ~40 utilidades mezclando `flex` con
+`text-4xl`, `tabular-nums` y color condicional. Con la frontera dura, el JSX
+enseña la estructura y el módulo el aspecto; un cambio de tipografía o de color
+se hace en un sitio y no se lee entre 12 clases.
+
+**Qué se descartó:**
+
+- **Barrel `index.ts` por carpeta** para no tocar imports: 12 ficheros que solo
+  reexportan, sin valor para quien lee el código. Se actualizaron los ~13
+  imports a mano (`page.tsx`, `SimulatorForm.tsx`, el test).
+- **Un módulo compartido de campos** (`field.module.css`): rompería "un módulo
+  por componente". Se acepta la repetición de `.label`/`.hint` entre los campos
+  de formulario; son tres o cuatro reglas.
+
+**Alcance:** solo `src/components/`. `app/[locale]/page.tsx` y `layout.tsx`
+(composición de página, casi todo `grid`/`flex`/`sticky`) quedan como están.
+
 ## 2026-09-06 · Convenciones del motor de cálculo
 
 **Decisión:** en `src/lib/mortgage/`:

@@ -149,8 +149,8 @@ comprador vacío por defecto y la casilla de agencia marcada.
 `messages/{es,en}.json`; **añadir una clave obliga a tocar los dos ficheros**.
 
 **Sin middleware**: la app se despliega como export estático (`output: "export"`),
-así que `next-intl` va en modo sin `proxy.ts` (equivale a `localePrefix: 'always'`
-+ `localeDetection: false`). `src/app/[locale]/layout.tsx` prerenderiza los
+así que `next-intl` va en modo sin `proxy.ts`: equivale a `localePrefix: 'always'`
+con `localeDetection: false`. `src/app/[locale]/layout.tsx` prerenderiza los
 idiomas (`generateStaticParams` + `dynamicParams = false`); `src/app/page.tsx`
 redirige `/` al idioma por defecto. No hay negociación por `Accept-Language`.
 Detalle en `docs/deploy.md`.
@@ -183,9 +183,22 @@ puede hacer un test.
 
 ## Estilos
 
-Tailwind v4 para estructura y espaciado; CSS Modules para bloques con muchos
-estados o `grid` complejos. Dentro de un módulo, tirar de las custom properties
+Reparto **estricto** entre Tailwind y CSS Modules:
+
+- **Tailwind** solo para **caja, colocación y espaciado**: `display`, `flex`,
+  `grid`, `position` y offsets, `gap`, `margin`, `padding`, `width`/`max-width`,
+  `overflow`. Única excepción tolerada: `sr-only`.
+- **CSS Modules** para **todo lo demás**: tipografía, color (texto, fondo,
+  borde), bordes y `radius`, sombras, transiciones y animaciones. Los estados
+  condicionales (activo, hover, `[open]`) son clases del módulo que el JSX
+  alterna, no ternarios de utilidades Tailwind.
+
+Dentro de un módulo, leer las custom properties de `globals.css`
 (`var(--azulejo)`) en vez de `@apply`, que obligaría a un `@reference`.
+
+**Un componente = una carpeta** `src/components/<Nombre>/` con `<Nombre>.tsx`,
+`<Nombre>.module.css` y `<Nombre>.test.tsx` si lo hay. Import por ruta explícita
+`@/components/<Nombre>/<Nombre>`, sin barrel `index.ts`.
 
 Dos tonos de ocre a propósito: `--ochre` solo para objetos gráficos (3:1 basta) y
 `--ochre-ink` para texto (hace falta 4,5:1). No unificarlos.

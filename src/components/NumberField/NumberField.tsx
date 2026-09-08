@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./NumberField.module.css";
+
 interface NumberFieldProps {
   id: string;
   label: string;
@@ -28,10 +30,10 @@ export function NumberField({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-ink text-sm font-medium">
+      <label htmlFor={id} className={styles.label}>
         {label}
       </label>
-      <div className="border-line bg-surface focus-within:border-azulejo flex items-center gap-2 rounded-lg border px-3 py-2">
+      <div className={`${styles.box} flex items-center gap-2 px-3 py-2`}>
         <input
           id={id}
           type="number"
@@ -42,16 +44,16 @@ export function NumberField({
           max={max}
           step={step}
           aria-describedby={hintId}
-          className="text-ink w-full bg-transparent text-lg font-semibold tabular-nums outline-none"
+          className={`${styles.input} w-full`}
         />
         {suffix ? (
-          <span aria-hidden="true" className="text-muted shrink-0 text-sm">
+          <span aria-hidden="true" className={`${styles.suffix} shrink-0`}>
             {suffix}
           </span>
         ) : null}
       </div>
       {hint ? (
-        <p id={hintId} className="text-muted text-xs">
+        <p id={hintId} className={styles.hint}>
           {hint}
         </p>
       ) : null}

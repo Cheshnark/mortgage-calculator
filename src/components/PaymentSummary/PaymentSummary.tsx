@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { formatEUR, formatRate } from "@/lib/mortgage/format";
 import { useSimulationResult } from "@/store/useSimulationResult";
+import styles from "./PaymentSummary.module.css";
 
 export function PaymentSummary() {
   const t = useTranslations("Summary");
@@ -10,7 +11,7 @@ export function PaymentSummary() {
   const result = useSimulationResult();
 
   if (!result) {
-    return <p className="text-muted text-lg text-balance">{t("empty")}</p>;
+    return <p className={styles.empty}>{t("empty")}</p>;
   }
 
   const { schedule, annualRate, crossoverMonth, principal } = result;
@@ -20,14 +21,14 @@ export function PaymentSummary() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="text-muted text-sm font-medium">{t("label")}</p>
+        <p className={styles.label}>{t("label")}</p>
         <p className="mt-1 flex flex-wrap items-baseline gap-x-3">
-          <span className="text-ink text-6xl font-bold tracking-tighter tabular-nums sm:text-7xl">
+          <span className={styles.amount}>
             {formatEUR(schedule.payment, locale)}
           </span>
-          <span className="text-muted text-lg">{t("perMonth")}</span>
+          <span className={styles.perMonth}>{t("perMonth")}</span>
         </p>
-        <p className="text-muted mt-2 text-sm">
+        <p className={`${styles.rate} mt-2`}>
           {t("rateApplied", { rate: formatRate(annualRate, locale) })}
         </p>
       </div>
@@ -39,37 +40,41 @@ export function PaymentSummary() {
             capital: Math.round(capitalShare),
             interest: Math.round(interestShare),
           })}
-          className="bg-line flex h-3 overflow-hidden rounded-full"
+          className={`${styles.bar} flex h-3 overflow-hidden`}
         >
-          <div className="bg-azulejo" style={{ width: `${capitalShare}%` }} />
-          <div className="bg-ochre" style={{ width: `${interestShare}%` }} />
+          <div
+            className={styles.barCapital}
+            style={{ width: `${capitalShare}%` }}
+          />
+          <div
+            className={styles.barInterest}
+            style={{ width: `${interestShare}%` }}
+          />
         </div>
 
-        <dl className="flex flex-wrap gap-x-8 gap-y-2 text-sm">
+        <dl className={`${styles.legend} flex flex-wrap gap-x-8 gap-y-2`}>
           <div className="flex items-center gap-2">
             <span
               aria-hidden="true"
-              className="bg-azulejo size-2.5 shrink-0 rounded-full"
+              className={`${styles.dotCapital} size-2.5 shrink-0`}
             />
-            <dt className="text-muted">{t("capital")}</dt>
-            <dd className="text-ink font-semibold tabular-nums">
-              {formatEUR(principal, locale)}
-            </dd>
+            <dt className={styles.term}>{t("capital")}</dt>
+            <dd className={styles.value}>{formatEUR(principal, locale)}</dd>
           </div>
           <div className="flex items-center gap-2">
             <span
               aria-hidden="true"
-              className="bg-ochre size-2.5 shrink-0 rounded-full"
+              className={`${styles.dotInterest} size-2.5 shrink-0`}
             />
-            <dt className="text-muted">{t("interest")}</dt>
-            <dd className="text-ink font-semibold tabular-nums">
+            <dt className={styles.term}>{t("interest")}</dt>
+            <dd className={styles.value}>
               {formatEUR(schedule.totalInterest, locale)}
             </dd>
           </div>
         </dl>
       </div>
 
-      <div className="text-ink flex flex-col gap-2 text-base leading-relaxed text-pretty">
+      <div className={`${styles.prose} flex flex-col gap-2`}>
         <p>
           {t("totalSentence", {
             total: formatEUR(schedule.totalPaid, locale),
@@ -77,11 +82,11 @@ export function PaymentSummary() {
           })}
         </p>
         {crossoverMonth ? (
-          <p className="text-muted">
+          <p className={styles.subtle}>
             {t("crossover", { month: crossoverMonth })}
           </p>
         ) : null}
-        <p className="text-muted">
+        <p className={styles.subtle}>
           {t("lastPayment", {
             amount: formatEUR(schedule.lastPayment, locale),
           })}

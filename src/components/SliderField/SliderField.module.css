@@ -1,0 +1,27 @@
+.label {
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.range {
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 9999px;
+  background: var(--line);
+  accent-color: var(--azulejo);
+  cursor: pointer;
+}
+
+.value {
+  color: var(--ink);
+  text-align: right;
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.75rem;
+}

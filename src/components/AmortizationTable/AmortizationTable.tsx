@@ -21,9 +21,9 @@ export function AmortizationTable() {
     <details
       open={open}
       onToggle={(event) => setOpen(event.currentTarget.open)}
-      className="border-line border-t pt-6"
+      className={`${styles.root} pt-6`}
     >
-      <summary className="text-azulejo hover:text-ink cursor-pointer list-none text-base font-semibold">
+      <summary className={styles.summary}>
         {open ? t("hide") : t("show", { months: schedule.rows.length })}
       </summary>
 

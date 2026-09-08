@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./SegmentedField.module.css";
+
 interface Option<T extends string> {
   value: T;
   label: string;
@@ -28,9 +30,9 @@ export function SegmentedField<T extends string>({
 }: SegmentedFieldProps<T>) {
   return (
     <fieldset className="flex flex-col gap-2">
-      <legend className="text-ink mb-2 text-sm font-medium">{legend}</legend>
+      <legend className={`${styles.legend} mb-2`}>{legend}</legend>
       <div
-        className="border-line bg-surface grid gap-1 rounded-lg border p-1"
+        className={`${styles.track} grid gap-1 p-1`}
         style={{ gridTemplateColumns: `repeat(${options.length}, 1fr)` }}
       >
         {options.map((option) => {
@@ -38,11 +40,9 @@ export function SegmentedField<T extends string>({
           return (
             <label
               key={option.value}
-              className={`cursor-pointer rounded-md px-3 py-2 text-center text-sm font-medium transition-colors ${
-                checked
-                  ? "bg-azulejo text-on-azulejo"
-                  : "text-muted hover:text-ink"
-              }`}
+              className={`${styles.option} ${
+                checked ? styles.optionChecked : styles.optionIdle
+              } px-3 py-2`}
             >
               <input
                 type="radio"

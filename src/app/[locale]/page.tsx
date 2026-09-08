@@ -1,12 +1,12 @@
 import { use } from "react";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import { AmortizationTable } from "@/components/AmortizationTable";
-import { CostBreakdown } from "@/components/CostBreakdown";
-import { LocaleSwitcher } from "@/components/LocaleSwitcher";
-import { PaymentSummary } from "@/components/PaymentSummary";
-import { ShareLink } from "@/components/ShareLink";
-import { SimulatorForm } from "@/components/SimulatorForm";
+import { AmortizationTable } from "@/components/AmortizationTable/AmortizationTable";
+import { CostBreakdown } from "@/components/CostBreakdown/CostBreakdown";
+import { LocaleSwitcher } from "@/components/LocaleSwitcher/LocaleSwitcher";
+import { PaymentSummary } from "@/components/PaymentSummary/PaymentSummary";
+import { ShareLink } from "@/components/ShareLink/ShareLink";
+import { SimulatorForm } from "@/components/SimulatorForm/SimulatorForm";
 
 type Props = {
   params: Promise<{ locale: string }>;

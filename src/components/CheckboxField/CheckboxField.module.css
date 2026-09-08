@@ -1,0 +1,11 @@
+.label {
+  color: var(--ink);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.checkbox {
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+  accent-color: var(--azulejo);
+}

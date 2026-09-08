@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useUrlSync } from "@/store/useUrlSync";
+import styles from "./ShareLink.module.css";
 
 type Status = "idle" | "copied" | "failed";
 
@@ -42,7 +43,7 @@ export function ShareLink() {
       <button
         type="button"
         onClick={copy}
-        className="bg-azulejo text-on-azulejo inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-opacity hover:opacity-90"
+        className={`${styles.button} inline-flex items-center gap-2 px-4 py-2`}
       >
         <svg
           aria-hidden="true"
@@ -66,11 +67,11 @@ export function ShareLink() {
       {status !== "idle" ? (
         <div
           role="status"
-          className="border-line bg-surface text-ink absolute top-full left-0 z-10 mt-2 w-72 rounded-lg border p-3 text-sm leading-relaxed text-pretty shadow-lg"
+          className={`${styles.popover} absolute top-full left-0 z-10 mt-2 w-72 p-3`}
         >
           <span
             aria-hidden="true"
-            className="border-line bg-surface absolute -top-1.5 left-5 size-3 rotate-45 border-t border-l"
+            className={`${styles.caret} absolute -top-1.5 left-5 size-3`}
           />
           {status === "copied" ? t("copied") : t("failed")}
         </div>

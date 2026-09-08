@@ -1,0 +1,32 @@
+.button {
+  border-radius: 0.5rem;
+  background: var(--azulejo);
+  color: var(--on-azulejo);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: opacity 150ms;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.popover {
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.875rem;
+  line-height: 1.625;
+  text-wrap: pretty;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.caret {
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  transform: rotate(45deg);
+}

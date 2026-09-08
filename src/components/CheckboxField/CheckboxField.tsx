@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./CheckboxField.module.css";
+
 interface CheckboxFieldProps {
   id: string;
   label: string;
@@ -17,17 +19,14 @@ export function CheckboxField({
   describedBy,
 }: CheckboxFieldProps) {
   return (
-    <label
-      htmlFor={id}
-      className="text-ink flex cursor-pointer items-center gap-2.5 text-sm"
-    >
+    <label htmlFor={id} className={`${styles.label} flex items-center gap-2.5`}>
       <input
         id={id}
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
         aria-describedby={describedBy}
-        className="border-line accent-azulejo size-4 shrink-0 rounded"
+        className={`${styles.checkbox} size-4 shrink-0`}
       />
       {label}
     </label>

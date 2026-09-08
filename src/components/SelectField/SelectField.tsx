@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./SelectField.module.css";
+
 interface SelectFieldProps {
   id: string;
   label: string;
@@ -21,7 +23,7 @@ export function SelectField({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-ink text-sm font-medium">
+      <label htmlFor={id} className={styles.label}>
         {label}
       </label>
       <select
@@ -29,7 +31,7 @@ export function SelectField({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         aria-describedby={hintId}
-        className="border-line bg-surface text-ink focus-within:border-azulejo w-full rounded-lg border px-3 py-2.5 text-base font-medium outline-none"
+        className={`${styles.select} w-full px-3 py-2.5`}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -38,7 +40,7 @@ export function SelectField({
         ))}
       </select>
       {hint ? (
-        <p id={hintId} className="text-muted text-xs">
+        <p id={hintId} className={styles.hint}>
           {hint}
         </p>
       ) : null}

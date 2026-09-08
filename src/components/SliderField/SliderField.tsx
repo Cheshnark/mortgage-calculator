@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./SliderField.module.css";
+
 interface SliderFieldProps {
   id: string;
   label: string;
@@ -31,7 +33,7 @@ export function SliderField({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-ink text-sm font-medium">
+      <label htmlFor={id} className={styles.label}>
         {label}
       </label>
       <div className="flex items-center gap-4">
@@ -44,17 +46,14 @@ export function SliderField({
           value={Number.isFinite(value) ? value : fallback}
           onChange={(event) => onChange(event.target.valueAsNumber)}
           aria-describedby={hintId}
-          className="bg-line accent-azulejo h-1.5 w-full cursor-pointer appearance-none rounded-full"
+          className={`${styles.range} h-1.5 w-full`}
         />
-        <output
-          htmlFor={id}
-          className="text-ink w-20 shrink-0 text-right text-lg font-semibold tabular-nums"
-        >
+        <output htmlFor={id} className={`${styles.value} w-20 shrink-0`}>
           {display}
         </output>
       </div>
       {hint ? (
-        <p id={hintId} className="text-muted text-xs">
+        <p id={hintId} className={styles.hint}>
           {hint}
         </p>
       ) : null}

@@ -60,6 +60,10 @@ tests, y `out/` servido en navegador (`/es`, `/en`, `/` → `/es`, `/xx` → 404
   `position: absolute`, no desplaza el layout.
 - Mobile-first, modo oscuro y contraste AA. Verificado en navegador a 390 px y a
   1280 px, en claro y oscuro, en los dos idiomas.
+- **Estilos**: reparto estricto Tailwind (caja, colocación, espaciado) / CSS
+  Modules (tipografía, color, bordes, animaciones), un módulo por componente.
+  Cada componente en su carpeta `src/components/<Nombre>/`. Ver `decisions.md`
+  → _2026-09-08_.
 
 ### Calidad
 

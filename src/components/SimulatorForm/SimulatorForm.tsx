@@ -1,15 +1,16 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { CheckboxField } from "./CheckboxField";
-import { CurrencyField } from "./CurrencyField";
-import { NumberField } from "./NumberField";
-import { SegmentedField } from "./SegmentedField";
-import { SelectField } from "./SelectField";
-import { SliderField } from "./SliderField";
+import { CheckboxField } from "@/components/CheckboxField/CheckboxField";
+import { CurrencyField } from "@/components/CurrencyField/CurrencyField";
+import { NumberField } from "@/components/NumberField/NumberField";
+import { SegmentedField } from "@/components/SegmentedField/SegmentedField";
+import { SelectField } from "@/components/SelectField/SelectField";
+import { SliderField } from "@/components/SliderField/SliderField";
 import { REGIONS } from "@/data/taxes/regions";
 import type { PropertyCondition } from "@/lib/mortgage/taxes";
 import { useSimulationStore, type RateMode } from "@/store/simulation";
+import styles from "./SimulatorForm.module.css";
 
 const REGION_OPTIONS = REGIONS.map((region) => ({
   value: region.code,
@@ -32,9 +33,7 @@ function Section({
 }) {
   return (
     <fieldset className="flex flex-col gap-5">
-      <legend className="text-muted mb-1 text-xs font-semibold tracking-wide uppercase">
-        {title}
-      </legend>
+      <legend className={`${styles.sectionLegend} mb-1`}>{title}</legend>
       {children}
     </fieldset>
   );
@@ -86,7 +85,7 @@ export function SimulatorForm() {
             onChange={(checked) => set("agencyFee", checked)}
             describedBy="agencyFee-hint"
           />
-          <p id="agencyFee-hint" className="text-muted text-xs leading-relaxed">
+          <p id="agencyFee-hint" className={styles.hint}>
             {t("agencyFeeHint")}
           </p>
         </div>
@@ -162,17 +161,13 @@ export function SimulatorForm() {
         )}
       </Section>
 
-      <details className="border-line bg-surface group rounded-lg border">
-        <summary className="text-ink cursor-pointer list-none px-4 py-3 text-sm font-medium">
-          <span className="text-azulejo mr-2 inline-block transition-transform group-open:rotate-90">
-            ›
-          </span>
+      <details className={`${styles.profile} rounded-lg`}>
+        <summary className={`${styles.profileSummary} px-4 py-3`}>
+          <span className={`${styles.chevron} mr-2 inline-block`}>›</span>
           {t("profileSummary")}
         </summary>
         <div className="flex flex-col gap-5 px-4 pt-1 pb-5">
-          <p className="text-muted text-xs leading-relaxed">
-            {t("profileHint")}
-          </p>
+          <p className={styles.hint}>{t("profileHint")}</p>
 
           <CurrencyField
             id="savings"
@@ -203,7 +198,7 @@ export function SimulatorForm() {
           />
 
           <fieldset className="flex flex-col gap-3">
-            <legend className="text-ink mb-2 text-sm font-medium">
+            <legend className={`${styles.groupLegend} mb-2`}>
               {t("buyerProfile")}
             </legend>
             <CheckboxField
@@ -237,7 +232,7 @@ export function SimulatorForm() {
       <button
         type="button"
         onClick={reset}
-        className="text-azulejo hover:text-ink self-start text-sm font-medium underline underline-offset-4"
+        className={`${styles.reset} self-start`}
       >
         {t("reset")}
       </button>
