@@ -48,15 +48,15 @@ Cada decisión y su motivo, en [`docs/decisions.md`](docs/decisions.md).
 
 ## Stack
 
-| Capa      | Tecnología                              |
-| --------- | --------------------------------------- |
+| Capa      | Tecnología                               |
+| --------- | ---------------------------------------- |
 | Framework | Next.js 16 (App Router, export estático) |
-| Lenguaje  | TypeScript                              |
-| UI        | React 19                               |
-| Estilos   | Tailwind CSS v4 + CSS Modules           |
-| Estado    | Zustand (+ estado en la URL)            |
-| i18n      | next-intl (ES por defecto, EN)          |
-| Tests     | Vitest + React Testing Library          |
+| Lenguaje  | TypeScript                               |
+| UI        | React 19                                 |
+| Estilos   | Tailwind CSS v4 + CSS Modules            |
+| Estado    | Zustand (+ estado en la URL)             |
+| i18n      | next-intl (ES por defecto, EN)           |
+| Tests     | Vitest + React Testing Library           |
 
 ## Desarrollo
 
