@@ -102,8 +102,10 @@
     "balance": "Balance"
   },
   "Share": {
+    "heading": "Share this simulation",
+    "description": "Copy the link — whoever opens it sees exactly these numbers.",
     "copy": "Copy link",
-    "copied": "Link copied",
+    "copied": "Link copied to clipboard",
     "failed": "Couldn't copy. Copy the address from the browser bar."
   }
 }
