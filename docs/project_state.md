@@ -1,13 +1,14 @@
 # Estado del proyecto
 
-_Última actualización: 2026-09-08_
+_Última actualización: 2026-09-14_
 
 ## Dónde estamos
 
-**v2 completa y verde, y despliegue decidido.** La app calcula el coste real de
-comprar: cuota, entrada, impuestos, gastos y ahorro necesario, en `/es` y `/en`.
+**v2 completa y verde, con dos canales de despliegue.** La app calcula el
+coste real de comprar: cuota, entrada, impuestos, gastos y ahorro necesario,
+en `/es` y `/en`.
 
-### Despliegue: export estático en servidor propio
+### Despliegue de producción: export estático en servidor propio
 
 `next.config.ts` con `output: "export"`. `npm run build` → `out/` → `rsync` a un
 servidor propio servido con Caddy. Sin proceso Node, sin middleware, sin route
@@ -16,6 +17,22 @@ middleware (`src/app/layout.tsx` mínimo + `src/app/page.tsx` que redirige `/` a
 `/es`). Guía en `docs/deploy.md`, `Caddyfile.example` en la raíz, motivo en
 `decisions.md` → _2026-09-08_. Verificado: `build`, `lint`, `typecheck`, 397
 tests, y `out/` servido en navegador (`/es`, `/en`, `/` → `/es`, `/xx` → 404).
+Sigue pendiente aprovisionar el servidor (paso 1 más abajo).
+
+### Despliegue de demo: GitHub Pages
+
+`.github/workflows/deploy-pages.yml` reconstruye en cada push a `main` y
+publica en `https://cheshnark.github.io/mortgage-calculator/`, con
+`basePath`/`assetPrefix` en `next.config.ts` activados solo para ese build
+(`GITHUB_PAGES=true`). No sustituye el servidor propio, es el canal para
+enseñar la app mientras ese servidor no está listo. Motivo y detalle en
+`decisions.md` → _2026-09-14_ y `docs/deploy.md`. Verificado en local
+sirviendo `out/` bajo `/mortgage-calculator/`.
+
+**Falta un paso manual de una sola vez** que no se puede hacer desde esta
+máquina (sin `gh` CLI): en GitHub, Settings → Pages → Source: **GitHub
+Actions**, en `https://github.com/Cheshnark/mortgage-calculator/settings/pages`.
+Sin eso el workflow se ejecuta pero no hay sitio donde publicar.
 
 ### Motor de cálculo (`src/lib/mortgage/`, `src/data/`)
 
@@ -76,9 +93,11 @@ tests, y `out/` servido en navegador (`/es`, `/en`, `/` → `/es`, `/xx` → 404
 
 ## Próximos pasos
 
-1. Aprovisionar el servidor (dominio, Caddy) y hacer el primer `rsync` de `out/`.
-2. Automatizar el `rsync` tras la CI (deploy en verde a `main`).
-3. v3: aval ICO y programas autonómicos.
+1. Activar Pages en GitHub (paso manual, ver arriba) para que
+   `deploy-pages.yml` publique de verdad.
+2. Aprovisionar el servidor (dominio, Caddy) y hacer el primer `rsync` de `out/`.
+3. Automatizar el `rsync` tras la CI (deploy en verde a `main`).
+4. v3: aval ICO y programas autonómicos.
 
 ## Pendiente de verificar / deuda
 

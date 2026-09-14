@@ -43,6 +43,10 @@ _Última actualización: 2026-09-08_
 - [x] Decidir despliegue: export estático (`output: "export"`) en servidor
       propio con Caddy, no Vercel. Ver `docs/deploy.md` y `decisions.md`
       (2026-09-08)
+- [x] Canal de demo en GitHub Pages (`deploy-pages.yml`, `basePath`
+      condicional). Ver `docs/deploy.md` y `decisions.md` (2026-09-14)
+- [ ] Activar Pages en Settings → Pages → Source: GitHub Actions (paso manual
+      en la web, no hay `gh` CLI en esta máquina)
 - [ ] Aprovisionar servidor + dominio + Caddy y hacer el primer `rsync` de `out/`
 - [ ] Automatizar el `rsync` de `out/` tras la CI en verde a `main`
 - [ ] Limpiar los SVG de plantilla en `public/` (`next.svg`, `vercel.svg`,

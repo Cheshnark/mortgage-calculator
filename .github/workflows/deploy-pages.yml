@@ -1,0 +1,61 @@
+name: Deploy Pages
+
+on:
+  push:
+    branches: [main]
+  # Permite relanzar el despliegue a mano sin necesidad de un push nuevo.
+  workflow_dispatch:
+
+# Permisos mínimos que pide el flujo oficial de GitHub Pages con Actions.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un despliegue a la vez; no cancela uno en curso para no dejar Pages a medias.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+  # Activa el basePath /mortgage-calculator en next.config.ts. El servidor
+  # propio (ver docs/deploy.md) construye sin esta variable.
+  GITHUB_PAGES: "true"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Build (export estático)
+        run: npm run build
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir out/ como artefacto de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

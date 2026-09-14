@@ -75,3 +75,31 @@ snippet en el propio servidor (Caddy/nginx) mirando la cabecera antes del
 `.github/workflows/ci.yml` corre `lint` + `typecheck` + `test` + `build` en cada
 push y PR a `main`. El `build` ya valida el export estático. Publicar (rsync al
 servidor) todavía es manual; automatizarlo es un paso pendiente (`todos.md`).
+
+## Canal de demo: GitHub Pages
+
+Además del servidor propio (el destino de producción), `main` se publica
+también en GitHub Pages para poder enseñar la app sin depender de tener el
+servidor aprovisionado. Motivo completo en `decisions.md` → _2026-09-14_.
+
+`.github/workflows/deploy-pages.yml` construye con `next build` y sube `out/`
+con `actions/upload-pages-artifact` + `actions/deploy-pages` en cada push a
+`main` (y a mano con `workflow_dispatch`). URL:
+`https://cheshnark.github.io/mortgage-calculator/`.
+
+Diferencia clave con el servidor propio: un repositorio de proyecto en GitHub
+Pages sirve bajo `/<repo>/`, no en la raíz del dominio. `next.config.ts` fija
+`basePath`/`assetPrefix` a `/mortgage-calculator` **solo** cuando el build
+recibe `GITHUB_PAGES=true` — variable que únicamente pone este workflow. El
+build normal (servidor propio, `npm run build` sin esa variable) sigue
+sirviendo en la raíz, sin tocar nada.
+
+`public/.nojekyll` evita que GitHub le aplique el procesado de Jekyll al
+sitio, que por defecto ignora cualquier carpeta que empiece por `_` (se
+comería `_next/`).
+
+**Paso manual de una sola vez** (no hay `gh` CLI en esta máquina para
+hacerlo por terminal): en GitHub, `Settings → Pages → Source: GitHub
+Actions`, en
+`https://github.com/Cheshnark/mortgage-calculator/settings/pages`. Sin esto
+activado el workflow corre pero no publica nada.

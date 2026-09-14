@@ -650,3 +650,32 @@ herramienta centrada en España es asumible, y es reversible (re-crear
 **Consecuencia para v3:** el dato del euríbor se resuelve en build. Actualizarlo
 es recompilar y volver a subir. Automatizar el `rsync` post-CI queda pendiente
 (`todos.md`).
+
+## 2026-09-14 · GitHub Pages como canal de demo, además del servidor propio
+
+**Decisión:** un segundo despliegue, en paralelo al del servidor propio, para
+poder enseñar la app sin esperar a aprovisionar servidor y dominio (paso 1
+pendiente en `project_state.md`). `.github/workflows/deploy-pages.yml`
+reconstruye en cada push a `main` (o a mano con `workflow_dispatch`) y publica
+`out/` con `actions/upload-pages-artifact` + `actions/deploy-pages`. Vive en
+`https://cheshnark.github.io/mortgage-calculator/`.
+
+Un repositorio de proyecto en GitHub Pages sirve bajo `/<repo>/`, no en la
+raíz, a diferencia del servidor propio. `next.config.ts` activa `basePath` y
+`assetPrefix` solo cuando el build los pide con `GITHUB_PAGES=true` (variable
+que solo pone el workflow de Pages); el build del servidor propio no la
+declara y sigue sirviendo en la raíz sin cambios. Se añade `public/.nojekyll`
+para que GitHub no le aplique el procesado de Jekyll a `_next/` (ignoraría
+cualquier carpeta que empiece por `_`).
+
+**Motivo:** no sustituye la decisión de servidor propio de 2026-09-08 —
+sigue siendo el destino de producción una vez esté aprovisionado— sino que
+cubre el hueco mientras tanto: una URL pública para enseñar el estado actual
+sin depender de esa tarea. El paso manual de una sola vez, activar Pages en
+Settings → Pages → Source: GitHub Actions, queda para quien tenga acceso al
+repo en la web: no hay `gh` CLI disponible en esta máquina para hacerlo desde
+la terminal.
+
+**Verificado:** build con `GITHUB_PAGES=true` sirviendo `out/` bajo
+`/mortgage-calculator/` con un servidor estático local — assets, `_next/` y
+el redirect de cliente `/` → `/es` respetan el `basePath` correctamente.
